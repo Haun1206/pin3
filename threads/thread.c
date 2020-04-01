@@ -125,7 +125,7 @@ thread_init (void) {
 	lock_init (&tid_lock);
 	list_init (&ready_list);
 	list_init (&destruction_req);
-    list_lnit (&sleeping_threads);
+    list_init (&sleeping_threads);
 
 	/* Set up a thread structure for the running thread. */
 	initial_thread = running_thread ();
@@ -242,8 +242,8 @@ thread_block (void) {
 }
 
 bool thread_compare_waketime(struct list_elem * x, struct list_elem * y, void *aux){
-	struct thread * X_thread = list_entry(e, struct thread, elem);
-	struct thread * Y_thread = list_entry(e, struct thread, elem);
+	struct thread * X_thread = list_entry(x, struct thread, elem);
+	struct thread * Y_thread = list_entry(y, struct thread, elem);
 	if(X_thread -> wake_time < Y_thread -> wake_time)
 		return true;
 	else if(X_thread -> wake_time == Y_thread -> wake_time){
@@ -271,7 +271,7 @@ void thread_sleep(int64_t waking_tick){
     current_thread -> wake_time = waking_tick;
 	set_next_awake_tick(waking_tick);
 	//putting threads in the list in order
-    list_insert_ordered(&sleeping_threads,current_thread->elem,thread_compare_waketime,NULL);
+    list_insert_ordered(&sleeping_threads,&current_thread->elem,thread_compare_waketime,NULL);
     thread_block();
     intr_set_level(old);
 }
@@ -284,7 +284,7 @@ void thread_sleep(int64_t waking_tick){
 void thread_awake(int64_t signal_tick){
     struct list_elem *e;
     //traverse the list
-    for(e=list_begin(sleeping_threads);e = list_end(sleeping_threads);e=list_next(sleeping_threads)){
+    for(e=list_begin(&sleeping_threads);e = list_end(&sleeping_threads);e=list_next(&sleeping_threads)){
 		struct thread * temp = list_entry(e,struct thread, elem);
 
 		//If the signal_tick that is given is bigger or same than the current tick, then it should wake up.
