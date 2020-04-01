@@ -271,7 +271,6 @@ void thread_sleep(int64_t waking_tick){
 	set_next_awake_tick(waking_tick);
 	//putting threads in the list in order
     list_insert_ordered(&sleeping_threads,&current_thread->elem,thread_compare_waketime,NULL);
-	printf(list_size(&sleeping_threads));
     thread_block();
     intr_set_level(old);
 }
@@ -284,14 +283,15 @@ void thread_sleep(int64_t waking_tick){
 void thread_awake(int64_t signal_tick){
     struct list_elem *e;
     //traverse the list
-    for(e=list_begin(&sleeping_threads);e != list_end(&sleeping_threads);e=list_next(e)){
+    for(e=list_begin(&sleeping_threads);e != list_end(&sleeping_threads);){
 		struct thread * temp = list_entry(e,struct thread, elem);
 
 		//If the signal_tick that is given is bigger or same than the current tick, then it should wake up.
 		if(signal_tick >= (temp->wake_time)){
-			list_remove(e);
+			e = list_remove(&thread->elem);
 			thread_unblock(temp);
 		}else{
+			e = list_next(e);
 			set_next_awake_tick(temp->wake_time);
 		}
 	}
