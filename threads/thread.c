@@ -272,6 +272,7 @@ void thread_sleep(int64_t waking_tick){
 	set_next_awake_tick(waking_tick);
 	//putting threads in the list in order
     list_insert_ordered(&sleeping_threads,&current_thread->elem,thread_compare_waketime,NULL);
+	printf(list_size(&sleeping_threads));
     thread_block();
     intr_set_level(old);
 }
