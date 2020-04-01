@@ -86,8 +86,8 @@ struct thread {
 	tid_t tid;                          /* Thread identifier. */
 	enum thread_status status;          /* Thread state. */
 	char name[16];                      /* Name (for debugging purposes). */
+    int64_t wake_time; //This information stores the wakeup tick.
 	int priority;                       /* Priority. */
-
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
 
@@ -106,6 +106,8 @@ struct thread {
    Controlled by kernel command-line option "-o mlfqs". */
 extern bool thread_mlfqs;
 
+void set_next_awake_tick(int64_t new_next);
+int64_t get_next_awake_tick(void);
 void thread_init (void);
 void thread_start (void);
 
@@ -116,6 +118,9 @@ typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);
 
 void thread_block (void);
+bool thread_compare_waketime(struct list_elem * x, struct list_elem * y, void *aux);
+void thread_sleep(int64_t waking_tick);
+void thread_awake(int64_t signal_tick);
 void thread_unblock (struct thread *);
 
 struct thread *thread_current (void);

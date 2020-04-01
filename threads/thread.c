@@ -40,6 +40,9 @@ static struct lock tid_lock;
 /* Thread destruction requests */
 static struct list destruction_req;
 
+/*List of sleeping threads*/
+static struct list sleeping_threads;
+
 /* Statistics. */
 static long long idle_ticks;    /* # of timer ticks spent idle. */
 static long long kernel_ticks;  /* # of timer ticks in kernel threads. */
@@ -62,6 +65,7 @@ static void init_thread (struct thread *, const char *name, int priority);
 static void do_schedule(int status);
 static void schedule (void);
 static tid_t allocate_tid (void);
+static int64_t next_awake_tick;
 
 /* Returns true if T appears to point to a valid thread. */
 #define is_thread(t) ((t) != NULL && (t)->magic == THREAD_MAGIC)
@@ -78,6 +82,18 @@ static tid_t allocate_tid (void);
 // Because the gdt will be setup after the thread_init, we should
 // setup temporal gdt first.
 static uint64_t gdt[3] = { 0, 0x00af9a000000ffff, 0x00cf92000000ffff };
+
+
+/*getter and setter for the next_awake_tick
+*/
+void set_next_awake_tick(int64_t new_next){
+	if(new_next < next_awake_tick){
+		next_awake_tick = new_next;
+	}
+}
+int64_t get_next_awake_tick(void){
+    return next_awake_tick;
+}
 
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
@@ -109,6 +125,7 @@ thread_init (void) {
 	lock_init (&tid_lock);
 	list_init (&ready_list);
 	list_init (&destruction_req);
+    list_lnit (&sleeping_threads);
 
 	/* Set up a thread structure for the running thread. */
 	initial_thread = running_thread ();
@@ -222,6 +239,62 @@ thread_block (void) {
 	ASSERT (intr_get_level () == INTR_OFF);
 	thread_current ()->status = THREAD_BLOCKED;
 	schedule ();
+}
+
+bool thread_compare_waketime(struct list_elem * x, struct list_elem * y, void *aux){
+	struct thread * X_thread = list_entry(e, struct thread, elem);
+	struct thread * Y_thread = list_entry(e, struct thread, elem);
+	if(X_thread -> wake_time < Y_thread -> wake_time)
+		return true;
+	else if(X_thread -> wake_time == Y_thread -> wake_time){
+		//compare the priority
+		if(X_thread -> priority < Y_thread -> priority)
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
+}
+
+/* Puts the thread to be asleep until some point of tick.
+ Input: The waking time tick
+ */
+void thread_sleep(int64_t waking_tick){
+    //When putting the thread to sleep we want to disable interrupts so that it isn't bothered
+    enum intr_level old = intr_get_level();
+    intr_set_level(intr_disable());
+    
+    current_thread = thread_current();
+    ASSERT(current_thread != idle_thread);
+    
+    current_thread -> wake_time = waking_tick;
+	set_next_awake_tick(waking_tick);
+	//putting threads in the list in order
+    list_insert_ordered(&sleeping_threads,current_thread->elem,thread_compare_waketime,NULL);
+    thread_block(current_thread);
+    intr_set_level(old);
+}
+
+/*Wakes the threads on the sleeping list that passed the signal_tick
+ For example for each threads, if each 	threads have waking time of
+ 2,3,4, 43, 123
+ and the signal_tick is 44, we unblock the 2,3,4, 43 thread
+ */
+void thread_awake(int64_t signal_tick){
+    list_elem *e;
+    //traverse the list
+    for(e=list_begin(sleeping_threads);e = list_end(sleeping_threads);e=list_next(sleeping_threads)){
+		struct thread * temp = list_entry(e,struct thread, elem);
+
+		//If the signal_tick that is given is bigger or same than the current tick, then it should wake up.
+		if(signal_tick >= (temp->wake_time)){
+			list_remove(e);
+			thread_unblock(temp);
+		}else{
+			set_next_awake_tick(temp->wake_time);
+		}
+	}
 }
 
 /* Transitions a blocked thread T to the ready-to-run state.
