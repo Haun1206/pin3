@@ -263,9 +263,8 @@ bool thread_compare_waketime(struct list_elem * x, struct list_elem * y, void *a
 void thread_sleep(int64_t waking_tick){
     //When putting the thread to sleep we want to disable interrupts so that it isn't bothered
     enum intr_level old = intr_get_level();
-    intr_set_level(intr_disable());
-    
     struct thread * current_thread = thread_current();
+	intr_set_level(INTR_OFF);
     ASSERT(current_thread != idle_thread);
     
     current_thread -> wake_time = waking_tick;
