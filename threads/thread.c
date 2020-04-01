@@ -265,14 +265,14 @@ void thread_sleep(int64_t waking_tick){
     enum intr_level old = intr_get_level();
     intr_set_level(intr_disable());
     
-    current_thread = thread_current();
+    struct thread * current_thread = thread_current();
     ASSERT(current_thread != idle_thread);
     
     current_thread -> wake_time = waking_tick;
 	set_next_awake_tick(waking_tick);
 	//putting threads in the list in order
     list_insert_ordered(&sleeping_threads,current_thread->elem,thread_compare_waketime,NULL);
-    thread_block(current_thread);
+    thread_block();
     intr_set_level(old);
 }
 
@@ -282,7 +282,7 @@ void thread_sleep(int64_t waking_tick){
  and the signal_tick is 44, we unblock the 2,3,4, 43 thread
  */
 void thread_awake(int64_t signal_tick){
-    list_elem *e;
+    struct list_elem *e;
     //traverse the list
     for(e=list_begin(sleeping_threads);e = list_end(sleeping_threads);e=list_next(sleeping_threads)){
 		struct thread * temp = list_entry(e,struct thread, elem);
