@@ -288,7 +288,7 @@ void thread_awake(int64_t signal_tick){
 
 		//If the signal_tick that is given is bigger or same than the current tick, then it should wake up.
 		if(signal_tick >= (temp->wake_time)){
-			e = list_remove(&thread->elem);
+			e = list_remove(&temp->elem);
 			thread_unblock(temp);
 		}else{
 			e = list_next(e);
