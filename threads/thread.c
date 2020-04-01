@@ -285,7 +285,7 @@ void thread_sleep(int64_t waking_tick){
 void thread_awake(int64_t signal_tick){
     struct list_elem *e;
     //traverse the list
-    for(e=list_begin(&sleeping_threads);e = list_end(&sleeping_threads);e=list_next(&sleeping_threads)){
+    for(e=list_begin(&sleeping_threads);e != list_end(&sleeping_threads);e=list_next(e)){
 		struct thread * temp = list_entry(e,struct thread, elem);
 
 		//If the signal_tick that is given is bigger or same than the current tick, then it should wake up.
