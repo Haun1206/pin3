@@ -87,10 +87,6 @@ struct thread {
 	enum thread_status status;          /* Thread state. */
 	char name[16];                      /* Name (for debugging purposes). */
     int64_t wake_time; //This information stores the wakeup tick.
-	int original_priority;
-	struct list donations;
-	struct list_elem donation_elem;
-	struct lock * want_lock; 
 	int priority;                       /* Priority. */
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
@@ -130,10 +126,6 @@ void thread_unblock (struct thread *);
 struct thread *thread_current (void);
 tid_t thread_tid (void);
 const char *thread_name (void);
-
-void priority_donate(struct lock * lock);
-void remove_list_in_lock(struct lock *lock);
-void refresh_priority(void);
 
 void thread_exit (void) NO_RETURN;
 void thread_yield (void);
