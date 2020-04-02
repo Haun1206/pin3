@@ -102,14 +102,7 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     
     
 }
-bool thread_compare_priority(struct list_elem *x, struct list_elem *y, void*aux){
-    struct thread * X_thread = list_entry(x, struct thread, elem);
-    struct thread * Y_thread = list_entry(y, struct thread, elem);
-    if(X_thread->priority > Y_thread->priority)
-        return true;
-    else
-        return false;
-}
+
 
 /* Down or "P" operation on a semaphore, but only if the
    semaphore is not already 0.  Returns true if the semaphore is
