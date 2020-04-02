@@ -313,7 +313,7 @@ cond_wait (struct condition *cond, struct lock *lock) {
 	sema_init (&waiter.semaphore, 0);
     //FIFO -> priority
 
-    list_insert_ordered(&cond->waiters, &waiter.elem,compare_sema_priority,NULL);
+    list_insert_ordered(&cond->waiters, &waiter.elem,thread_compare_priority,NULL);
 	lock_release (lock);
 	sema_down (&waiter.semaphore);
 	lock_acquire (lock);
@@ -333,7 +333,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED) {
 	ASSERT (!intr_context ());
 	ASSERT (lock_held_by_current_thread (lock));
     if (!list_empty (&cond->waiters)){
-        list_sort(&cond->waiters, compare_sema_priority, NULL);
+        list_sort(&cond->waiters, thread_compare_priority, NULL);
 		sema_up (&list_entry (list_pop_front (&cond->waiters),
 					struct semaphore_elem, elem)->semaphore);
     }
