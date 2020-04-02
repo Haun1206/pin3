@@ -66,11 +66,37 @@ sema_down (struct semaphore *sema) {
 
 	old_level = intr_disable ();
 	while (sema->value == 0) {
-		list_push_back (&sema->waiters, &thread_current ()->elem);
+		//Currently FIFO and we would like to give priority here
+		list_insert_ordered(&sema->waiters,&thread_current()->elem, compare_sema_priority,NULL);
 		thread_block ();
 	}
 	sema->value--;
 	intr_set_level (old_level);
+}
+/*
+ For two semaphore elem X,Y if there is a waiting list for only x, priority is bigger => proceed X first, and the opposite also holds.
+ After sorting the waiting queue, for both lists, we check the max priority for each queue and decide the semaphore priority.
+ */
+bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
+    struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
+    struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
+    struct list x_wait_list = X_sema->semaphore.waiters;
+    struct list y_wait_list = Y_sema ->semaphore.waiters;
+    if(list_empty(&x_wait_list))
+        return false;
+    if(list_empty(&y_wait_list))
+        return true;
+    list_sort(&x_wait_list, thread_compare_priority, NULL);
+    list_sort(&y_wait_list, thread_compare_priority, NULL);
+    
+    struct thread * first_x = list_entry(list_begin(x_wait_list),struct thread, elem);
+    struct thread * first_y = list_entry(list_begin(y_wait_list), struct thread, elem);
+    if( first_x -> priority > first_y->priority)
+        return true;
+    else return false;
+    
+    
+    
 }
 
 /* Down or "P" operation on a semaphore, but only if the
@@ -100,7 +126,8 @@ sema_try_down (struct semaphore *sema) {
 
 /* Up or "V" operation on a semaphore.  Increments SEMA's value
    and wakes up one thread of those waiting for SEMA, if any.
-
+ There might be some cases where the priority order is ruined by the interrupt handler, thus we should sort the order once again.
+ Then yield it.
    This function may be called from an interrupt handler. */
 void
 sema_up (struct semaphore *sema) {
@@ -109,10 +136,13 @@ sema_up (struct semaphore *sema) {
 	ASSERT (sema != NULL);
 
 	old_level = intr_disable ();
-	if (!list_empty (&sema->waiters))
+    if (!list_empty (&sema->waiters)){
+        list_sort(&sema->waiters, compare_sema_priority, NULL);
 		thread_unblock (list_entry (list_pop_front (&sema->waiters),
 					struct thread, elem));
+    }
 	sema->value++;
+    thread_yield();
 	intr_set_level (old_level);
 }
 
@@ -282,7 +312,9 @@ cond_wait (struct condition *cond, struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	sema_init (&waiter.semaphore, 0);
-	list_push_back (&cond->waiters, &waiter.elem);
+    //FIFO -> priority
+
+    list_insert_ordered(&cond->waiters, &waiter.elem,thread_compare_priority,NULL);
 	lock_release (lock);
 	sema_down (&waiter.semaphore);
 	lock_acquire (lock);
@@ -301,7 +333,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED) {
 	ASSERT (lock != NULL);
 	ASSERT (!intr_context ());
 	ASSERT (lock_held_by_current_thread (lock));
-
+    list_sort(&cond->waiters, compare_sema_priority. NULL);
 	if (!list_empty (&cond->waiters))
 		sema_up (&list_entry (list_pop_front (&cond->waiters),
 					struct semaphore_elem, elem)->semaphore);

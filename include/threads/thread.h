@@ -119,10 +119,11 @@ tid_t thread_create (const char *name, int priority, thread_func *, void *);
 
 void thread_block (void);
 bool thread_compare_waketime(struct list_elem * x, struct list_elem * y, void *aux);
+bool thread_compare_priority(struct list_elem *x, struct list_elem *y, void*aux);
 void thread_sleep(int64_t waking_tick);
 void thread_awake(int64_t signal_tick);
 void thread_unblock (struct thread *);
-
+void swap_working(void);
 struct thread *thread_current (void);
 tid_t thread_tid (void);
 const char *thread_name (void);
