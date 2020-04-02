@@ -227,6 +227,8 @@ thread_create (const char *name, int priority,
 
 	/* Add to run queue. */
 	thread_unblock (t);
+	if (thread_current()->priority < priority)
+    	thread_yield();
 
 	return tid;
 }
@@ -327,8 +329,7 @@ const char *
 thread_name (void) {
 	return thread_current ()->name;
 }
-void priority_donate(void){
-	struct lock* lock = thread_current()->want_lock;
+void priority_donate(struct lock * lock){
 	struct thread * holding = lock->holder;
 	ASSERT(lock!=NULL);
 	ASSERT(holding!= NULL);
@@ -337,7 +338,7 @@ void priority_donate(void){
 	struct thread * first_thread = list_entry(first,struct thread, donation_elem);
 	holding->priority = first_thread->priority;
 	if(holding->want_lock != NULL)
-		priority_donate();
+		priority_donate(holding->want_lock);
 }
 void remove_list_in_lock(struct lock * lock){
 	struct thread * holder = lock->holder;
@@ -415,7 +416,7 @@ thread_set_priority (int new_priority) {
 	int original_priority  = cur->priority;
 	cur->priority = new_priority;
 	if(original_priority <= new_priority){
-		if(cur->want_lock != NULL) priority_donate();
+		if(cur->want_lock != NULL) priority_donate(cur->want_lock);
 	}else{
 		thread_yield();
 	}

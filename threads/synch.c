@@ -194,13 +194,15 @@ lock_acquire (struct lock *lock) {
 		if(cur->priority > lock->holder->priority){
 			lock->holder->original_priority = lock->holder->priority;
 			list_insert_ordered(&lock->holder->donations, &cur->donation_elem, lock_compare_priority,NULL);
-			priority_donate();
+			priority_donate(lock);
 		}
 	}
 
 	sema_down (&lock->semaphore);
+	thread_current()->want_lock = NULL;
 	lock->holder = thread_current ();
-	lock->holder->want_lock = NULL;
+
+
 }
 
 bool lock_compare_priority(struct list_elem * x, struct list_elem * y, void *aux){
@@ -241,9 +243,9 @@ void
 lock_release (struct lock *lock) {
 	ASSERT (lock != NULL);
 	ASSERT (lock_held_by_current_thread (lock));
-
-	remove_list_in_lock(lock);
 	refresh_priority();
+	remove_list_in_lock(lock);
+
 	lock->holder = NULL;
 	sema_up (&lock->semaphore);
 }
