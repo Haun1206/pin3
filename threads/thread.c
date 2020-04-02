@@ -223,7 +223,7 @@ thread_create (const char *name, int priority,
 
 	/* Add to run queue. */
 	thread_unblock (t);
-
+    swap_working();
 	return tid;
 }
 
@@ -256,7 +256,14 @@ bool thread_compare_waketime(struct list_elem * x, struct list_elem * y, void *a
 	else
 		return false;
 }
-
+bool thread_compare_priority(struct list_elem *x, struct list_elem *y, void*aux){
+    struct thread * X_thread = list_entry(x, struct thread, elem);
+    struct thread * Y_thread = list_entry(y, struct thread, elem);
+    if(X_thread->priority > Y_thread->priority)
+        return true;
+    else
+        return false;
+}
 /* Puts the thread to be asleep until some point of tick.
  Input: The waking time tick
  */
@@ -313,7 +320,8 @@ thread_unblock (struct thread *t) {
 
 	old_level = intr_disable ();
 	ASSERT (t->status == THREAD_BLOCKED);
-	list_push_back (&ready_list, &t->elem);
+    //should change the priority as soon as it is unblocked
+    list_insert_ordered(&ready_list, &t->elem, thread_compare_priority,NULL);
 	t->status = THREAD_READY;
 	intr_set_level (old_level);
 }
@@ -376,15 +384,26 @@ thread_yield (void) {
 
 	old_level = intr_disable ();
 	if (curr != idle_thread)
-		list_push_back (&ready_list, &curr->elem);
+        list_insert_ordered(&ready_list, &curr->elem, thread_compare_priority, NULL);
 	do_schedule (THREAD_READY);
 	intr_set_level (old_level);
 }
 
+/*Since the ready list is ordered in the order of the high priority -> low priority, compare current_thread and the ready thread and yield it if the ready priority is bigger than the current one.
+*/
+void swap_working(void){
+    if(!list_empty(&ready_list)){
+        struct list_elem * first = list_begin(&ready_list);
+        struct thread * first_thread = list_entry(first, struct thread, elem);
+        if(thread_current()->priority < first_thread-> priority)
+            thread_yield();
+    }
+}
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) {
 	thread_current ()->priority = new_priority;
+    swap_working();
 }
 
 /* Returns the current thread's priority. */
