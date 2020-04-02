@@ -86,17 +86,15 @@ sema_down (struct semaphore *sema) {
 bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
     struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
-    struct list x_wait_list = X_sema->semaphore.waiters;
-    struct list y_wait_list = Y_sema ->semaphore.waiters;
-    if(list_empty(&y_wait_list))
+    if(list_empty(&Y_sema->semaphore.waiters))
         return true;
-    if(list_empty(&x_wait_list))
+    if(list_empty(&X_sema -> semaphore.waiters))
         return false;
-    list_sort(&x_wait_list, thread_compare_priority, NULL);
-    list_sort(&y_wait_list, thread_compare_priority, NULL);
+    list_sort(&X_sema->semaphore.waiters, thread_compare_priority, NULL);
+    list_sort(&Y_sema->semaphore.waiters, thread_compare_priority, NULL);
     
-    struct thread * first_x = list_entry(list_begin(&x_wait_list),struct thread, elem);
-    struct thread * first_y = list_entry(list_begin(&y_wait_list), struct thread, elem);
+    struct thread * first_x = list_entry(list_begin(&X_sema->semaphore.waiters),struct thread, elem);
+    struct thread * first_y = list_entry(list_begin(&Y_sema->semaphore.waiters), struct thread, elem);
     if( first_x -> priority >= first_y->priority)
         return true;
     else return false;
@@ -148,7 +146,7 @@ sema_up (struct semaphore *sema) {
 					struct thread, elem));
     }
 	sema->value++;
-    swap_working();
+    if(!intr_context()) swap_working();
 	intr_set_level (old_level);
 }
 
