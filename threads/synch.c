@@ -74,8 +74,9 @@ sema_down (struct semaphore *sema) {
 		//Currently FIFO and we would like to give priority here
 		list_insert_ordered(&sema->waiters,&thread_current()->elem, thread_compare_priority,NULL);
 		thread_block ();
+        sema->value--;
 	}
-	sema->value--;
+
 	intr_set_level (old_level);
 }
 /*
