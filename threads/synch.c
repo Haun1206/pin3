@@ -194,7 +194,7 @@ lock_acquire (struct lock *lock) {
 		if(cur->priority > lock->holder->priority){
 			lock->holder->original_priority = lock->holder->priority;
 			list_insert_ordered(&lock->holder->donations, &cur->donation_elem, lock_compare_priority,NULL);
-			priority_donate(lock);
+			priority_donate();
 		}
 	}
 
