@@ -131,6 +131,10 @@ struct thread *thread_current (void);
 tid_t thread_tid (void);
 const char *thread_name (void);
 
+void priority_donate(struct lock *lock);
+void remove_list_in_lock(struct lock *lock);
+void refresh_priority(struct lock * lock);
+
 void thread_exit (void) NO_RETURN;
 void thread_yield (void);
 
