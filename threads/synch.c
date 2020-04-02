@@ -89,8 +89,8 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     list_sort(&x_wait_list, thread_compare_priority, NULL);
     list_sort(&y_wait_list, thread_compare_priority, NULL);
     
-    struct thread * first_x = list_entry(list_begin(x_wait_list),struct thread, elem);
-    struct thread * first_y = list_entry(list_begin(y_wait_list), struct thread, elem);
+    struct thread * first_x = list_entry(list_begin(&x_wait_list),struct thread, elem);
+    struct thread * first_y = list_entry(list_begin(&y_wait_list), struct thread, elem);
     if( first_x -> priority > first_y->priority)
         return true;
     else return false;
