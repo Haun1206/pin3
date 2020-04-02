@@ -346,7 +346,7 @@ void refresh_priority(struct lock * lock){
 	struct thread * holder = lock->holder;
 	struct list_elem * first = list_begin(&holder->donations);
 	struct thread * first_thread = list_entry(first,struct thread, donation_elem);
-	holding->priority = first_thread -> priority;
+	holder->priority = first_thread -> priority;
 }
 
 /* Returns the running thread.
