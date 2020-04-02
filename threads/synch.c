@@ -79,17 +79,13 @@ sema_down (struct semaphore *sema) {
 
 	intr_set_level (old_level);
 }
-/*
- For two semaphore elem X,Y if there is a waiting list for only x, priority is bigger => proceed X first, and the opposite also holds.
- After sorting the waiting queue, for both lists, we check the max priority for each queue and decide the semaphore priority.
- */
+
 bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
+    ASSERT(x!=NULL);
+    ASSERT(y!=NULL);
     struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
     struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
-    if(list_empty(&Y_sema->semaphore.waiters))
-        return true;
-    if(list_empty(&X_sema -> semaphore.waiters))
-        return false;
+    
     list_sort(&X_sema->semaphore.waiters, thread_compare_priority, NULL);
     list_sort(&Y_sema->semaphore.waiters, thread_compare_priority, NULL);
     
@@ -101,6 +97,14 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     
     
     
+}
+bool thread_compare_priority(struct list_elem *x, struct list_elem *y, void*aux){
+    struct thread * X_thread = list_entry(x, struct thread, elem);
+    struct thread * Y_thread = list_entry(y, struct thread, elem);
+    if(X_thread->priority > Y_thread->priority)
+        return true;
+    else
+        return false;
 }
 
 
@@ -137,17 +141,15 @@ sema_try_down (struct semaphore *sema) {
 void
 sema_up (struct semaphore *sema) {
 	enum intr_level old_level;
-
 	ASSERT (sema != NULL);
 
 	old_level = intr_disable ();
     while(!list_empty (&sema->waiters)){
         //list_sort(&sema->waiters, thread_compare_priority, NULL);
-		thread_unblock (list_entry (list_pop_front (&sema->waiters),
-					struct thread, elem));
+		thread_unblock (list_entry (list_pop_front (&sema->waiters),struct thread, elem));
     }
 	sema->value++;
-    if(!intr_context()) swap_working();
+    swap_working();
 	intr_set_level (old_level);
 }
 
