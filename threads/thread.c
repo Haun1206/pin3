@@ -126,12 +126,16 @@ thread_init (void) {
 	list_init (&ready_list);
 	list_init (&destruction_req);
     list_init (&sleeping_threads);
+	
 
 	/* Set up a thread structure for the running thread. */
 	initial_thread = running_thread ();
 	init_thread (initial_thread, "main", PRI_DEFAULT);
 	initial_thread->status = THREAD_RUNNING;
 	initial_thread->tid = allocate_tid ();
+	initial_thread -> want_lock = NULL;
+	list_init(&initial_thread->donations);
+
 }
 
 /* Starts preemptive thread scheduling by enabling interrupts.
@@ -323,6 +327,27 @@ const char *
 thread_name (void) {
 	return thread_current ()->name;
 }
+void priority_donate(struct lock * lock){
+	struct thread * holding = lock->holder;
+	ASSERT(lock!=NULL);
+	ASSERT(holding!= NULL);
+	ASSERT(thread_current()->priority > holding->priority);
+	struct list_elem * first= list_begin(&holding->donations);
+	struct thread * first_thread = list_entry(first,struct thread, donation_elem);
+	holding->priority = first_thread->priority;
+	if(holding->want_lock != NULL)
+		priority_donate(holding->want_lock);
+}
+void remove_list_in_lock(struct lock * lock){
+	struct thread * holder = lock->holder;
+	list_pop_front(&holder->donations);
+}
+void refresh_priority(struct lock * lock){
+	struct thread * holder = lock->holder;
+	struct list_elem * first = list_begin(&holder->donations);
+	struct thread * first_thread = list_entry(first,struct thread, donation_elem);
+	holding->priority = first_thread -> priority;
+}
 
 /* Returns the running thread.
    This is running_thread() plus a couple of sanity checks.
@@ -384,7 +409,15 @@ thread_yield (void) {
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) {
-	thread_current ()->priority = new_priority;
+	struct thread * cur = thread_current();
+	int original_priority  = cur->priority;
+	cur->priority = new_priority;
+	if(original_priority <= new_priority){
+		if(cur->want_lock != NULL) priority_donate(cur);
+	}else{
+		thread_yield();
+	}
+
 }
 
 /* Returns the current thread's priority. */

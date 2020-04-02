@@ -188,8 +188,28 @@ lock_acquire (struct lock *lock) {
 	ASSERT (!intr_context ());
 	ASSERT (!lock_held_by_current_thread (lock));
 
+	if(lock->holder != NULL){
+		struct thread * cur = thread_current();
+		cur->want_lock = lock;
+		if(cur->priority > lock->holder->priority){
+			lock->holder->original_priority = lock->holder->priority;
+			list_insert_ordered(&lock->holder->donations, &cur->donation_elem, lock_compare_priority,NULL);
+			priority_donate(lock);
+		}
+	}
+
 	sema_down (&lock->semaphore);
 	lock->holder = thread_current ();
+	lock->holder->want_lock = NULL;
+}
+
+bool lock_compare_priority(struct list_elem * x, struct list_elem * y, void *aux){
+	struct thread * X_thread = list_entry(x, struct thread, donation_elem);
+	struct thread * Y_thread = list_entry(y, struct thread, donation_elem);
+	if(X_thread -> priority >= Y_thread -> priority)
+		return true;
+	else
+		return false;
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -222,6 +242,8 @@ lock_release (struct lock *lock) {
 	ASSERT (lock != NULL);
 	ASSERT (lock_held_by_current_thread (lock));
 
+	remove_list_in_lock(lock);
+	refresh_priority();
 	lock->holder = NULL;
 	sema_up (&lock->semaphore);
 }
