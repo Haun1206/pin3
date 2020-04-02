@@ -72,7 +72,7 @@ sema_down (struct semaphore *sema) {
 	old_level = intr_disable ();
 	while (sema->value == 0) {
 		//Currently FIFO and we would like to give priority here
-		list_insert_ordered(&sema->waiters,&thread_current()->elem, thread_compare_priority,NULL);
+		list_insert_ordered(&sema->waiters,&thread_current()->elem, compare_thread_priority,NULL);
 		thread_block ();
 	}
     sema->value--;
@@ -86,8 +86,8 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
     struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
     
-    list_sort(&X_sema->semaphore.waiters, thread_compare_priority, NULL);
-    list_sort(&Y_sema->semaphore.waiters, thread_compare_priority, NULL);
+    list_sort(&X_sema->semaphore.waiters, compare_thread_priority, NULL);
+    list_sort(&Y_sema->semaphore.waiters, compare_thread_priority, NULL);
     
     struct thread * first_x = list_entry(list_begin(&X_sema->semaphore.waiters),struct thread, elem);
     struct thread * first_y = list_entry(list_begin(&Y_sema->semaphore.waiters), struct thread, elem);
@@ -98,7 +98,7 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     
     
 }
-bool thread_compare_priority(struct list_elem *x, struct list_elem *y, void*aux){
+bool compare_thread_priority(struct list_elem *x, struct list_elem *y, void*aux){
     struct thread * X_thread = list_entry(x, struct thread, elem);
     struct thread * Y_thread = list_entry(y, struct thread, elem);
     if(X_thread->priority > Y_thread->priority)
@@ -145,7 +145,7 @@ sema_up (struct semaphore *sema) {
 
 	old_level = intr_disable ();
     while(!list_empty (&sema->waiters)){
-        //list_sort(&sema->waiters, thread_compare_priority, NULL);
+        //list_sort(&sema->waiters, compare_thread_priority, NULL);
 		thread_unblock (list_entry (list_pop_front (&sema->waiters),struct thread, elem));
     }
 	sema->value++;
