@@ -327,7 +327,8 @@ const char *
 thread_name (void) {
 	return thread_current ()->name;
 }
-void priority_donate(struct lock * lock){
+void priority_donate(void){
+	struct lock* lock = thread_current()->want_lock;
 	struct thread * holding = lock->holder;
 	ASSERT(lock!=NULL);
 	ASSERT(holding!= NULL);
@@ -336,13 +337,14 @@ void priority_donate(struct lock * lock){
 	struct thread * first_thread = list_entry(first,struct thread, donation_elem);
 	holding->priority = first_thread->priority;
 	if(holding->want_lock != NULL)
-		priority_donate(holding->want_lock);
+		priority_donate();
 }
 void remove_list_in_lock(struct lock * lock){
 	struct thread * holder = lock->holder;
 	list_pop_front(&holder->donations);
 }
-void refresh_priority(struct lock * lock){
+void refresh_priority(void){
+	struct lock* lock = thread_current()->want_lock;
 	struct thread * holder = lock->holder;
 	struct list_elem * first = list_begin(&holder->donations);
 	struct thread * first_thread = list_entry(first,struct thread, donation_elem);
@@ -413,7 +415,7 @@ thread_set_priority (int new_priority) {
 	int original_priority  = cur->priority;
 	cur->priority = new_priority;
 	if(original_priority <= new_priority){
-		if(cur->want_lock != NULL) priority_donate(cur);
+		if(cur->want_lock != NULL) priority_donate();
 	}else{
 		thread_yield();
 	}
