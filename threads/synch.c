@@ -152,7 +152,7 @@ sema_up (struct semaphore *sema) {
             temp = list_entry(e,struct thread, elem);
             if(temp->priority > max_t -> priority){
                 max_e = e;
-                max_t = t;
+                max_t = temp;
             }
         }
 		//thread_unblock (list_entry (list_pop_front (&sema->waiters),struct thread, elem));
