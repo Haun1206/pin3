@@ -231,7 +231,6 @@ lock_acquire (struct lock *lock) {
         struct thread * cur = thread_current();
         cur->want_lock = lock;
         list_insert_ordered(&lock->holder->donation, &cur->donation_elem, thread_compare_priority, NULL);
-        donate_priority();
     }
 	sema_down (&lock->semaphore);
 	lock->holder = thread_current ();
