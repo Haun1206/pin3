@@ -72,7 +72,7 @@ sema_down (struct semaphore *sema) {
 	old_level = intr_disable ();
 	while (sema->value == 0) {
 		//Currently FIFO and we would like to give priority here
-		list_insert_ordered(&sema->waiters,&thread_current()->elem, compare_thread_priority,NULL);
+		list_insert_ordered(&sema->waiters,&thread_current()->elem, thread_compare_priority,NULL);
 		thread_block ();
 	}
     sema->value--;
@@ -80,14 +80,20 @@ sema_down (struct semaphore *sema) {
 	intr_set_level (old_level);
 }
 
+/*
+If Y is empty, X priority will be higher always, if only X empty -> lower
+Plus, we check the highest priority of threads of X and Y, sorting the list.(only need to pop the first element
+*/
 bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     ASSERT(x!=NULL);
     ASSERT(y!=NULL);
     struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
     struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
     
-    list_sort(&X_sema->semaphore.waiters, compare_thread_priority, NULL);
-    list_sort(&Y_sema->semaphore.waiters, compare_thread_priority, NULL);
+    if(list_empty(&Y_sema->semaphore.waiters)) return true;
+    if(list_empty(&X_sema->semaphore.waiters)) return false;
+    list_sort(&X_sema->semaphore.waiters, thread_compare_priority, NULL);
+    list_sort(&Y_sema->semaphore.waiters, thread_compare_priority, NULL);
     
     struct thread * first_x = list_entry(list_begin(&X_sema->semaphore.waiters),struct thread, elem);
     struct thread * first_y = list_entry(list_begin(&Y_sema->semaphore.waiters), struct thread, elem);
@@ -98,14 +104,8 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     
     
 }
-bool compare_thread_priority(struct list_elem *x, struct list_elem *y, void*aux){
-    struct thread * X_thread = list_entry(x, struct thread, elem);
-    struct thread * Y_thread = list_entry(y, struct thread, elem);
-    if(X_thread->priority > Y_thread->priority)
-        return true;
-    else
-        return false;
-}
+
+
 
 
 /* Down or "P" operation on a semaphore, but only if the
@@ -145,7 +145,7 @@ sema_up (struct semaphore *sema) {
 
 	old_level = intr_disable ();
     while(!list_empty (&sema->waiters)){
-        //list_sort(&sema->waiters, compare_thread_priority, NULL);
+        list_sort(&sema->waiters, thread_compare_priority, NULL);
 		thread_unblock (list_entry (list_pop_front (&sema->waiters),struct thread, elem));
     }
 	sema->value++;
@@ -315,7 +315,6 @@ cond_wait (struct condition *cond, struct lock *lock) {
 
 	sema_init (&waiter.semaphore, 0);
     //FIFO -> priority
-
     list_insert_ordered(&cond->waiters, &waiter.elem,compare_sema_priority,NULL);
 	lock_release (lock);
 	sema_down (&waiter.semaphore);
