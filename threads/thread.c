@@ -699,7 +699,7 @@ allocate_tid (void) {
 	return tid;
 }
 
-void lock_remove(struct lock *lock){
+void remove_lock(struct lock *lock){
     struct thread *t;
     struct list_elem *e;
     struct thread *cur = thread_current();
