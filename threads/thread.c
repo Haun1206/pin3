@@ -732,7 +732,7 @@ void refresh_priority(void){
  */
 void donate_priority(void){
     int depth = 0;
-    struct thread *cur = thread_current();
+    struct thread * cur = thread_current();
     struct lock * temp_lock = cur->want_lock();
     while(temp_lock != NULL && depth < DEPTH_MAX){
         depth++;
