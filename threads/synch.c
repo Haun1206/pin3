@@ -91,8 +91,6 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
     struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
     
-    if(list_empty(&Y_sema->semaphore.waiters)) return true;
-    if(list_empty(&X_sema->semaphore.waiters)) return false;
     list_sort(&X_sema->semaphore.waiters, thread_compare_priority, NULL);
     list_sort(&Y_sema->semaphore.waiters, thread_compare_priority, NULL);
     
@@ -253,7 +251,8 @@ lock_try_acquire (struct lock *lock) {
 
 	success = sema_try_down (&lock->semaphore);
     if (success){
-        //no one hj
+        //no one has lock
+        thread_current() ->want_lock = NULL;
 		lock->holder = thread_current ();
     }
 	return success;
