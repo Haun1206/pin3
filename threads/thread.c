@@ -418,7 +418,7 @@ thread_set_priority (int new_priority) {
     refresh_priority();
     if(orig_pri > cur->priority)
         swap_working();
-    if(orig_pri<cur_priority)
+    if(orig_pri<cur->priority)
         donate_priority();
     intr_set_level(old);
     
@@ -722,8 +722,8 @@ void refresh_priority(void){
     if(!list_empty(&cur->donation)){}
     else{
         struct thread * first = list_entry(list_begin(&cur->donation), struct thread, donation_elem);
-        if(first->priority > cur_priority)
-            cur_priority = first_priority;
+        if(first->priority > cur->priority)
+            cur->priority = first->priority;
     }
 }
 
@@ -733,7 +733,7 @@ void refresh_priority(void){
 void donate_priority(void){
     int depth = 0;
     struct thread *cur = thread_current();
-    struct lock * temp_lock = temp_thread->want_lock();
+    struct lock * temp_lock = cur->want_lock();
     while(temp_lock != NULL && depth < DEPTH_MAX){
         depth++;
         //No lock holder
