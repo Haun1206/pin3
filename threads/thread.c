@@ -23,6 +23,8 @@
 /* Random value for basic thread
    Do not modify this value. */
 #define THREAD_BASIC 0xd42df210
+//Nested depth_limit
+#define DEPTH_MAX 8
 
 /* List of processes in THREAD_READY state, that is, processes
    that are ready to run but not actually running. */
@@ -399,11 +401,27 @@ void swap_working(void){
             thread_yield();
     }
 }
-/* Sets the current thread's priority to NEW_PRIORITY. */
+/* Sets the current thread's priority to NEW_PRIORITY.
+   If the priority of the thread changes, we need to check if it is somewhat different from the original priority. After updating the priority, we should immediately check it with the locks currently waiting for the possessed lock. (priority might change) After we get the refreshed_prioity,
+    If it smaller than the original one, check if other processes in the waiting queue has higher priority (preemptive)
+    If bigger, give the other threads that posess the lock the priority changed inforamtion.
+    If same, no other processes are needed.
+ */
 void
 thread_set_priority (int new_priority) {
-	thread_current ()->priority = new_priority;
-    swap_working();
+    struct thread * cur = thread_current();
+    if(cur->priority == new_priority) return;
+    enum intr_level old = intr_get_level();
+    intr_set_level(INTR_OFF);
+    int orig_pri = cur->priority;
+    cur->priority = new_priority;
+    refresh_priority();
+    if(orig_pri > cur->priority)
+        swap_working();
+    if(orig_pri<cur_priority)
+        donate_priority();
+    intr_set_level(old);
+    
 }
 
 /* Returns the current thread's priority. */
@@ -680,3 +698,49 @@ allocate_tid (void) {
 
 	return tid;
 }
+
+void lock_remove(struct lock *lock){
+    struct thread *t;
+    struct list_elem *e;
+    struct thread *cur = thread_current();
+    for(e= list_begin(&t->donation); e != list_end(&cur->donation);){
+        t = list_entry(e,struct thread, donation_elem);
+        if(t->want_lock == lock)
+            e = list_remove(e);
+        else
+            e = list_next(e);
+    }
+}
+/*
+ After erasing the thread due to lock, or if there is a change in priority we should change the priority.
+ If the priority of the other waiting thread is higher then we tend to change the priority to that value, else just let it be the original one.
+ */
+void refresh_priority(void){
+    struct thread * cur = thread_current();
+    //change the priority to the original priority since the thread is erased.
+    cur->priority = cur->original_priority;
+    if(!list_empty(&cur->donation)){}
+    else{
+        struct thread * first = list_entry(list_begin(&cur->donation), struct thread, donation_elem);
+        if(first->priority > cur_priority)
+            cur_priority = first_priority;
+    }
+}
+
+/*
+ When donation happens, the current thread priority should be higher
+ */
+void donate_priority(void){
+    int depth = 0;
+    struct thread *cur = thread_current();
+    struct lock * temp_lock = temp_thread->want_lock();
+    while(temp_lock != NULL && depth < DEPTH_MAX){
+        depth++;
+        //No lock holder
+        if(temp_lock->holder == NULL) return;
+        if(temp_lock->holder->priority >= cur->priority) return;
+        temp_lock->holder->priority = cur->priority;
+        temp_lock = cur->want_lock;
+    }
+}
+
