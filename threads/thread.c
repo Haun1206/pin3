@@ -703,7 +703,7 @@ void remove_lock(struct lock *lock){
     struct thread *t;
     struct list_elem *e;
     struct thread *cur = thread_current();
-    for(e= list_begin(&t->donation); e != list_end(&cur->donation);){
+    for(e= list_begin(&cur->donation); e != list_end(&cur->donation);){
         t = list_entry(e,struct thread, donation_elem);
         if(t->want_lock == lock)
             e = list_remove(e);
@@ -735,7 +735,7 @@ void donate_priority(void){
     struct thread * cur = thread_current();
     struct lock * temp_lock = cur->want_lock;
     while(temp_lock != NULL && depth < DEPTH_MAX){
-        depth++;
+        depth = depth+1;
         //No lock holder
         if(temp_lock->holder == NULL) return;
         if(temp_lock->holder->priority >= cur->priority) return;
