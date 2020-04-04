@@ -151,6 +151,7 @@ sema_up (struct semaphore *sema) {
 	sema->value++;
     swap_working();
 	intr_set_level (old_level);
+    
 }
 
 static void sema_test_helper (void *sema_);

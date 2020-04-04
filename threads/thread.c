@@ -367,12 +367,7 @@ thread_exit (void) {
 #ifdef USERPROG
 	process_cleanup ();
 #endif
-    struct thread * cur = thread_current();
-    struct list_elem *e;
-    for (e = list_begin (&cur->list_lock); e != list_end (&cur->list_lock); e = list_next (e)) {
-       struct lock *lock = list_entry(e, struct lock, lock_elem);
-       lock_release(lock);
-     }
+
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
