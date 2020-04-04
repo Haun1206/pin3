@@ -457,7 +457,6 @@ thread_set_nice (int nice ) {
     intr_enable();
     mlfqs_recent_cpu(thread_current());
     mlfqs_priority(thread_current());
-    swap_working();
 }
 
 /* Returns the current thread's nice value. */
@@ -805,9 +804,12 @@ void donate_priority(void){
 void mlfqs_priority(struct thread *t){
     if(t==idle_thread) return;
     int m_priority = 0;
-    int rec_cpu = t-> recent_cpu;
-    int rec_nice = t->nice;
-    m_priority = 63- FP_TO_INT(rec_cpu/4) - rec_nice*2;
+    int max_pri = INT_TO_FP(PRI_MAX);
+    int recent_cpu_d4 = DIV_FI(t->recent_cpu,4);
+    int nice_doubled = MULT_FI(INT_TO_FP(t->nice),2);
+    
+    m_priority = SUB_FP(max_pri,recent_cpu_d4);
+    m_priority = SUB_FP(m_priority,nice_doubled);
     if(m_priority>PRI_MAX) m_priority = PRI_MAX;
     if(m_priority<PRI_MIN) m_priority = PRI_MIN;
     t->priority = m_priority;
@@ -859,12 +861,18 @@ void mlfqs_recalc(void){
     for (e = list_begin(&process_list); e!=list_end(&process_list); e = list_next(e)){
         struct thread *thread_each = list_entry(e,struct thread, process_elem);
         mlfqs_recent_cpu(thread_each);
+        mlfqs_priority(thread_each);
     }
 }
 
 
 int count_ready_threads(void){
-    int cnt = list_size(&ready_list);
-    if(thread_current() != idle_thread) cnt++;
-    return cnt;
+    int cnt =0;
+    struct list_elem *e;
+    
+    for(e=list_begin(&ready_list);e!=list_end(&ready_list); e = list_next(e)){
+        cnt++;
+    }
+    if(thread_current()==idle_thread) cnt--;
+    return cnt+1;
 }
