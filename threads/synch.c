@@ -208,6 +208,7 @@ lock_init (struct lock *lock) {
 	ASSERT (lock != NULL);
 
 	lock->holder = NULL;
+    lock->priority = 0;
 	sema_init (&lock->semaphore, 1);
 }
 
@@ -228,10 +229,26 @@ lock_acquire (struct lock *lock) {
     struct thread * cur = thread_current();
     struct thread * holding = lock->holder;
     struct lock * cur_lock = lock;
-    donate_priority();
+    
+    cur->want_lock = lock;
+    /*If it is a fresh lock, the priority of the lock itself will be the thread's priority.*/
+    
+    if(holding ==NULL)
+        cur_lock->priority = cur->priority;
+    while(holding != NULL && holding->priority < cur->priority){
+        int donating_priority_level = cur->priority;
+        donate_priority(holding, donating_priority_level);
+        //priority update
+        if(cur->priority > cur_lock->priority)
+            cur_lock -> priority = cur->priority;
+        cur_lock = holding->want_lock;
+        if(cur_lock ==NULL) break;
+        holding = cur_lock->holder;
+    }
 	sema_down (&lock->semaphore);
 	lock->holder = thread_current ();
     lock->holder->want_lock = NULL;
+    list_insert_ordered(&lock->holder->list_lock, &lock->elem),compare_lock_priority,NULL);
     
 }
 
@@ -266,9 +283,10 @@ lock_release (struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	lock->holder = NULL;
-    remove_lock(lock);
-    refresh_priority();
 	sema_up (&lock->semaphore);
+    
+    list_remove(&lock->elem);
+    refresh_priority();
 }
 
 /* Returns true if the current thread holds LOCK, false
@@ -362,4 +380,25 @@ cond_broadcast (struct condition *cond, struct lock *lock) {
 
 	while (!list_empty (&cond->waiters))
 		cond_signal (cond, lock);
+}
+bool compare_lock_priority(struct list_elem * x, struct list_elem *y, void * aux){
+    ASSERT(x!=NULL);
+    ASSERT(y!=NULL);
+    struct lock* X_lock = list_entry(x, struct lock, elem);
+    struct lock * Y_lock = list_entry(y,struct lock, elem);
+    if(X_lock->priority >= Y_lock -> priority) return true;
+    else return false;
+    
+}
+void refresh_priority(void){
+    struct thread * cur = thread_current();
+    if(list_empty(&cur->list_lock){
+        donate_priority(cur, cur->original_priority);
+    }
+    else{
+        //if there are some donating left, should check
+        list_sort(&cur->list_lock, compare_lock_priority, NULL);
+        struct * lock first = list_entry(&cur0>list_lock, struct lock, elem);
+        donate_priority(cur,first->priority);
+    }
 }

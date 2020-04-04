@@ -88,12 +88,13 @@ struct thread {
 	char name[16];                      /* Name (for debugging purposes). */
     int64_t wake_time; //This information stores the wakeup tick.
 	int priority;                       /* Priority. */
-    int original_priority;
+    int original_priority;              /* original priority*/
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
-    struct lock * want_lock;
-    struct list donation;
-    struct list_elem donation_elem;
+    
+    struct lock * want_lock;            /*The lock that the thread wants*/
+    struct list list_lock;              /*List of locks*/
+
 
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */
@@ -144,8 +145,6 @@ int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 
 void do_iret (struct intr_frame *tf);
-void donate_priority(void);
-void remove_lock(struct lock *lock);
-void refresh_priority(void);
+
 
 #endif /* threads/thread.h */
