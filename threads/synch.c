@@ -392,7 +392,7 @@ bool compare_lock_priority(struct list_elem * x, struct list_elem *y, void * aux
 }
 void refresh_priority(void){
     struct thread * cur = thread_current();
-    if(list_empty(&cur->list_lock){
+    if(list_empty(&cur->list_lock)){
         donate_priority(cur, cur->original_priority);
     }
     else{
