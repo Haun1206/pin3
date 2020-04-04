@@ -801,7 +801,7 @@ void mlfqs_priority(struct thread *t){
  Check if it is idle and do the calc. recent_cpu = 2*load_avg/(2*load_avg+1) * recent_cpu +nice
  */
 void mlfqs_recent_cpu(struct thread *t){
-    if(t==idlle_thread) return;
+    if(t==idle_thread) return;
     int m_recent_cpu;
     int load_avg_doubled = MULT_FI(load_avg,2);
     int load_avg_doubled_plus_one = ADD_FI(load_avg_doubled, 1);
