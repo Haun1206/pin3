@@ -367,7 +367,12 @@ thread_exit (void) {
 #ifdef USERPROG
 	process_cleanup ();
 #endif
-
+    struct thread * cur = thread_current();
+    struct list_elem *e;
+    for (e = list_begin (&cur->list_lock); e != list_end (&curr->locks); e = list_next (e)) {
+       struct lock *lock = list_entry(e, struct lock, lock_elem);
+       lock_release(lock);
+     }
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
@@ -417,7 +422,7 @@ thread_set_priority (int new_priority) {
 
     if(!list_empty(&ready_list)){
         struct thread *first = list_entry(list_begin(&ready_list),struct thread,elem);
-        if(first!=NULL && first->priority>new_priority) thread_yield();
+        if(first!=NULL && first->priority>new_priority) swap_working();
     }
 
 }
@@ -515,6 +520,7 @@ init_thread (struct thread *t, const char *name, int priority) {
 	t->status = THREAD_BLOCKED;
 	strlcpy (t->name, name, sizeof t->name);
 	t->tf.rsp = (uint64_t) t + PGSIZE - sizeof (void *);
+    list_init(&t->list_lock);
 	t->priority = priority;
 	t->magic = THREAD_MAGIC;
 }
@@ -706,7 +712,7 @@ void donate_priority(struct thread * t, int d_priority){
     if(t==thread_current() && !list_empty(&ready_list)){
         struct thread * first = list_entry(list_begin(&ready_list), struct thread, elem);
         if(first != NULL && first->priority > d_priority){
-            thread_yield();
+            swap_working();
         }
     }
 }

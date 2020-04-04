@@ -248,7 +248,7 @@ lock_acquire (struct lock *lock) {
 	sema_down (&lock->semaphore);
 	lock->holder = thread_current ();
     lock->holder->want_lock = NULL;
-    list_insert_ordered(&lock->holder->list_lock, &lock->elem,compare_lock_priority,NULL);
+    list_insert_ordered(&(lock->holder->list_lock), &lock->lock_elem,compare_lock_priority,NULL);
     
 }
 
@@ -285,7 +285,7 @@ lock_release (struct lock *lock) {
 	lock->holder = NULL;
 	sema_up (&lock->semaphore);
     
-    list_remove(&lock->elem);
+    list_remove(&lock->lock_elem);
     refresh_priority();
 }
 
