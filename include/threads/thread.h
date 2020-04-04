@@ -88,6 +88,7 @@ struct thread {
 	char name[16];                      /* Name (for debugging purposes). */
     int64_t wake_time; //This information stores the wakeup tick.
 	int priority;                       /* Priority. */
+    int original_priority;
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
     struct lock * want_lock;
