@@ -736,8 +736,7 @@ allocate_tid (void) {
 }
 
 void remove_lock(struct lock *lock){
-    if(thread_mlfqs)
-        NOT_REACHED();
+
     struct thread *t;
     struct list_elem *e;
     struct thread *cur = thread_current();
@@ -754,8 +753,7 @@ void remove_lock(struct lock *lock){
  If the priority of the other waiting thread is higher then we tend to change the priority to that value, else just let it be the original one.
  */
 void refresh_priority(void){
-    if(thread_mlfqs)
-        NOT_REACHED
+
     struct thread * cur = thread_current();
     struct thread * first;
     //change the priority to the original priority since the thread is erased.
@@ -774,8 +772,7 @@ void refresh_priority(void){
  When donation happens, the current thread priority should be higher
  */
 void donate_priority(void){
-    if(thread_mlfqs)
-        NOT_REACHED();
+
     int depth = 0;
     struct thread * cur = thread_current();
     struct lock * temp_lock = cur->want_lock;
