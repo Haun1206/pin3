@@ -384,8 +384,8 @@ cond_broadcast (struct condition *cond, struct lock *lock) {
 bool compare_lock_priority(struct list_elem * x, struct list_elem *y, void * aux){
     ASSERT(x!=NULL);
     ASSERT(y!=NULL);
-    struct lock* X_lock = list_entry(x, struct lock, elem);
-    struct lock * Y_lock = list_entry(y,struct lock, elem);
+    struct lock* X_lock = list_entry(x, struct lock, lock_elem);
+    struct lock * Y_lock = list_entry(y,struct lock, lock_elem);
     if(X_lock->priority >= Y_lock -> priority) return true;
     else return false;
     
