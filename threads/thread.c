@@ -453,7 +453,7 @@ thread_set_nice (int nice UNUSED) {
     intr_disable();
     thread_current() -> nice = nice;
     intr_enable();
-    mlfqs_priority();
+    mlfqs_priority(thread_current());
     intr_yield_on_return();
 }
 
