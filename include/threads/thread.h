@@ -88,12 +88,16 @@ struct thread {
 	char name[16];                      /* Name (for debugging purposes). */
     int64_t wake_time; //This information stores the wakeup tick.
 	int priority;                       /* Priority. */
+    int original_priority;
+    
+    int nice;
+    int64_t recent_cpu;
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;/* List element. */
-    int original_priority;
     struct lock * want_lock;
     struct list donation;
     struct list_elem donation_elem;
+    struct list_elem process_elem;
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */
 	uint64_t *pml4;                     /* Page map level 4 */
@@ -145,6 +149,13 @@ void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 
+void mlfqs_priority (struct thread *t);
+void mlfqs_recent_cpu (struct thread *t);
+void mlfqs_load_avg (void);
+void mlfqs_increment(void);
+void mlfqs_recalc (void);
+
+int count_ready_threads(void);
 void do_iret (struct intr_frame *tf);
 
 #endif /* threads/thread.h */

@@ -120,13 +120,23 @@ timer_print_stats (void) {
 	printf ("Timer: %"PRId64" ticks\n", timer_ticks ());
 }
 
-/* Timer interrupt handler. */
+/* Timer interrupt handler.
+ (for last part project 1) If it is mlfqs, every interrupt->recent_cpu increase
+ every second, we recalculate the mlfqs (loadavg, recentcpu...)/ 4second priority
+ */
 static void
 timer_interrupt (struct intr_frame *args UNUSED) {
 	ticks++;
+    thread_tick ();
+    
+    if(thread_mlfqs){
+        mlfqs_increment();
+        if(ticks%4==0) mlfqs_priority(thread_current());
+        if(ticks%TIMER_FREQ==0) mlfqs_recalc();
+    }
 	if(get_next_awake_tick()<=ticks)
 		thread_awake(ticks);
-	thread_tick ();
+	
 }
 
 /* Returns true if LOOPS iterations waits for more than one timer

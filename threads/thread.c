@@ -11,6 +11,7 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 #include "intrinsic.h"
+#include "threads/fixed_point.h"
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
@@ -25,6 +26,10 @@
 #define THREAD_BASIC 0xd42df210
 //Nested depth_limit
 #define DEPTH_MAX 8
+
+#define NICE_INIT 0
+#define RECENT_CPU_INIT 0
+#define LOAD_AVG_INIT 0
 
 /* List of processes in THREAD_READY state, that is, processes
    that are ready to run but not actually running. */
@@ -44,6 +49,10 @@ static struct list destruction_req;
 
 /*List of sleeping threads*/
 static struct list sleeping_threads;
+
+/*List of all process*/
+static struct process_list;
+
 
 /* Statistics. */
 static long long idle_ticks;    /* # of timer ticks spent idle. */
@@ -68,6 +77,8 @@ static void do_schedule(int status);
 static void schedule (void);
 static tid_t allocate_tid (void);
 static int64_t next_awake_tick;
+
+static int load_avg;
 
 /* Returns true if T appears to point to a valid thread. */
 #define is_thread(t) ((t) != NULL && (t)->magic == THREAD_MAGIC)
@@ -128,6 +139,7 @@ thread_init (void) {
 	list_init (&ready_list);
 	list_init (&destruction_req);
     list_init (&sleeping_threads);
+    list_init (&process_list);
 
 	/* Set up a thread structure for the running thread. */
 	initial_thread = running_thread ();
@@ -144,7 +156,7 @@ thread_start (void) {
 	struct semaphore idle_started;
 	sema_init (&idle_started, 0);
 	thread_create ("idle", PRI_MIN, idle, &idle_started);
-
+    load_avg = LOAD_AVG_INIT;
 	/* Start preemptive thread scheduling. */
 	intr_enable ();
 
@@ -371,6 +383,7 @@ thread_exit (void) {
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
+    list_remove(&thread_current()->process_elem); /*clear the list of all process*/
 	do_schedule (THREAD_DYING);
 	NOT_REACHED ();
 }
@@ -406,20 +419,23 @@ void swap_working(void){
     If it smaller than the original one, check if other processes in the waiting queue has higher priority (preemptive)
     If bigger, give the other threads that posess the lock the priority changed inforamtion.
     If same, no other processes are needed.
+    Should not work when mlfqs is present
  */
 void
 thread_set_priority (int new_priority) {
-    struct thread * cur = thread_current();
-    enum intr_level old = intr_get_level();
-    intr_set_level(INTR_OFF);
-    int orig_pri = cur->priority;
-    cur->original_priority = new_priority;
-    refresh_priority();
-    if(orig_pri > cur->priority)
-        swap_working();
-    if(orig_pri<cur->priority)
-        donate_priority();
-    intr_set_level(old);
+    if(!thread_mlfqs){
+        struct thread * cur = thread_current();
+        enum intr_level old = intr_get_level();
+        intr_set_level(INTR_OFF);
+        int orig_pri = cur->priority;
+        cur->original_priority = new_priority;
+        refresh_priority();
+        if(orig_pri > cur->priority)
+            swap_working();
+        if(orig_pri<cur->priority)
+            donate_priority();
+        intr_set_level(old);
+    }
     
 }
 
@@ -429,31 +445,41 @@ thread_get_priority (void) {
 	return thread_current ()->priority;
 }
 
-/* Sets the current thread's nice value to NICE. */
+/* Sets the current thread's nice value to NICE.
+        interrupts are disabled for nice/load_avg operations
+ */
 void
 thread_set_nice (int nice UNUSED) {
-	/* TODO: Your implementation goes here */
+    intr_disable();
+    thread_current() -> nice = nice;
+    intr_enable();
 }
 
 /* Returns the current thread's nice value. */
 int
 thread_get_nice (void) {
-	/* TODO: Your implementation goes here */
-	return 0;
+    intr_disable();
+    int cur_nice = thread_current()->nice;
+    intr_enable();
+	return cur_nice;
 }
 
 /* Returns 100 times the system load average. */
 int
 thread_get_load_avg (void) {
-	/* TODO: Your implementation goes here */
-	return 0;
+	intr_disable();
+    int cur_load_avg = FP_TO_INT_ROUND(MULT_FI(load_avg,100));
+    intr_enable();
+    return cur_load_avg;
 }
 
 /* Returns 100 times the current thread's recent_cpu value. */
 int
 thread_get_recent_cpu (void) {
-	/* TODO: Your implementation goes here */
-	return 0;
+	intr_disable();
+    int cur_recent_cpu = FP_TO_INT_ROUND(MULT_FI(thread_current()->recent_cpu,100));
+    intr_enable();
+    return cur_recent_cpu;
 }
 
 /* Idle thread.  Executes when no other thread is ready to run.
@@ -516,12 +542,17 @@ init_thread (struct thread *t, const char *name, int priority) {
 	t->status = THREAD_BLOCKED;
 	strlcpy (t->name, name, sizeof t->name);
 	t->tf.rsp = (uint64_t) t + PGSIZE - sizeof (void *);
-	t->priority = priority;
-	t->magic = THREAD_MAGIC;
 
-	t->want_lock = NULL;
-	list_init(&t->donation);
-	t->original_priority = priority;
+	t->magic = THREAD_MAGIC;
+    list_push_back(&process_list,&t->process_elem);
+
+    t->priority = priority;
+    t->original_priority = priority;
+    
+    t->want_lock = NULL;
+    list_init(&t->donation);
+    t->nice = NICE_INIT;
+    t->recent_cpu = RECENT_CPU_INIT;
 	
 }
 
@@ -750,4 +781,81 @@ void donate_priority(void){
         temp_lock = temp_lock->holder->want_lock;
     }
 }
+/*
+ Check if it is idle and going to get the priority
+ priority = PRI_MAX - recent_cpu/4-nice*2
+ */
+void mlfqs_priority(struct thread *t){
+    if(t==idle_thread) return;
+    
+    int m_priority;
+    int max_pri = INT_TO_FP(PRI_MAX);
+    int recent_cpu_d4 = DIV_FI(t->recent_cpu,4);
+    int nice_doubled = MULT_FI(INT_TO_FP(t->nice),2);
+    
+    m_priority = SUB_FP(max_pri,recent_cpu_d4);
+    m_priority = SUB_FP(m_priority,nice_doubled);
+    t->priority = m_priority;
+}
+/*
+ Check if it is idle and do the calc. recent_cpu = 2*load_avg/(2*load_avg+1) * recent_cpu +nice
+ */
+void mlfqs_recent_cpu(struct thread *t){
+    if(t==idlle_thread) return;
+    int m_recent_cpu;
+    int load_avg_doubled = MULT_FI(load_avg,2);
+    int load_avg_doubled_plus_one = ADD_FI(load_avg_doubled, 1);
+    int temp_recent_cpu = t->recent_cpu;
+    int m_nice = INT_TO_FP(t->nice);
+    int former = DIV_FP(load_avg_doubled,load_avg_doubled_plus_one);
+    former = MULT_FP(former, temp_recent_cpu);
+    m_recent_cpu = ADD_FP(former,m_nice);
+    t->recent_cpu = m_recent_cpu;
+}
+/*
+ Calculate the load average by the calc 59/60 * load_avg+1/60*ready_threads
+ should be bigger than zero. SHould be initialized at system boot
+ */
+void mlfqs_load_avg(void){
+    int coeff_former= DIV_FP(INT_TO_FP(59), INT_TO_FP(60));
+    int before_lavg = load_avg;
+    int coeff_ladder = DIV_FP(INT_TO_FP(1), INT_TO_FP(60));
+    int ready_threads_count = INT_TO_FP(count_ready_threads());
+    int former = MULT_FP(coeff_former,before_lavg);
+    int ladder = MULT_FP(coeff_ladder,ready_threads_count);
+    load_avg = ADD_FP(former,ladder);
+    if(load_avg<0) load_avg = 0;
+}
+/*
+ Also idle thread test needed +should increment recent_cpu value by 1
+ */
+void mlfqs_increment(void){
+    if(thread_current()==idle_thread) return;
+    thread_current()->recent_cpu = ADD_FI(thread_current()->recent_cpu, 1);
+}
 
+/*
+ recalculate all the priiority and the recent_cpu value'
+ It seems that I need a list of all scheduled processes.
+ */
+void mlfqs_recalc(void){
+    struct list_elem *e;
+    mlfqs_load_avg();
+    for (e = list_begin(&process_list); e!=list_end(&ready_list); e = list_next(e)){
+        struct thread *thread_each = list_entry(e,struct thread, process_elem);
+        mlfqs_recent_cpu(thread_each);
+        mlfqs_priority(thread_each);
+    }
+}
+
+
+int count_ready_threads(void){
+    int cnt =0;
+    struct list_elem *e;
+    
+    for(e=list_begin(&ready_list);e!=list_end(&ready_list); e = list_next(e)){
+        cnt++;
+    }
+    if(thread_current()==idle_thread) cnt--;
+    return cnt+1;
+}

@@ -224,13 +224,15 @@ lock_acquire (struct lock *lock) {
     //if the lock is already possessed
     struct thread * holding = lock->holder;
     struct thread * cur = thread_current();
-    cur->want_lock = lock;
-    if(holding != NULL){
+    if(!thread_mlfqs){
         cur->want_lock = lock;
-        list_insert_ordered(&lock->holder->donation, &cur->donation_elem, thread_compare_priority, NULL);
+        if(holding != NULL){
+            cur->want_lock = lock;
+            list_insert_ordered(&lock->holder->donation, &cur->donation_elem, thread_compare_priority, NULL);
+        }
     }
 	sema_down (&lock->semaphore);
-   thread_current()->want_lock = NULL;
+    thread_current()->want_lock = NULL;
 	lock->holder = thread_current ();
 
 }
@@ -266,9 +268,13 @@ lock_release (struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
     
 	lock->holder = NULL;
-    //remove lock and change to original priority
-   remove_lock(lock);
-   refresh_priority();
+    /*remove lock and change to original priority
+     when it is not round robin
+     */
+    if(!thread_mlfqs){
+        remove_lock(lock);
+        refresh_priority();
+    }
 	sema_up (&lock->semaphore);
 }
 
