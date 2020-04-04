@@ -725,16 +725,13 @@ void refresh_priority(void){
     struct thread * first;
     //change the priority to the original priority since the thread is erased.
     cur->priority = cur->original_priority;
-    if(list_empty(&cur->donation)){
-        donate_priority();
+    if(list_empty(&cur->donation))
         return;
-    }
 
     else{
         first = list_entry(list_begin(&cur->donation), struct thread, donation_elem);
         if(first->priority > cur->priority)
             cur->priority = first->priority;
-        donate_priority();
     }
 }
 
@@ -751,7 +748,7 @@ void donate_priority(void){
         if(temp_lock->holder == NULL) return;
         if(temp_lock->holder->priority >= cur->priority) return;
         temp_lock->holder->priority = cur->priority;
-        temp_lock = cur->want_lock;
+        temp_lock = lock->holder->want_lock;
     }
 }
 
