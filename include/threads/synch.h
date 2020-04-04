@@ -19,15 +19,10 @@ bool sema_try_down (struct semaphore *);
 void sema_up (struct semaphore *);
 void sema_self_test (void);
 
-/* Lock.
- Locks have priorities, based on the threads they have.
- */
+/* Lock. */
 struct lock {
 	struct thread *holder;      /* Thread holding lock (for debugging). */
 	struct semaphore semaphore; /* Binary semaphore controlling access. */
-    int priority;
-    struct list_elem lock_elem;
-
 };
 
 void lock_init (struct lock *);
@@ -46,8 +41,6 @@ void cond_init (struct condition *);
 void cond_wait (struct condition *, struct lock *);
 void cond_signal (struct condition *, struct lock *);
 void cond_broadcast (struct condition *, struct lock *);
-bool compare_lock_priority(struct list_elem * x, struct list_elem *y, void * aux);
-
 
 /* Optimization barrier.
  *

@@ -71,6 +71,7 @@ sema_down (struct semaphore *sema) {
 
 	old_level = intr_disable ();
 	while (sema->value == 0) {
+      donate_priority();
 		//Currently FIFO and we would like to give priority here
 		list_insert_ordered(&sema->waiters,&thread_current()->elem, thread_compare_priority,NULL);
 		thread_block ();
@@ -90,8 +91,6 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     struct semaphore_elem * X_sema = list_entry(x,struct semaphore_elem, elem);
     struct semaphore_elem * Y_sema = list_entry(y,struct semaphore_elem, elem);
     
-    if(list_empty(&Y_sema->semaphore.waiters)) return true;
-    if(list_empty(&X_sema->semaphore.waiters)) return false;
     list_sort(&X_sema->semaphore.waiters, thread_compare_priority, NULL);
     list_sort(&Y_sema->semaphore.waiters, thread_compare_priority, NULL);
     
@@ -100,9 +99,6 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     if( first_x -> priority >= first_y->priority)
         return true;
     else return false;
-    
-    
-    
 }
 
 
@@ -149,9 +145,8 @@ sema_up (struct semaphore *sema) {
 		thread_unblock (list_entry (list_pop_front (&sema->waiters),struct thread, elem));
     }
 	sema->value++;
-    swap_working();
+   swap_working();
 	intr_set_level (old_level);
-    
 }
 
 static void sema_test_helper (void *sema_);
@@ -209,7 +204,6 @@ lock_init (struct lock *lock) {
 	ASSERT (lock != NULL);
 
 	lock->holder = NULL;
-    lock->priority = 0;
 	sema_init (&lock->semaphore, 1);
 }
 
@@ -227,30 +221,18 @@ lock_acquire (struct lock *lock) {
 	ASSERT (!intr_context ());
 	ASSERT (!lock_held_by_current_thread (lock));
     
-    struct thread * cur = thread_current();
+    //if the lock is already possessed
     struct thread * holding = lock->holder;
-    struct lock * cur_lock = lock;
-    
+    struct thread * cur = thread_current();
     cur->want_lock = lock;
-    /*If it is a fresh lock, the priority of the lock itself will be the thread's priority.*/
-    
-    if(holding ==NULL)
-        cur_lock->priority = cur->priority;
-    while(holding != NULL && holding->priority < cur->priority){
-        int donating_priority_level = cur->priority;
-        donate_priority(holding, donating_priority_level);
-        //priority update
-        if(cur->priority > cur_lock->priority)
-            cur_lock -> priority = cur->priority;
-        cur_lock = holding->want_lock;
-        if(cur_lock ==NULL) break;
-        holding = cur_lock->holder;
+    if(holding != NULL){
+        cur->want_lock = lock;
+        list_insert_ordered(&lock->holder->donation, &cur->donation_elem, thread_compare_priority, NULL);
     }
 	sema_down (&lock->semaphore);
+   thread_current()->want_lock = NULL;
 	lock->holder = thread_current ();
-    lock->holder->want_lock = NULL;
-    list_insert_ordered(&(lock->holder->list_lock), &lock->lock_elem,compare_lock_priority,NULL);
-    
+
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -267,8 +249,10 @@ lock_try_acquire (struct lock *lock) {
 	ASSERT (!lock_held_by_current_thread (lock));
 
 	success = sema_try_down (&lock->semaphore);
-	if (success)
+    if (success){
+      thread_current() -> want_lock = NULL;
 		lock->holder = thread_current ();
+    }
 	return success;
 }
 
@@ -282,12 +266,12 @@ void
 lock_release (struct lock *lock) {
 	ASSERT (lock != NULL);
 	ASSERT (lock_held_by_current_thread (lock));
-    struct thread * cur = thread_current();
-	lock->holder = NULL;
-	sema_up (&lock->semaphore);
     
-    list_remove(&lock->lock_elem);
-    refresh_priority(cur);
+	lock->holder = NULL;
+    //remove lock and change to original priority
+   remove_lock(lock);
+   refresh_priority();
+	sema_up (&lock->semaphore);
 }
 
 /* Returns true if the current thread holds LOCK, false
@@ -382,13 +366,3 @@ cond_broadcast (struct condition *cond, struct lock *lock) {
 	while (!list_empty (&cond->waiters))
 		cond_signal (cond, lock);
 }
-bool compare_lock_priority(struct list_elem * x, struct list_elem *y, void * aux){
-    ASSERT(x!=NULL);
-    ASSERT(y!=NULL);
-    struct lock* X_lock = list_entry(x, struct lock, lock_elem);
-    struct lock * Y_lock = list_entry(y,struct lock, lock_elem);
-    if(X_lock->priority >= Y_lock -> priority) return true;
-    else return false;
-    
-}
-
