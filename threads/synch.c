@@ -249,10 +249,8 @@ lock_try_acquire (struct lock *lock) {
 	ASSERT (!lock_held_by_current_thread (lock));
 
 	success = sema_try_down (&lock->semaphore);
-    if (success){
-      thread_current() -> want_lock = NULL;
-		lock->holder = thread_current ();
-    }
+    if (success)
+        lock->holder = thread_current ();
 	return success;
 }
 

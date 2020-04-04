@@ -707,14 +707,13 @@ void remove_lock(struct lock *lock){
     struct thread *t;
     struct list_elem *e;
     struct thread *cur = thread_current();
-    for(e= list_begin(&cur->donation); e != list_end(&cur->donation);e=list_next(e)){
+    for(e= list_begin(&cur->donation); e != list_end(&cur->donation);){
         t = list_entry(e,struct thread, donation_elem);
         if(t->want_lock == lock)
-            list_remove(e);
+            e = list_remove(e);
+        else
+            e = list_next(e);
     }
-    /*for(e=begin, e!=end; )
-     e = list_remove if same else e = list_next
-    */
 }
 /*
  After erasing the thread due to lock, or if there is a change in priority we should change the priority.
