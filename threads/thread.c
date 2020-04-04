@@ -868,6 +868,6 @@ void mlfqs_recalc(void){
 
 int count_ready_threads(void){
     int cnt = list_size(&ready_list);
-    if(thread_current != idle_thread) cnt++;
+    if(thread_current() != idle_thread) cnt++;
     return cnt;
 }
