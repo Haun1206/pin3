@@ -51,7 +51,7 @@ static struct list destruction_req;
 static struct list sleeping_threads;
 
 /*List of all process*/
-static struct process_list;
+static struct list process_list;
 
 
 /* Statistics. */
@@ -841,7 +841,7 @@ void mlfqs_increment(void){
 void mlfqs_recalc(void){
     struct list_elem *e;
     mlfqs_load_avg();
-    for (e = list_begin(&process_list); e!=list_end(&ready_list); e = list_next(e)){
+    for (e = list_begin(&process_list); e!=list_end(&process_list); e = list_next(e)){
         struct thread *thread_each = list_entry(e,struct thread, process_elem);
         mlfqs_recent_cpu(thread_each);
         mlfqs_priority(thread_each);
