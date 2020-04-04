@@ -133,6 +133,7 @@ timer_interrupt (struct intr_frame *args UNUSED) {
         mlfqs_increment();
         if(ticks%4==0) {
             mlfqs_priority(thread_current());
+            intr_yield_on_return();
         }
         if(ticks%TIMER_FREQ==0) mlfqs_recalc();
     }
