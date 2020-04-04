@@ -449,7 +449,7 @@ thread_get_priority (void) {
         interrupts are disabled for nice/load_avg operations
  */
 void
-thread_set_nice (int nice UNUSED) {
+thread_set_nice (int nice ) {
     intr_disable();
     if(nice>20) nice=20;
     if(nice<-20) nice = -20;
