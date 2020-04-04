@@ -226,7 +226,7 @@ lock_acquire (struct lock *lock) {
 	ASSERT (!lock_held_by_current_thread (lock));
     
     struct thread * cur = thread_current();
-    struct thread * holding = lock->holding;
+    struct thread * holding = lock->holder;
     struct lock * cur_lock = lock;
     donate_priority();
 	sema_down (&lock->semaphore);
@@ -266,7 +266,7 @@ lock_release (struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	lock->holder = NULL;
-    remove_lock();
+    remove_lock(lock);
     refresh_priority();
 	sema_up (&lock->semaphore);
 }
