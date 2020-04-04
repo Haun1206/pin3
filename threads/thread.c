@@ -867,12 +867,7 @@ void mlfqs_recalc(void){
 
 
 int count_ready_threads(void){
-    int cnt =0;
-    struct list_elem *e;
-    
-    for(e=list_begin(&ready_list);e!=list_end(&ready_list); e = list_next(e)){
-        cnt++;
-    }
-    if(thread_current()==idle_thread) cnt--;
-    return cnt+1;
+   int cnt = list_size(&ready_list);
+    if(thread_current() != idle_thread) cnt++;
+    return cnt;
 }
