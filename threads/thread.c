@@ -555,8 +555,17 @@ init_thread (struct thread *t, const char *name, int priority) {
     
     t->want_lock = NULL;
     list_init(&t->donation);
-    t->nice = NICE_INIT;
-    t->recent_cpu = RECENT_CPU_INIT;
+    if(thread_mlfqs){
+        /* Differ whether it is initial or not*/
+        if(t==initial_thread){
+            t->nice = NICE_INIT;
+            t->recent_cpu = RECENT_CPU_INIT;
+        }
+        else{
+            t->nice = thread_current()->nice;
+            t->recent_cpu = thread_current()->recent_cpu;
+        }
+    }
 	
 }
 
