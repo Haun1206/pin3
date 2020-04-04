@@ -804,13 +804,9 @@ void donate_priority(void){
  */
 void mlfqs_priority(struct thread *t){
     if(t==idle_thread) return;
-    int m_priority = 0;
-    int max_pri = INT_TO_FP(PRI_MAX);
-    int recent_cpu_d4 = DIV_FI(t->recent_cpu,4);
-    int nice_doubled = MULT_FI(INT_TO_FP(t->nice),2);
-    
-    m_priority = SUB_FP(max_pri,recent_cpu_d4);
-    m_priority = SUB_FP(m_priority,nice_doubled);
+    int64_t rec_cpu = t-> recent_cpu;
+    int32_t rec_nice = t->nice;
+    int m_priority = 63- FP_TO_INT(rec_cpu/4) - rec_nice*2;
     if(m_priority>PRI_MAX) m_priority = PRI_MAX;
     if(m_priority<PRI_MIN) m_priority = PRI_MIN;
     t->priority = m_priority;
