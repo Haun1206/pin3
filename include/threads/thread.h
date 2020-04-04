@@ -89,11 +89,8 @@ struct thread {
     int64_t wake_time; //This information stores the wakeup tick.
 	int priority;                       /* Priority. */
 	/* Shared between thread.c and synch.c. */
-	struct list_elem elem;/* List element. */
-    int original_priority;
-    struct lock * want_lock;
-    struct list donation;
-    struct list_elem donation_elem;
+	struct list_elem elem;              /* List element. */
+
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */
 	uint64_t *pml4;                     /* Page map level 4 */
@@ -130,9 +127,6 @@ void swap_working(void);
 struct thread *thread_current (void);
 tid_t thread_tid (void);
 const char *thread_name (void);
-void donate_priority(void);
-void remove_lock(struct lock *lock);
-void refresh_priority(void);
 
 void thread_exit (void) NO_RETURN;
 void thread_yield (void);
