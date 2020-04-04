@@ -748,7 +748,7 @@ void donate_priority(void){
         if(temp_lock->holder == NULL) return;
         if(temp_lock->holder->priority >= cur->priority) return;
         temp_lock->holder->priority = cur->priority;
-        temp_lock = lock->holder->want_lock;
+        temp_lock = temp_lock->holder->want_lock;
     }
 }
 
