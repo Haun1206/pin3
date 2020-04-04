@@ -71,7 +71,6 @@ sema_down (struct semaphore *sema) {
 
 	old_level = intr_disable ();
 	while (sema->value == 0) {
-        donate_priority();
 		//Currently FIFO and we would like to give priority here
 		list_insert_ordered(&sema->waiters,&thread_current()->elem, thread_compare_priority,NULL);
 		thread_block ();
@@ -223,14 +222,15 @@ lock_acquire (struct lock *lock) {
     
     //if the lock is already possessed
     struct thread * holding = lock->holder;
+    struct thread * cur = thread_current();
+    cur->want_lock = lock;
     if(holding != NULL){
-        struct thread * cur = thread_current();
-        cur->want_lock = lock;
+        donate_priority();
         list_insert_ordered(&lock->holder->donation, &cur->donation_elem, thread_compare_priority, NULL);
     }
 	sema_down (&lock->semaphore);
-    thread_current()->want_lock = NULL;
 	lock->holder = thread_current ();
+    thread_current()->want_lock = NULL;
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -248,8 +248,6 @@ lock_try_acquire (struct lock *lock) {
 
 	success = sema_try_down (&lock->semaphore);
     if (success){
-        //no one has lock
-        thread_current() ->want_lock = NULL;
 		lock->holder = thread_current ();
     }
 	return success;
