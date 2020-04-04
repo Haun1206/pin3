@@ -457,7 +457,7 @@ thread_set_nice (int nice ) {
     intr_enable();
     mlfqs_recent_cpu(thread_current());
     mlfqs_priority(thread_current());
-    thread_yield();
+    intr_yield_on_return();
 }
 
 /* Returns the current thread's nice value. */
