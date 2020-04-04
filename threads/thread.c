@@ -187,7 +187,7 @@ thread_tick (void) {
         mlfqs_increment();
         if(ticks%4==0)
             mlfqs_priority(thread_current());
-        if(timer_ticks()%TIMER_FREQ==0) mlfqs_recalc();
+        if(timer_ticks()%100==0) mlfqs_recalc();
     }
 }
 
