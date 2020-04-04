@@ -398,7 +398,7 @@ void refresh_priority(void){
     else{
         //if there are some donating left, should check
         list_sort(&cur->list_lock, compare_lock_priority, NULL);
-        struct lock *first = list_entry(&cur0>list_lock, struct lock, elem);
+        struct lock *first = list_entry(&cur->list_lock, struct lock, elem);
         donate_priority(cur,first->priority);
     }
 }
