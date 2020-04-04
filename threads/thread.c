@@ -724,10 +724,10 @@ void refresh_priority(void){
     struct thread * first;
     //change the priority to the original priority since the thread is erased.
     cur->priority = cur->original_priority;
-    if(!list_empty(&cur->donation))
+    if(list_empty(&cur->donation))
        return;
     else{
-        first = list_entry(list_front(&cur->donation), struct thread, donation_elem);
+        first = list_entry(list_begin(&cur->donation), struct thread, donation_elem);
         if(first->priority > cur->priority)
             cur->priority = first->priority;
     }
