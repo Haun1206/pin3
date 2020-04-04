@@ -183,6 +183,12 @@ thread_tick (void) {
 	/* Enforce preemption. */
 	if (++thread_ticks >= TIME_SLICE)
 		intr_yield_on_return ();
+    if(thread_mlfqs){
+        mlfqs_increment();
+        if(ticks%4==0)
+            mlfqs_priority(thread_current());
+        if(timer_ticks()%TIMER_FREQ==0) mlfqs_recalc();
+    }
 }
 
 /* Prints thread statistics. */
