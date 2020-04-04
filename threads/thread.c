@@ -185,7 +185,7 @@ thread_tick (void) {
 		intr_yield_on_return ();
     if(thread_mlfqs){
         mlfqs_increment();
-        if(timer_ticks%4==0)
+        if(timer_ticks()%4==0)
             mlfqs_priority(thread_current());
         if(timer_ticks()%100==0) mlfqs_recalc();
     }
