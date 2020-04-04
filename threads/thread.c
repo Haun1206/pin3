@@ -810,7 +810,7 @@ void mlfqs_priority(struct thread *t){
     
     m_priority = SUB_FP(max_pri,recent_cpu_d4);
     m_priority = SUB_FP(m_priority,nice_doubled);
-    if(m_priority>PRI_MAX) m_priority = PRI_MAX;
+    if(m_priority>max_pri) m_priority = max_pri;
     if(m_priority<PRI_MIN) m_priority = PRI_MIN;
     t->priority = m_priority;
 }
