@@ -24,6 +24,8 @@
    Do not modify this value. */
 #define THREAD_BASIC 0xd42df210
 
+#define DEPTH_MAX 8
+
 /* List of processes in THREAD_READY state, that is, processes
    that are ready to run but not actually running. */
 static struct list ready_list;
