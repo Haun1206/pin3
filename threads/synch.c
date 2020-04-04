@@ -99,7 +99,6 @@ bool compare_sema_priority(struct list_elem *x, struct list_elem *y, void *aux){
     if( first_x -> priority >= first_y->priority)
         return true;
     else return false;
-    
 }
 
 
