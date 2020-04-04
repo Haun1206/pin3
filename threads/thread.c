@@ -408,20 +408,16 @@ void
 thread_set_priority (int new_priority) {
     struct thread * cur = thread_current();
     /*current before priority*/
-    printf("%d",cur->priority);
     int orig_pri = cur->priority;
-    printf("%d",cur->priority);
     cur->original_priority = new_priority;
     refresh_priority();
     printf("%d",cur->priority);
     if(orig_pri > cur->priority){
         swap_working();
-        printf("%d",cur->priority);
     }
         
     if(orig_pri<cur->priority){
         donate_priority();
-        printf("%d",cur->priority);
     }
         
 
