@@ -410,8 +410,7 @@ void swap_working(void){
 void
 thread_set_priority (int new_priority) {
     struct thread * cur = thread_current();
-    enum intr_level old = intr_get_level();
-    intr_set_level(INTR_OFF);
+
     int orig_pri = cur->priority;
     cur->original_priority = new_priority;
     refresh_priority();
@@ -419,7 +418,7 @@ thread_set_priority (int new_priority) {
         swap_working();
     if(orig_pri<cur->priority)
         donate_priority();
-    intr_set_level(old);
+
     
 }
 
