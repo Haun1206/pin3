@@ -47,7 +47,7 @@ void cond_wait (struct condition *, struct lock *);
 void cond_signal (struct condition *, struct lock *);
 void cond_broadcast (struct condition *, struct lock *);
 bool compare_lock_priority(struct list_elem * x, struct list_elem *y, void * aux);
-void refresh_priority(void);
+
 
 /* Optimization barrier.
  *

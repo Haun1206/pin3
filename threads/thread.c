@@ -710,3 +710,15 @@ void donate_priority(struct thread * t, int d_priority){
         }
     }
 }
+void refresh_priority(void){
+    struct thread * cur = thread_current();
+    if(list_empty(&cur->list_lock)){
+        donate_priority(cur, cur->original_priority);
+    }
+    else{
+        //if there are some donating left, should check
+        list_sort(&cur->list_lock, compare_lock_priority, NULL);
+        struct lock *first = list_entry(&cur->list_lock, struct lock, elem);
+        donate_priority(cur,first->priority);
+    }
+}
