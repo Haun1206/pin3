@@ -727,6 +727,7 @@ void refresh_priority(void){
     if(list_empty(&cur->donation))
        return;
     else{
+        list_sort(&cur->donation,thread_compare_priority ,NULL);
         first = list_entry(list_begin(&cur->donation), struct thread, donation_elem);
         if(first->priority > cur->priority)
             cur->priority = first->priority;
