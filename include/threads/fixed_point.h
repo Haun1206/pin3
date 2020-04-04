@@ -1,82 +1,34 @@
+#ifndef THREADS_FIXED_POINT_H
+#define THREADS_FIXED_POINT_H
+
 #define P 17
 #define Q 14
-#define F 1<<(Q)
+#define F (1<<(Q))
+
+#if P+Q != 31
+#error "The sum of P, Q is 31"
+#endif
 
 
+#define INT_TO_FP(x) ((x)*F)
 
-int INT_TO_FP(int x);
+#define FP_TO_INT_ROUND(x) ((x) >= 0 ? ((x) + (F) / 2) / (F) : ((x) - (F) / 2) / (F))
+#define FP_TO_INT(x) (x)/F
 
-int FP_TO_INT_ROUND(int x);
-int FP_TO_INT(int x);
+#define ADD_FP(x,y) ((x)+(y))
 
-int ADD_FP(int x,int y);
+#define ADD_FI(x,i) ((x)+(i)*F)
 
-int ADD_FI(int x,int i);
+#define SUB_FP(x,y) ((x)-(y))
 
-int SUB_FP(int x,int y);
+#define SUB_FI(x,i) ((x)-(i)*F)
 
-int SUB_FI(int x,int i);
+#define MULT_FP(x,y) ((((int64_t)x)*(y))/F)
 
-int MULT_FP(int x,int y);
+#define MULT_FI(x,i) ((x)*(i))
 
-int MULT_FI(int x,int i);
+#define DIV_FP(x,y) (((int64_t)x)*(F))/(y)
 
-int DIV_FP(int x,int y);
+#define DIV_FI(x,i) ((x)/(i))
 
-int DIV_FI(int x,int i);
-
-int INT_TO_FP (int x)
-{
-    return x * F;
-}
-
-int FP_TO_INT_ROUND (int x)
-{
-    if(x>=0) return (x+F/2)/F;
-    else return (x-F/2)/F;
-}
-
-int FP_TO_INT (int x)
-{
-  return x / F;
-}
-
-int ADD_FP (int x, int y)
-{
-  return x + y;
-}
-
-int ADD_FI (int x, int i)
-{
-  return ADD_FP (x, INT_TO_FP (i));
-}
-
-int SUB_FP (int x, int y)
-{
-    return x-y;
-}
-
-int SUB_FI (int x, int i)
-{
-    return SUB_FP(x,INT_TO_FP(i));
-}
-
-int MULT_FP (int x, int y)
-{
-  return (int) ((int64_t) x * y / F);
-}
-
-int MULT_FI (int x, int i)
-{
-  return MULT_FP(x, INT_TO_FP (i));
-}
-
-int DIV_FP (int x, int i)
-{
-  return (int64_t) x * F / i;
-}
-
-int DIV_FI (int x, int i)
-{
-  return DIV_FP (x, INT_TO_FP (i));
-}
+#endif

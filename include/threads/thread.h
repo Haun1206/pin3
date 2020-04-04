@@ -91,7 +91,7 @@ struct thread {
     int original_priority;
     
     int nice;
-    int64_t recent_cpu;
+    int recent_cpu;
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;/* List element. */
     struct lock * want_lock;
