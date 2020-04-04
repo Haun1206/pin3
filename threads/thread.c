@@ -451,6 +451,8 @@ thread_get_priority (void) {
 void
 thread_set_nice (int nice UNUSED) {
     intr_disable();
+    if(nice>20) nice=20;
+    if(nice<-20) nice = -20;
     thread_current() -> nice = nice;
     intr_enable();
     mlfqs_recent_cpu(thread_current());
