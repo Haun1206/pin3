@@ -464,7 +464,7 @@ thread_set_nice (int nice ) {
 int
 thread_get_nice (void) {
     intr_disable();
-    int cur_nice = thread_current()->nice;
+    int32_t cur_nice = thread_current()->nice;
     intr_enable();
 	return cur_nice;
 }
@@ -482,7 +482,7 @@ thread_get_load_avg (void) {
 int
 thread_get_recent_cpu (void) {
 	intr_disable();
-    int cur_recent_cpu = FP_TO_INT_ROUND(MULT_FI(thread_current()->recent_cpu,100));
+    int64_t cur_recent_cpu = FP_TO_INT_ROUND(MULT_FI(thread_current()->recent_cpu,100));
     intr_enable();
     return cur_recent_cpu;
 }
@@ -820,7 +820,7 @@ void mlfqs_priority(struct thread *t){
  */
 void mlfqs_recent_cpu(struct thread *t){
     if(t==idle_thread) return;
-    int m_recent_cpu=0;
+    int64_t m_recent_cpu=0;
     int load_avg_doubled = MULT_FI(load_avg,2);
     int load_avg_doubled_plus_one = ADD_FI(load_avg_doubled, 1);
     int temp_recent_cpu = t->recent_cpu;
