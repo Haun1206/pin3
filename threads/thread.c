@@ -716,8 +716,8 @@ void donate_priority(struct thread * t, int d_priority){
         }
     }
 }
-void refresh_priority(void){
-    struct thread * cur = thread_current();
+void refresh_priority(struct thread * cur){
+
     if(list_empty(&cur->list_lock)){
         donate_priority(cur, cur->original_priority);
     }

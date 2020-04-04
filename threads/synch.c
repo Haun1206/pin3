@@ -281,12 +281,12 @@ void
 lock_release (struct lock *lock) {
 	ASSERT (lock != NULL);
 	ASSERT (lock_held_by_current_thread (lock));
-
+    struct thread * cur = thread_current();
 	lock->holder = NULL;
 	sema_up (&lock->semaphore);
     
     list_remove(&lock->lock_elem);
-    refresh_priority();
+    refresh_priority(cur);
 }
 
 /* Returns true if the current thread holds LOCK, false
