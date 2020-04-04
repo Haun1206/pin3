@@ -369,7 +369,7 @@ thread_exit (void) {
 #endif
     struct thread * cur = thread_current();
     struct list_elem *e;
-    for (e = list_begin (&cur->list_lock); e != list_end (&curr->locks); e = list_next (e)) {
+    for (e = list_begin (&cur->list_lock); e != list_end (&cur->locks); e = list_next (e)) {
        struct lock *lock = list_entry(e, struct lock, lock_elem);
        lock_release(lock);
      }
