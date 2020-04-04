@@ -453,6 +453,7 @@ thread_set_nice (int nice UNUSED) {
     intr_disable();
     thread_current() -> nice = nice;
     intr_enable();
+    mlfqs_recent_cpu(thread_current());
     mlfqs_priority(thread_current());
 }
 
