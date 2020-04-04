@@ -454,7 +454,6 @@ thread_set_nice (int nice UNUSED) {
     thread_current() -> nice = nice;
     intr_enable();
     mlfqs_priority(thread_current());
-    intr_yield_on_return();
 }
 
 /* Returns the current thread's nice value. */
