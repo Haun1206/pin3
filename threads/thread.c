@@ -183,12 +183,6 @@ thread_tick (void) {
 	/* Enforce preemption. */
 	if (++thread_ticks >= TIME_SLICE)
 		intr_yield_on_return ();
-    if(thread_mlfqs){
-        mlfqs_increment();
-        if(timer_ticks()%4==0)
-            mlfqs_priority(thread_current());
-        if(timer_ticks()%100==0) mlfqs_recalc();
-    }
 }
 
 /* Prints thread statistics. */
@@ -868,18 +862,12 @@ void mlfqs_recalc(void){
     for (e = list_begin(&process_list); e!=list_end(&process_list); e = list_next(e)){
         struct thread *thread_each = list_entry(e,struct thread, process_elem);
         mlfqs_recent_cpu(thread_each);
-        mlfqs_priority(thread_each);
     }
 }
 
 
 int count_ready_threads(void){
-    int cnt =0;
-    struct list_elem *e;
-    
-    for(e=list_begin(&ready_list);e!=list_end(&ready_list); e = list_next(e)){
-        cnt++;
-    }
-    if(thread_current()==idle_thread) cnt--;
-    return cnt+1;
+    int cnt = list_size(&ready_list);
+    if(thread_current != idle_thread) cnt++;
+    return cnt;
 }
