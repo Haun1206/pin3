@@ -78,7 +78,7 @@ static void schedule (void);
 static tid_t allocate_tid (void);
 static int64_t next_awake_tick;
 
-static int load_avg;
+int load_avg;
 
 /* Returns true if T appears to point to a valid thread. */
 #define is_thread(t) ((t) != NULL && (t)->magic == THREAD_MAGIC)
@@ -453,6 +453,8 @@ thread_set_nice (int nice UNUSED) {
     intr_disable();
     thread_current() -> nice = nice;
     intr_enable();
+    mlfqs_priority();
+    intr_yield_on_return();
 }
 
 /* Returns the current thread's nice value. */
@@ -787,14 +789,15 @@ void donate_priority(void){
  */
 void mlfqs_priority(struct thread *t){
     if(t==idle_thread) return;
-    
-    int m_priority;
+    int m_priority = 0;
     int max_pri = INT_TO_FP(PRI_MAX);
     int recent_cpu_d4 = DIV_FI(t->recent_cpu,4);
     int nice_doubled = MULT_FI(INT_TO_FP(t->nice),2);
     
     m_priority = SUB_FP(max_pri,recent_cpu_d4);
     m_priority = SUB_FP(m_priority,nice_doubled);
+    if(m_priority>PRI_MAX) m_priority = PRI_MAX;
+    if(m_priority<PRI_MIN) m_priority = PRI_MIN;
     t->priority = m_priority;
 }
 /*
@@ -802,7 +805,7 @@ void mlfqs_priority(struct thread *t){
  */
 void mlfqs_recent_cpu(struct thread *t){
     if(t==idle_thread) return;
-    int m_recent_cpu;
+    int m_recent_cpu=0;
     int load_avg_doubled = MULT_FI(load_avg,2);
     int load_avg_doubled_plus_one = ADD_FI(load_avg_doubled, 1);
     int temp_recent_cpu = t->recent_cpu;
