@@ -418,7 +418,7 @@ thread_set_priority (int new_priority) {
 
     if(!list_empty(&ready_list)){
         struct thread *first = list_entry(list_begin(&ready_list),struct thread,elem);
-        if(first!=NULL && first_priority>new_priority) swap_working();
+        if(first!=NULL && first->priority>new_priority) swap_working();
     }
 
 }
