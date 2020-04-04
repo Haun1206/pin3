@@ -402,22 +402,28 @@ void swap_working(void){
     }
 }
 /* Sets the current thread's priority to NEW_PRIORITY.
-   If the priority of the thread changes, we need to check if it is somewhat different from the original priority. After updating the priority, we should immediately check it with the locks currently waiting for the possessed lock. (priority might change) After we get the refreshed_prioity,
-    If it smaller than the original one, check if other processes in the waiting queue has higher priority (preemptive)
-    If bigger, give the other threads that posess the lock the priority changed inforamtion.
-    If same, no other processes are needed.
+
  */
 void
 thread_set_priority (int new_priority) {
     struct thread * cur = thread_current();
-
+    /*current before priority*/
+    printf("%d",cur->priority);
     int orig_pri = cur->priority;
+    printf("%d",cur->priority);
     cur->original_priority = new_priority;
     refresh_priority();
-    if(orig_pri > cur->priority)
+    printf("%d",cur->priority);
+    if(orig_pri > cur->priority){
         swap_working();
-    if(orig_pri<cur->priority)
+        printf("%d",cur->priority);
+    }
+        
+    if(orig_pri<cur->priority){
         donate_priority();
+        printf("%d",cur->priority);
+    }
+        
 
     
 }
