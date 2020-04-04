@@ -806,7 +806,7 @@ void mlfqs_priority(struct thread *t){
     if(t==idle_thread) return;
     int m_priority = 0;
     int rec_cpu = t-> recent_cpu;
-    int3 rec_nice = t->nice;
+    int rec_nice = t->nice;
     m_priority = 63- FP_TO_INT(rec_cpu/4) - rec_nice*2;
     if(m_priority>PRI_MAX) m_priority = PRI_MAX;
     if(m_priority<PRI_MIN) m_priority = PRI_MIN;
