@@ -402,25 +402,24 @@ void swap_working(void){
     }
 }
 /* Sets the current thread's priority to NEW_PRIORITY.
-
+   If the priority of the thread changes, we need to check if it is somewhat different from the original priority. After updating the priority, we should immediately check it with the locks currently waiting for the possessed lock. (priority might change) After we get the refreshed_prioity,
+    If it smaller than the original one, check if other processes in the waiting queue has higher priority (preemptive)
+    If bigger, give the other threads that posess the lock the priority changed inforamtion.
+    If same, no other processes are needed.
  */
 void
 thread_set_priority (int new_priority) {
     struct thread * cur = thread_current();
-    /*current before priority*/
+    enum intr_level old = intr_get_level();
+    intr_set_level(INTR_OFF);
     int orig_pri = cur->priority;
     cur->original_priority = new_priority;
     refresh_priority();
-    printf("%d",cur->priority);
-    if(orig_pri > cur->priority){
+    if(orig_pri > cur->priority)
         swap_working();
-    }
-        
-    if(orig_pri<cur->priority){
+    if(orig_pri<cur->priority)
         donate_priority();
-    }
-        
-
+    intr_set_level(old);
     
 }
 
@@ -708,13 +707,14 @@ void remove_lock(struct lock *lock){
     struct thread *t;
     struct list_elem *e;
     struct thread *cur = thread_current();
-    for(e= list_begin(&cur->donation); e != list_end(&cur->donation);){
+    for(e= list_begin(&cur->donation); e != list_end(&cur->donation);e=list_next(e)){
         t = list_entry(e,struct thread, donation_elem);
         if(t->want_lock == lock)
-            e = list_remove(e);
-        else
-            e = list_next(e);
+            list_remove(e);
     }
+    /*for(e=begin, e!=end; )
+     e = list_remove if same else e = list_next
+    */
 }
 /*
  After erasing the thread due to lock, or if there is a change in priority we should change the priority.
@@ -728,7 +728,6 @@ void refresh_priority(void){
     if(list_empty(&cur->donation))
        return;
     else{
-        list_sort(&cur->donation,thread_compare_priority ,NULL);
         first = list_entry(list_begin(&cur->donation), struct thread, donation_elem);
         if(first->priority > cur->priority)
             cur->priority = first->priority;

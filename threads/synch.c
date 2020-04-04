@@ -230,7 +230,7 @@ lock_acquire (struct lock *lock) {
         list_insert_ordered(&lock->holder->donation, &cur->donation_elem, thread_compare_priority, NULL);
     }
 	sema_down (&lock->semaphore);
-    thread_current()->want_lock = NULL;
+   thread_current()->want_lock = NULL;
 	lock->holder = thread_current ();
 
 }
@@ -250,8 +250,8 @@ lock_try_acquire (struct lock *lock) {
 
 	success = sema_try_down (&lock->semaphore);
     if (success){
-        //thread_current() -> want_lock = NULL;
-        lock->holder = thread_current ();
+      thread_current() -> want_lock = NULL;
+		lock->holder = thread_current ();
     }
 	return success;
 }
@@ -269,8 +269,8 @@ lock_release (struct lock *lock) {
     
 	lock->holder = NULL;
     //remove lock and change to original priority
-    remove_lock(lock);
-    refresh_priority();
+   remove_lock(lock);
+   refresh_priority();
 	sema_up (&lock->semaphore);
 }
 
