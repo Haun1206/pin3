@@ -1,6 +1,3 @@
-#ifndef THREADS_FIXED_POINT_H
-#define THREADS_FIXED_POINT_H
-
 #define P 17
 #define Q 14
 #define F 1<<(Q)
@@ -66,7 +63,7 @@ int SUB_FI (int x, int i)
 
 int MULT_FP (int x, int y)
 {
-  return (int) ((int_64) x * y / F);
+  return (int) ((int64_t) x * y / F);
 }
 
 int MULT_FI (int x, int i)
