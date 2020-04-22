@@ -421,9 +421,9 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     
-    char*token, *save_ptr;
+    char *save_ptr;
     int count = 0;
-    char* token = strtok_r((char *)f_name, " ",&save_ptr);
+    char* token = strtok_r((char *)file_name, " ",&save_ptr);
     while(token!=NULL){
         count++;
         token = strtok_r(NULL, " ",&save_ptr);
