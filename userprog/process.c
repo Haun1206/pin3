@@ -49,7 +49,11 @@ process_create_initd (const char *file_name) {
 	if (fn_copy == NULL)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, PGSIZE);
-
+    /*
+     My addition
+     */
+    char* save_ptr;
+    file_name = strtok_r(file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
@@ -178,9 +182,9 @@ process_exec (void *f_name) {
 
 	/* And then load the binary */
 	success = load (file_name, &_if);
-
-	/* If load failed, quit. */
-	palloc_free_page (file_name);
+    hex_dump(_if.rsp,_if.rsp,PHYS_BASE-if_.rsp, true);
+    /* If load failed, quit. */
+    palloc_free_page (file_name);
 	if (!success)
 		return -1;
 
@@ -416,7 +420,15 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
-
+    
+    char*token, *save_ptr;
+    int count = 0;
+    char* token = strtok_r((char *)f_name, " ",&save_ptr);
+    while(token!=NULL){
+        count++;
+        token = strtok_r(NULL, " ",&save_ptr);
+    }
+    argument_stack(&file_name,count,if_);
 	success = true;
 
 done:
@@ -425,6 +437,43 @@ done:
 	return success;
 }
 
+
+static void argument_stack(char * parse[], int count, struct intr_frame *if_){
+    void * addr[count];
+    void** rsp = &if_->rsp;
+    void** rsi = &if_->rsi;
+    void** rdi = &if_->rdi;
+    int len=0;
+    for(int i=0;i<count;i++){
+        len += strlen(parse[i]);
+        len++;
+        *rsp-=len;
+        memcpy(*rsp, parse[i],len);
+    }
+    *rsp = (void*)((unsigned int)(*rsp) & 0xfffffffffffffff8);
+    *rsp -= 8;
+    *((uint64_t*) *rsp) = 0;
+
+    // setting **esp with argvs
+    for (i = count - 1; i >= 0; i--) {
+      *rsp -= 8;
+      *((void**) *rsp) = addr[i];
+    }
+
+    // setting **argv (addr of stack, esp)
+    *rsp -= 8;
+    *((void**) *rsi) = (*rsp + 4);
+
+    // setting argc
+    *rsp -= 8;
+    *((int*) *rdi) = count;
+
+    // setting ret addr
+    *rsp -= 8;
+    *((int*) *rsp) = 0;
+    
+    
+}
 
 /* Checks whether PHDR describes a valid, loadable segment in
  * FILE and returns true if so, false otherwise. */
