@@ -441,8 +441,8 @@ done:
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     void * addr[count];
     void** rsp = &if_->rsp;
-    void** rsi = &if_->rsi;
-    void** rdi = &if_->rdi;
+    void** rsi = &if_->R.rsi;
+    void** rdi = &if_->R.rdi;
     int len=0;
     for(int i=0;i<count;i++){
         len += strlen(parse[i]);
