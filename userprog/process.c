@@ -455,7 +455,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     *((uint64_t*) *rsp) = 0;
 
     // setting **esp with argvs
-    for (i = count - 1; i >= 0; i--) {
+    for (int i = count - 1; i >= 0; i--) {
       *rsp -= 8;
       *((void**) *rsp) = addr[i];
     }
