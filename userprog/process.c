@@ -478,8 +478,10 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
         arguments_address[i] = *rsp;
     }
     printf("%s\n", "YES:");
-    while((uint64_t)(*rsp)%8!=0)
-         *rsp = (uint64_t)(*rsp)-1;
+    while((uint64_t)(*rsp)%8!=0){
+        printf("%d\n", *rsp);
+        *rsp = (uint64_t)(*rsp)-1;
+    }
     
     *rsp -= 1;
     **rsp = 0;
