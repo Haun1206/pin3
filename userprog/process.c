@@ -47,19 +47,16 @@ process_create_initd (const char *file_name) {
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
 	fn_copy = palloc_get_page (0);
-    char * filename_copy;
-    filename_copy = palloc_get_page(0);
 	if (fn_copy == NULL)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, PGSIZE);
-    strlcpy(filename_copy,file_name, PGSIZE);
     /*
      My addition
      */
     char* save_ptr;
-    filename_copy = strtok_r(filename_copy," ",&save_ptr);
+    f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (filename_copy, PRI_DEFAULT, initd, fn_copy);
+	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -184,13 +181,10 @@ process_exec (void *f_name) {
 	/* We first kill the current context */
 	process_cleanup ();
     
-    char* real_file_name;
-    char* save_ptr;
-    real_file_name = strtok_r(file_name," ", &save_ptr);
 	/* And then load the binary */
 	success = load (file_name, &_if);
     /* If load failed, quit. */
-    palloc_free_page (real_file_name);
+    palloc_free_page (file_name);
 	if (!success)
 		return -1;
 
@@ -472,10 +466,6 @@ done:
 
 
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
-    printf("%s\n",parse[0]);
-    printf("%s\n",parse[1]);
-    printf("%s\n",parse[2]);
-    printf("%s\n",parse[3]);
     printf("%s\n", "YES:");
     uintptr_t ** rsp = &if_->rsp;
     int ** arguments_address;
