@@ -55,7 +55,7 @@ process_create_initd (const char *file_name) {
      My addition
      */
     char* save_ptr;
-    file_name = strtok_r(file_name," ",&save_ptr);
+    fn_copy = strtok_r(fn_copy," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
@@ -337,7 +337,7 @@ load (const char *file_name, struct intr_frame *if_) {
     /* Change the file name so that it is the filename that we want*/
     char* save_ptr;
     char* token;
-    char** arguments;
+    char** arguments = malloc(4*sizeof(char*));;
     char * temp = palloc_get_page(0);
     
     if(temp ==NULL){
@@ -346,10 +346,15 @@ load (const char *file_name, struct intr_frame *if_) {
     strlcpy(temp, file_name, PGSIZE);
     token = strtok_r(temp," ", &save_ptr);
     int idx=0;
+    int capacity = 4;
     while(temp!=NULL){
         arguments[idx] = token;
         idx ++;
         token = strtok_r(NULL, " ", &save_ptr);
+        if(idx>=capacity){
+            capacity *=2;
+            arguments = realloc(arguments, capacity*size((char*)));
+        }
     }
     int argc = idx;
     
