@@ -473,13 +473,13 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
         len = 0;
         len += strlen(parse[i]);
         len++;
-        *rsp-=len;
+        *rsp = (uint64_t)(*rsp)-len;
         memcpy(*rsp, parse[i],len);
         arguments_address[i] = *rsp;
     }
     printf("%s\n", "YES:");
     while((uint64_t)(*rsp)%8!=0)
-         *rsp --;
+         *rsp = (uint64_t)(*rsp)-1;
     
     *rsp -= 1;
     **rsp = 0;
