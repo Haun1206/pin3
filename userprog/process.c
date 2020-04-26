@@ -361,7 +361,7 @@ load (const char *file_name, struct intr_frame *if_) {
         token = strtok_r(NULL, " ", &save_ptr);
         if(idx>=capacity){
             capacity *=2;
-            arguments = realloc(arguments, capacity* sizeof((char*)));
+            arguments = realloc(arguments, capacity* sizeof(char*));
         }
     }
     int argc = idx;
