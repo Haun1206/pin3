@@ -26,7 +26,6 @@ static void process_cleanup (void);
 static bool load (const char *file_name, struct intr_frame *if_);
 static void initd (void *f_name);
 static void __do_fork (void *);
-
 static void argument_stack(char * parse[], int count, struct intr_frame *if_);
 
 /* General process initializer for initd and other process. */
@@ -171,7 +170,8 @@ error:
  * Returns -1 on fail. */
 int
 process_exec (void *f_name) {
-	char *file_name = (char*)f_name;
+    printf("%d",2);
+	char *file_name = f_name;
 	bool success;
 
 	/* We cannot use the intr_frame in the thread structure.
@@ -336,6 +336,7 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
  * Returns true if successful, false otherwise. */
 static bool
 load (const char *file_name, struct intr_frame *if_) {
+    printf("%d",2);
 	struct thread *t = thread_current ();
 	struct ELF ehdr;
 	struct file *file = NULL;
