@@ -181,11 +181,15 @@ process_exec (void *f_name) {
 
 	/* We first kill the current context */
 	process_cleanup ();
-    
+    char *tempo;
+    char * saveptr;
+    tempo = palloc_get_page(0);
+    strlcpy(tempo, file_name, PGSIZE);
+    tempo = strtok_r(tempo," ", &saveptr);
 	/* And then load the binary */
 	success = load (file_name, &_if);
     /* If load failed, quit. */
-    palloc_free_page (file_name);
+    palloc_free_page (tempo);
 	if (!success)
 		return -1;
 
