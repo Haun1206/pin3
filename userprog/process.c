@@ -339,7 +339,8 @@ load (const char *file_name, struct intr_frame *if_) {
     /* Change the file name so that it is the filename that we want*/
     char* save_ptr;
     char* token;
-    char** arguments = malloc(4*sizeof(char*));;
+    char** arguments;
+    //arguments= malloc(4*sizeof(char*));;
     char * temp = palloc_get_page(0);
     
     if(temp ==NULL){
@@ -355,7 +356,7 @@ load (const char *file_name, struct intr_frame *if_) {
         token = strtok_r(NULL, " ", &save_ptr);
         if(idx>=capacity){
             capacity *=2;
-            arguments = realloc(arguments, capacity* sizeof((char*)));
+            //arguments = realloc(arguments, capacity* sizeof((char*)));
         }
     }
     int argc = idx;
