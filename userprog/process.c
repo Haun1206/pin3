@@ -461,10 +461,10 @@ load (const char *file_name, struct intr_frame *if_) {
     argument_stack(arguments,argc,if_);
     //hex_dump(if_->rsp, if_->rsp, size, true);
 	success = true;
-    
+    //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
-    printf("%d\n",4);
+    //printf("%d\n",4);
 	file_close (file);
 	return success;
 }
