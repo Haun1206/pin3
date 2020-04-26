@@ -504,8 +504,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     *rsp -= 8;
     *(int*)*rsp = 0;
     printf("%s\n", "YES:");
-    int size = (uint64_t)(USER_STACK)- (uint64_t)(*rsp);
-    printf("%d\n",size);
+    hex_dump(if_->rsp, if_->rsp, USER_STACK- if_->rsp, true);
     
     
 }
