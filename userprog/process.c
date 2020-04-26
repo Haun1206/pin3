@@ -473,7 +473,8 @@ done:
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     printf("%s\n", "YES:");
     uintptr_t ** rsp = &if_->rsp;
-    uintptr_t ** arguments_address;
+    int ** arguments_address;
+    arguments_address = malloc(count*sizeof(char*));
     int len=0;
     for(int i=0;i<count;i++){
         len += strlen(parse[i]);
