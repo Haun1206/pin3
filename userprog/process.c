@@ -356,7 +356,7 @@ load (const char *file_name, struct intr_frame *if_) {
     token = strtok_r(temp," ", &save_ptr);
     int idx=0;
     int capacity = 4;
-    while(temp!=NULL){
+    while(token!=NULL){
         arguments[idx] = token;
         idx ++;
         token = strtok_r(NULL, " ", &save_ptr);
