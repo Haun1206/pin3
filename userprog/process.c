@@ -461,9 +461,10 @@ load (const char *file_name, struct intr_frame *if_) {
     argument_stack(arguments,argc,if_);
     //hex_dump(if_->rsp, if_->rsp, size, true);
 	success = true;
-
+    
 done:
 	/* We arrive here whether the load is successful or not. */
+    printf("%d\n",4);
 	file_close (file);
 	return success;
 }
@@ -504,7 +505,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     *rsp -= 8;
     *(int*)*rsp = 0;
     printf("%s\n", "YES:");
-    hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
+    //hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
     
     
 }
