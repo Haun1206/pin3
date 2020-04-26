@@ -496,7 +496,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     
     /*setting argc has rdi */
     if_->R.rdi = count;
-    printf("%d\n", if_->R.rdi);
+    printf("%p\n", if_->R.rsi);
     // setting ret addr
     *rsp -= 1;
     *(int*)*rsp = 0;
