@@ -346,13 +346,8 @@ load (const char *file_name, struct intr_frame *if_) {
     char* save_ptr;
     char* token;
     char** arguments = malloc(4*sizeof(char*));
-    char * temp = palloc_get_page(0);
-    
-    if(temp ==NULL){
-        goto done;
-    }
-    strlcpy(temp, file_name, PGSIZE);
-    token = strtok_r(temp," ", &save_ptr);
+
+    token = strtok_r((char*)file_name," ", &save_ptr);
     int idx=0;
     int capacity = 4;
     while(token!=NULL){
@@ -472,6 +467,8 @@ done:
 
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     printf("%s\n", "YES:");
+    printf("%s\n", parse[0]);
+    printf("%s\n", parse[1]);
     uintptr_t ** rsp = &if_->rsp;
     int ** arguments_address;
     arguments_address = malloc(count*sizeof(char*));
