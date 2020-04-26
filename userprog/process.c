@@ -472,6 +472,7 @@ done:
 
 
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
+    printf("%s\n", "YES:");
     uintptr_t ** rsp = &if_->rsp;
     uintptr_t ** arguments_address;
     int len=0;
@@ -482,12 +483,13 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
         memcpy(*rsp, parse[i],len);
         arguments_address[i] = *rsp;
     }
+    printf("%s\n", "YES:");
     while((uint64_t)(*rsp)%8!=0)
          *rsp --;
      
     *rsp -= 8;
     **rsp = 0;
-
+    printf("%s\n", "YES:");
     /* setting argv[i] of having the addresses */
     for (int i = count - 1; i >= 0; i--) {
         *rsp -= 8;
@@ -499,10 +501,11 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     
     /*setting argc has rdi */
     if_->R.rdi = count;
-
+    printf("%s\n", "YES:");
     // setting ret addr
     *rsp -= 8;
     **rsp = 0;
+    printf("%s\n", "YES:");
     
     
 }
