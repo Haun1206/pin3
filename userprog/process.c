@@ -446,7 +446,7 @@ load (const char *file_name, struct intr_frame *if_) {
     
     argument_stack(arguments,argc,if_);
     int size = (int)(USER_STACK)-(int)(*rsp) +8;
-    hex_dump(_if.rsp, _if.rsp, size_stack, true);
+    hex_dump(_if.rsp, _if.rsp, size, true);
 	success = true;
 
 done:
