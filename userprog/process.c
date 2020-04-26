@@ -486,7 +486,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     **rsp = 0;
     printf("%s\n", "YES:");
     /* setting argv[i] of having the addresses */
-    for (int i = 0; i <count 0; i++) {
+    for (int i = 0; i <count ; i++) {
         *rsp -= 1;
         memcpy(*rsp,&arguments_address[i], sizeof(char*));
     }
