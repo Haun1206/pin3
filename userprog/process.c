@@ -466,7 +466,7 @@ done:
 
 
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
-    for(int index = 0;i<count;i++){
+    for(int index = 0;index<count;index++){
         printf("%s\n", parse[index]);
     }
     uintptr_t ** rsp = &if_->rsp;
