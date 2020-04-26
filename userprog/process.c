@@ -454,7 +454,7 @@ load (const char *file_name, struct intr_frame *if_) {
     printf("%d\n", 3);
     argument_stack(arguments,argc,if_);
     int size = (uint64_t)(USER_STACK) - (uint64_t)(if_->rsp);
-    hex_dump(if_->rsp, if_->rsp, size, true);
+    hex_dump((uintptr_t)if_->rsp, if_->rsp, size, true);
 	success = true;
     printf("%d\n",4);
 done:
