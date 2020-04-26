@@ -459,7 +459,8 @@ load (const char *file_name, struct intr_frame *if_) {
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     printf("%d\n", 3);
     argument_stack(arguments,argc,if_);
-    //hex_dump(if_->rsp, if_->rsp, size, true);
+    int size = (uint64_t)(USER_STACK) - (uint64_t)(*rsp);
+    hex_dump(if_->rsp, if_->rsp, size, true);
 	success = true;
     printf("%d\n",4);
 done:
