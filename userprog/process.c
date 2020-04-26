@@ -472,6 +472,10 @@ done:
 
 
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
+    printf("%s\n",parse[0]);
+    printf("%s\n",parse[1]);
+    printf("%s\n",parse[2]);
+    printf("%s\n",parse[3]);
     printf("%s\n", "YES:");
     uintptr_t ** rsp = &if_->rsp;
     int ** arguments_address;
