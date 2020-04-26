@@ -48,6 +48,7 @@ process_create_initd (const char *file_name) {
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
 	fn_copy = palloc_get_page (0);
+    char * filename_copy;
     filename_copy = palloc_get_page(0);
 	if (fn_copy == NULL)
 		return TID_ERROR;
@@ -59,7 +60,7 @@ process_create_initd (const char *file_name) {
     char* save_ptr;
     filename_copy = strtok_r(filename_copy," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (file_name_copy, PRI_DEFAULT, initd, fn_copy);
+	tid = thread_create (filename_copy, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
