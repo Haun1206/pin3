@@ -502,9 +502,10 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     printf("%s\n", "YES:");
     // setting ret addr
     *rsp -= 8;
-    **rsp = 0;
+    *(int*)*rsp = 0;
     printf("%s\n", "YES:");
-    
+    int size = (uint64_t)(USER_STACK)- (uint64_t)(*rsp);
+    printf("%d\n",size);
     
     
 }
