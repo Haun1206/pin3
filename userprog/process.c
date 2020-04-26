@@ -181,6 +181,7 @@ process_exec (void *f_name) {
 
 	/* We first kill the current context */
 	process_cleanup ();
+    struct thread *t = thread_current();
     sema_up (&t->load_sema);
 	/* And then load the binary */
 	success = load (file_name, &_if);
