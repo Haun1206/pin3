@@ -479,7 +479,6 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     }
     printf("%s\n", "YES:");
     while((uint64_t)(*rsp)%8!=0){
-        printf("%d\n", *rsp);
         *rsp = (uint64_t)(*rsp)-1;
     }
     
@@ -497,7 +496,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     
     /*setting argc has rdi */
     if_->R.rdi = count;
-    printf("%s\n", "YES:");
+    printf("%d\n", if_->R.rdi);
     // setting ret addr
     *rsp -= 1;
     *(int*)*rsp = 0;
