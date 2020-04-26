@@ -471,10 +471,10 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     int len=0;
     for(int i=0;i<count;i++){
         len = 0;
-        len += strlen(parse[i]);
+        len += strlen(parse[count-i-1]);
         len++;
         *rsp = (uint64_t)(*rsp)-len;
-        memcpy(*rsp, parse[i],len);
+        memcpy(*rsp, parse[count-i-1],len);
         arguments_address[i] = *rsp;
     }
     printf("%s\n", "YES:");
@@ -496,7 +496,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     
     /*setting argc has rdi */
     if_->R.rdi = count;
-    printf("%p\n", if_->R.rsi);
+    //printf("%p\n", if_->R.rsi);
     // setting ret addr
     *rsp -= 1;
     *(int*)*rsp = 0;
