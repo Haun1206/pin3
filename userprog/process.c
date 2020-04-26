@@ -505,7 +505,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     **rsp = 0;
     printf("%s\n", "YES:");
     
-    printf("%d\n", (int)(*rsp));
+    
     
 }
 
