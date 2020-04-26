@@ -181,7 +181,7 @@ process_exec (void *f_name) {
 
 	/* We first kill the current context */
 	process_cleanup ();
-
+    sema_up (&t->load_sema);
 	/* And then load the binary */
 	success = load (file_name, &_if);
     //hex_dump(_if.R.rdi,_if.R.rsi,KERN_BASE-_if.rsp, true);
