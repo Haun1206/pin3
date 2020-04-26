@@ -170,7 +170,6 @@ error:
  * Returns -1 on fail. */
 int
 process_exec (void *f_name) {
-    printf("%d",2);
 	char *file_name = f_name;
 	bool success;
 
@@ -336,7 +335,6 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
  * Returns true if successful, false otherwise. */
 static bool
 load (const char *file_name, struct intr_frame *if_) {
-    printf("%d",2);
 	struct thread *t = thread_current ();
 	struct ELF ehdr;
 	struct file *file = NULL;
@@ -347,8 +345,7 @@ load (const char *file_name, struct intr_frame *if_) {
     /* Change the file name so that it is the filename that we want*/
     char* save_ptr;
     char* token;
-    char** arguments;
-    //arguments= malloc(4*sizeof(char*));;
+    char** arguments = malloc(4*sizeof(char*));
     char * temp = palloc_get_page(0);
     
     if(temp ==NULL){
@@ -364,7 +361,7 @@ load (const char *file_name, struct intr_frame *if_) {
         token = strtok_r(NULL, " ", &save_ptr);
         if(idx>=capacity){
             capacity *=2;
-            //arguments = realloc(arguments, capacity* sizeof((char*)));
+            arguments = realloc(arguments, capacity* sizeof((char*)));
         }
     }
     int argc = idx;
