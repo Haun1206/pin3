@@ -459,10 +459,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     printf("%d\n", 3);
     argument_stack(arguments,argc,if_);
-    printf("%d", (int)(if_->rsp));
-    int size = (uint64_t)(USER_STACK)-(uint64_t)(if_->rsp);
-    printf("%d\n",size);
-    hex_dump(if_->rsp, if_->rsp, size, true);
+    //hex_dump(if_->rsp, if_->rsp, size, true);
 	success = true;
 
 done:
@@ -508,6 +505,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     **rsp = 0;
     printf("%s\n", "YES:");
     
+    printf("%d\n", (int)(*rsp));
     
 }
 
