@@ -184,11 +184,14 @@ process_exec (void *f_name) {
 
 	/* We first kill the current context */
 	process_cleanup ();
+    
+    char* real_file_name;
+    char* save_ptr;
+    real_file_name = strtok_r(file_name," ", &save_ptr);
 	/* And then load the binary */
 	success = load (file_name, &_if);
-    //hex_dump(_if.R.rdi,_if.R.rsi,KERN_BASE-_if.rsp, true);
     /* If load failed, quit. */
-    palloc_free_page (file_name);
+    palloc_free_page (real_file_name);
 	if (!success)
 		return -1;
 
