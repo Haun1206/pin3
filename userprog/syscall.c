@@ -27,7 +27,7 @@ void syscall_handler (struct intr_frame *);
 
 static void check_address(void * addr){
     if(!(is_user_vaddr(addr) && addr >= (void*)0x0 ))
-        exit(-1);
+        return -1;
 }
 void
 syscall_init (void) {
