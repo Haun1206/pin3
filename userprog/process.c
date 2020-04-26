@@ -343,6 +343,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	int i;
     
     /* Change the file name so that it is the filename that we want*/
+    printf("%d\n", 1);
     char* save_ptr;
     char* token;
     char** arguments = malloc(4*sizeof(char*));
@@ -367,6 +368,7 @@ load (const char *file_name, struct intr_frame *if_) {
     int argc = idx;
     
     char * f_name = arguments[0];
+    printf("%d\n", 2);
     
 	/* Allocate and activate page directory. */
 	t->pml4 = pml4_create ();
@@ -455,9 +457,10 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
-    
+    printf("%d\n", 3);
     argument_stack(arguments,argc,if_);
     int size = (int)(USER_STACK)-(int)(if_->rsp) +8;
+    printf("%d\n",size);
     hex_dump(if_->rsp, if_->rsp, size, true);
 	success = true;
 
