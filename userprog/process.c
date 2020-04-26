@@ -184,7 +184,7 @@ process_exec (void *f_name) {
 
 	/* And then load the binary */
 	success = load (file_name, &_if);
-    hex_dump(_if.R.rdi,_if.R.rsi,KERN_BASE-_if.rsp, true);
+    //hex_dump(_if.R.rdi,_if.R.rsi,KERN_BASE-_if.rsp, true);
     /* If load failed, quit. */
     palloc_free_page (file_name);
 	if (!success)
@@ -334,7 +334,28 @@ load (const char *file_name, struct intr_frame *if_) {
 	off_t file_ofs;
 	bool success = false;
 	int i;
-
+    
+    /* Change the file name so that it is the filename that we want*/
+    char* save_ptr;
+    char* token;
+    char** arguments;
+    char * temp = palloc_get_page(0);
+    
+    if(temp ==NULL){
+        goto done;
+    }
+    strlcpy(temp, file_name, PGSIZE);
+    token = strtok_r(temp," ", &save_ptr);
+    int idx=0;
+    while(temp!=NULL){
+        parse[idx] = token;
+        idx ++;
+        token = strtok_r(NULL, " ", &save_ptr);
+    }
+    int argc = idx;
+    
+    char * f_name = arguments[0];
+    
 	/* Allocate and activate page directory. */
 	t->pml4 = pml4_create ();
 	if (t->pml4 == NULL)
@@ -342,9 +363,9 @@ load (const char *file_name, struct intr_frame *if_) {
 	process_activate (thread_current ());
 
 	/* Open executable file. */
-	file = filesys_open (file_name);
+	file = filesys_open (f_name);
 	if (file == NULL) {
-		printf ("load: %s: open failed\n", file_name);
+		printf ("load: %s: open failed\n", f_name);
 		goto done;
 	}
 
@@ -423,14 +444,9 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     
-    char *save_ptr;
-    int count = 0;
-    char* token = strtok_r((char *)file_name, " ",&save_ptr);
-    while(token!=NULL){
-        count++;
-        token = strtok_r(NULL, " ",&save_ptr);
-    }
-    argument_stack(&file_name,count,if_);
+    argument_stack(arguments,argc,if_);
+    int size = (int)(USER_STACK)-(int)(*rsp) +8;
+    hex_dump(_if.rsp, _if.rsp, size_stack, true);
 	success = true;
 
 done:
@@ -441,38 +457,37 @@ done:
 
 
 static void argument_stack(char * parse[], int count, struct intr_frame *if_){
-    void * addr[count];
-    void** rsp = &if_->rsp;
-    void** rsi = &if_->R.rsi;
-    void** rdi = &if_->R.rdi;
+    uintptr_t ** rsp = &if_->rsp;
+    uintptr_t ** arguments_address;
     int len=0;
     for(int i=0;i<count;i++){
         len += strlen(parse[i]);
         len++;
         *rsp-=len;
         memcpy(*rsp, parse[i],len);
+        arguments_address[i] = *rsp;
     }
-    *rsp = (void*)((unsigned int)(*rsp) & 0xfffffffffffffff8);
+    while((uint64_t)(*rsp)%8!=0)
+         *rsp --;
+     
     *rsp -= 8;
-    *((uint64_t*) *rsp) = 0;
+    **rsp = 0;
 
-    // setting **esp with argvs
+    /* setting argv[i] of having the addresses */
     for (int i = count - 1; i >= 0; i--) {
-      *rsp -= 8;
-      *((void**) *rsp) = addr[i];
+        *rsp -= 8;
+        memcpy(*rsp,&arguments_address[i], sizeof(char*));
     }
 
-    // setting **argv (addr of stack, esp)
-    *rsp -= 8;
-    *((void**) *rsi) = (*rsp + 4);
-
-    // setting argc
-    *rsp -= 8;
-    *((int*) *rdi) = count;
+    /* setting argv as rsi*/
+    if_->R.rsi = (uint64_t)*rsp;
+    
+    /*setting argc has rdi */
+    if_->R.rdi = count;
 
     // setting ret addr
     *rsp -= 8;
-    *((int*) *rsp) = 0;
+    **rsp = 0;
     
     
 }
