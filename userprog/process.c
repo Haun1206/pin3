@@ -48,16 +48,18 @@ process_create_initd (const char *file_name) {
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
 	fn_copy = palloc_get_page (0);
+    filename_copy = palloc_get_page(0);
 	if (fn_copy == NULL)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, PGSIZE);
+    strlcpy(filename_copy,file_name, PGSIZE);
     /*
      My addition
      */
     char* save_ptr;
-    fn_copy = strtok_r(fn_copy," ",&save_ptr);
+    filename_copy = strtok_r(filename_copy," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
+	tid = thread_create (file_name_copy, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -353,7 +355,7 @@ load (const char *file_name, struct intr_frame *if_) {
         token = strtok_r(NULL, " ", &save_ptr);
         if(idx>=capacity){
             capacity *=2;
-            arguments = realloc(arguments, capacity*size((char*)));
+            arguments = realloc(arguments, capacity* sizeof((char*)));
         }
     }
     int argc = idx;
