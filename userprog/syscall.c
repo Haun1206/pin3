@@ -53,6 +53,7 @@ void halt(void){
 }
 void exit (int status){
 	struct thread*t = thread_current();
+	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
 	thread_exit();
 }
@@ -72,7 +73,8 @@ int exec(const char *cmd_line){
 		return id;
 }
 int wait(pid_t pid){
-
+	int status  = process_wait(pid);
+	return status;
 }
 bool create(const char*file, unsigned initial_size){
 	return filesys_create(file, initial_size);

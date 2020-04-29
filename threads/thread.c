@@ -400,7 +400,15 @@ thread_exit (void) {
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
-    list_remove(&thread_current()->process_elem); /*clear the list of all process*/
+	struct thread *t = thread_current();
+    list_remove(&t->process_elem); /*clear the list of all process*/
+	
+	/* tell the process descriptor that the process is done*/
+	t->process_exit = 1;
+	/* now the parent process is done with waiting.*/
+	sema_up(&t->exit_sema);
+	
+	
 	do_schedule (THREAD_DYING);
 	NOT_REACHED ();
 }
@@ -747,6 +755,8 @@ schedule (void) {
 		   schedule(). */
 		if (curr && curr->status == THREAD_DYING && curr != initial_thread) {
 			ASSERT (curr != next);
+			/* shouuld delete process descriptor */
+			palloc_free_page(curr);
 			list_push_back (&destruction_req, &curr->elem);
 		}
 
