@@ -229,7 +229,7 @@ process_wait (tid_t child_tid UNUSED) {
 	 * XXX:       implementing the process_wait. */
 	int res_status;
 	struct thread* child;
-	if(!(child = thread_get_child(child_tid)))
+	if(!(child = get_child_process(child_tid)))
 		return -1;
 	/*Wait until the process of child is done */
 	sema_down(&child -> exit_sema);
