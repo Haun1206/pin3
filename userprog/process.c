@@ -188,6 +188,13 @@ process_exec (void *f_name) {
     tempo = strtok_r(tempo," ", &saveptr);
 	/* And then load the binary */
 	success = load (file_name, &_if);
+	/*Write the success status to the threads*/
+	struct thread * t  = thread_current();
+	t->success_load = success;
+
+	/*If succcessful, the do the parent again*/
+	sema_up(&(t->load_sema));
+
     /* If load failed, quit. */
     palloc_free_page (tempo);
 	if (!success)
@@ -504,6 +511,30 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     hex_dump((uintptr_t)(*rsp), *rsp, size, true);
     
     
+}
+/*
+	Search the child list based on the pid and return the process descriptor 
+*/
+struct thread * get_child_process(int pid){
+	struct thread *t = thread_current();
+	struct list_elem *e = list_begin(&t->child);
+	while(e!=list_end(&t->child)){
+		struct thread *temp = list_entry(e,struct thread, child_elem);
+		if(tid == temp->tid) 
+			return temp;
+		e = list_next(e);
+	}
+	return NULL;
+
+}
+
+/* remove the child process and delete process descriptor memory*/
+
+void remove_child_process(struct thread *cp){
+	if(cp==NULL) 
+		return;
+	list_remove(&(cp->child_elem));
+	palloc_free_page(cp);
 }
 
 /* Checks whether PHDR describes a valid, loadable segment in

@@ -110,6 +110,32 @@ struct thread {
 	/* Table for whole virtual memory owned by thread. */
 	struct supplemental_page_table spt;
 #endif
+	/*child list element*/
+	struct list_elem child_elem;
+	/*child list*/
+	struct list child;
+
+	/*Checks if the process's program memory is loaded */
+	bool success_load;
+	
+	/*Checks if process in ended */
+	bool process_exit;
+
+	/*Exit semaphore*/
+	struct semaphore exit_sema;
+
+	/*Load Semaphore*/
+	struct semaphore load_sema;
+
+	/*Indicating the next process descriptor */
+	int next_fd;
+
+	struct file **fd_table;
+
+	struct thread * parent;
+
+	/*Status when exiting */
+	int status_exit;
 
 	/* Owned by thread.c. */
 	struct intr_frame tf;               /* Information for switching */

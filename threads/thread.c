@@ -224,6 +224,21 @@ thread_create (const char *name, int priority,
 	init_thread (t, name, priority);
 	tid = t->tid = allocate_tid ();
 
+
+	t->next_fd = 2;
+	t->fd_table = palloc_get_page(0);
+
+	t->parent = thread_current();
+	t->success_load = 0;
+	t->process_exit = 0;
+
+	sema_init(&(t->load_sema), 0);
+	sema_init(&(t->exit_sema), 0);
+	
+	list_push_back(&thread_current()->child, &t->child_elem);
+
+
+
 	/* Call the kernel_thread if it scheduled.
 	 * Note) rdi is 1st argument, and rsi is 2nd argument. */
 	t->tf.rip = (uintptr_t) kernel_thread;
@@ -234,6 +249,8 @@ thread_create (const char *name, int priority,
 	t->tf.ss = SEL_KDSEG;
 	t->tf.cs = SEL_KCSEG;
 	t->tf.eflags = FLAG_IF;
+
+
 
 	/* Add to run queue. */
 	thread_unblock (t);
@@ -566,6 +583,11 @@ init_thread (struct thread *t, const char *name, int priority) {
             t->recent_cpu = thread_current()->recent_cpu;
         }
     }
+
+
+	list_init(&t->child);
+
+
 	
 }
 
