@@ -526,7 +526,7 @@ struct thread * get_child_process(int pid){
 	struct list_elem *e = list_begin(&t->child);
 	while(e!=list_end(&t->child)){
 		struct thread *temp = list_entry(e,struct thread, child_elem);
-		if(tid == temp->tid) 
+		if(pid == temp->tid) 
 			return temp;
 		e = list_next(e);
 	}
