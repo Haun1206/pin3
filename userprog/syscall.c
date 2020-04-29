@@ -116,7 +116,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
 	int64_t args[6];
 	check_address(&f->rsp);
-	switch(f->R.rax)){
+	switch(f->R.rax){
 		case SYS_HALT:
 			halt();
 			break;
