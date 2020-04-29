@@ -224,10 +224,12 @@ thread_create (const char *name, int priority,
 	init_thread (t, name, priority);
 	tid = t->tid = allocate_tid ();
 
-
+	/*File descriptor part*/
 	t->next_fd = 2;
 	t->fd_table = palloc_get_page(0);
-
+	if(t->fd_table ==NULL)
+		return TID_ERROR;
+	/*Child, parent Relationship */
 	t->parent = thread_current();
 	t->success_load = 0;
 	t->process_exit = 0;

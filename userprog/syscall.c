@@ -7,6 +7,7 @@
 #include "userprog/gdt.h"
 #include "threads/flags.h"
 #include "intrinsic.h"
+#include "lib/user/userprog/syscall.h"
 
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
@@ -114,17 +115,28 @@ bool remove(const char *file){
 	return filesys_remove(file);
 }
 int open (const char *file){
+	/*  Open the file and give the file descriptor
+		Ret; the file descriptor
+	*/
 	struct file * res;
-	int fd;
 	lock_acquire(&file_lock);
 	res = filesys_open(file);
 	lock_release(&file_lock);
 	if(res==NULL)
-		fd = -1;
-	ASSERT(fd!=1); /* stdoutput*/
-	ASSERT(fd!=0); /*std input*/
+		return -1;
+	int fd = process_add_file(res);
 	return fd;
 }
+int filesize(int fd){
+	/*Find the file with the fd and return the length of the file*/
+	struct *f = process_get_file(fd);
+	if(f==NULL)
+		return -1;
+	int size = file_length(f);
+	return size;
+
+}
+void string_validity(char * str, )
 
 /* The main system call interface */
 void
@@ -146,6 +158,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 
 		case SYS_EXEC:
+			get_argument(f,args,1);
+			
 			break;
 		
 		case SYS_WAIT:

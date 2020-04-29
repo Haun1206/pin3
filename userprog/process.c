@@ -27,7 +27,9 @@ static bool load (const char *file_name, struct intr_frame *if_);
 static void initd (void *f_name);
 static void __do_fork (void *);
 static void argument_stack(char * parse[], int count, struct intr_frame *if_);
-
+int process_add_file(struct file *f);
+struct file *process_get_file(int fd);
+void process_close_file(int fd);
 /* General process initializer for initd and other process. */
 static void
 process_init (void) {
@@ -541,6 +543,40 @@ void remove_child_process(struct thread *cp){
 		return;
 	list_remove(&(cp->child_elem));
 	palloc_free_page(cp);
+}
+
+int process_add_file(struct file *f){
+	/*Add the file to the file descriptor table
+	Make the file descriptor's maximum value incremented */
+	struct thread* t = thread_current();
+	struct file ** fd_tab = t->fd_table;
+	int next = t->next_fd;
+	if(fd_tab==NULL)
+		return -1;
+	
+	fd_tab[next] = f;
+	t->next_fd +=1;
+	return next;
+}
+struct file* process_get_file(int fd){
+	/*return the file that has the fd, but if the fd is invalid, we might not get the file*/
+	struct thread* t = thread_current();
+	if(fd>= t->next_fd)
+		return NULL;
+	struct file *ret_file = t->fd_table[fd];
+	return ret_file;
+}
+
+/*close the file for the fd
+Also initialize the entry at that file descriptor*/
+void process_close_file(int fd){
+	struct file * rm_file = process_get_file(fd);
+	if(rm_file==NULL)
+		return ;
+	file_close(rm_file);
+	/*Initialization*/
+	struct thread *t = thread_current();
+	t->fd_table[fd] = NULL;
 }
 
 /* Checks whether PHDR describes a valid, loadable segment in
