@@ -7,7 +7,7 @@
 #include "userprog/gdt.h"
 #include "threads/flags.h"
 #include "intrinsic.h"
-#include "lib/user/userprog/syscall.h"
+
 
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
@@ -89,7 +89,7 @@ void exit (int status){
 	t->status_exit = status;
 	thread_exit();
 }
-pid_t fork(const char *thread_name){
+int fork(const char *thread_name){
 
 }
 int exec(const char *cmd_line){
@@ -104,7 +104,7 @@ int exec(const char *cmd_line){
 	else 
 		return id;
 }
-int wait(pid_t pid){
+int wait(int pid){
 	int status  = process_wait(pid);
 	return status;
 }
