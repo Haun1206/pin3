@@ -138,6 +138,8 @@ struct thread {
 	/*Status when exiting */
 	int status_exit;
 
+	/*Current running file*/
+	struct file *cur_file;
 	/* Owned by thread.c. */
 	struct intr_frame tf;               /* Information for switching */
 	unsigned magic;                     /* Detects stack overflow. */
