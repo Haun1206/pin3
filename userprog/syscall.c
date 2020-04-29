@@ -116,7 +116,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
 	int64_t args[6];
 	check_address(&f->rsp);
-	thread_exit ();
 	switch(f->R.rax)){
 		case SYS_HALT:
 			halt();
@@ -164,6 +163,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 
 		default:
+			break;
 	}
 	printf("system call!\n");
 	thread_exit();
