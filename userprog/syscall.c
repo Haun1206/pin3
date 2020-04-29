@@ -129,7 +129,7 @@ int open (const char *file){
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
-	struct *f = process_get_file(fd);
+	struct file *f = process_get_file(fd);
 	if(f==NULL)
 		return -1;
 	int size = file_length(f);
