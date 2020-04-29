@@ -47,6 +47,22 @@ void get_argument(struct intr_frame * f, int * arg, int count){
 			arg[0] = f->R.rdi; 
 	}
 }
+
+
+void
+syscall_init (void) {
+	write_msr(MSR_STAR, ((uint64_t)SEL_UCSEG - 0x10) << 48  |
+			((uint64_t)SEL_KCSEG) << 32);
+	write_msr(MSR_LSTAR, (uint64_t) syscall_entry);
+
+	/* The interrupt service rountine should not serve any interrupts
+	 * until the syscall_entry swaps the userland stack to the kernel
+	 * mode stack. Therefore, we masked the FLAG_FL. */
+	write_msr(MSR_SYSCALL_MASK,
+			FLAG_IF | FLAG_TF | FLAG_DF | FLAG_IOPL | FLAG_AC | FLAG_NT);
+
+	lock_init(&file_lock);
+}
 void halt(void){
 	power_off();
 
@@ -93,21 +109,6 @@ int open (const char *file){
 	ASSERT(fd!=1); /* stdoutput*/
 	ASSERT(fd!=0); /*std input*/
 	return fd;
-}
-
-void
-syscall_init (void) {
-	write_msr(MSR_STAR, ((uint64_t)SEL_UCSEG - 0x10) << 48  |
-			((uint64_t)SEL_KCSEG) << 32);
-	write_msr(MSR_LSTAR, (uint64_t) syscall_entry);
-
-	/* The interrupt service rountine should not serve any interrupts
-	 * until the syscall_entry swaps the userland stack to the kernel
-	 * mode stack. Therefore, we masked the FLAG_FL. */
-	write_msr(MSR_SYSCALL_MASK,
-			FLAG_IF | FLAG_TF | FLAG_DF | FLAG_IOPL | FLAG_AC | FLAG_NT);
-
-	lock_init(&file_lock);
 }
 
 /* The main system call interface */
