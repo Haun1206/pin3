@@ -8,7 +8,9 @@
 #include "threads/flags.h"
 #include "intrinsic.h"
 
-
+static void check_addr(void* addr);
+void get_argument(struct intr_frame * f, int * arg, int count);
+void check_str(void * str);
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
 void halt (void);
@@ -41,11 +43,28 @@ void close(int fd);
 
 struct lock file_lock;	
 
-static void check_address(void* addr){
+static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
     if(!(is_user_vaddr(addr)))
         return exit(-1);
 } 
+
+void check_str(void *str){
+	check_addr(str);
+	/*Check it for all strings*/
+	char * temp = (char*) str;
+	while(*temp != '\0'){
+		temp++;
+		check_addr((void *)temp);
+	}
+}
+void check_buf(void *buffer, unsigned size){
+	char * temp = (char *)buffer;
+	for (int i=0; i<size;i++){
+		check_addr((void*)temp);
+		temp++;
+	}
+}
 void get_argument(struct intr_frame * f, int * arg, int count){
 	ASSERT(1<=count && count<=6);
 	switch(count){
@@ -209,7 +228,7 @@ void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
 	int64_t args[6];
-	check_address(&f->rsp);
+	check_addr(&f->rsp);
 	switch(f->R.rax){
 		case SYS_HALT:
 			halt();
@@ -225,37 +244,63 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		case SYS_EXEC:
 			get_argument(f,args,1);
-			
+			check_str((void *)args[0]);
+			f->R.rax = exec((const char *)args[0]);
 			break;
 		
 		case SYS_WAIT:
+			get_argument(f,args,1);
+			f->R.rax = wait(args[0]);
 			break;
 		
 		case SYS_CREATE:
+			get_argument(f,args,2);
+			check_str((void *)args[0]);
+			f->R.rax = create((const char *) args[0], (unsigned) args[1]);
 			break;
 		
 		case SYS_REMOVE:
+			get_argument(f,args,1);
+			check_str((const void *)args[0]);
+			f->R.rax = remove((const char *) args[0]);
 			break;
 
 		case SYS_OPEN:
+			get_argument(f,args,1);
+			check_str((const void *)args[0]);
+			f->R.rax = open((const char*)args[0]);
 			break;
 		
 		case SYS_FILESIZE:
+			get_argument(f,args,1);
+			f->R.rax = filesize(args[0]);
 			break;
 		
 		case SYS_READ:
+			get_argument(f,args,3);
+			check_buf((void *)args[1], (unsigned)args[2]);
+			f->R.rax = read(args[0], (void *)args[1], (unsigned)args[2]);
 			break;
 		
 		case SYS_WRITE:
+			get_argument(f,args,3);
+			check_buf((void *)args[1], (unsigned)args[2]);
+			f->R.rax = write(args[0], (void *)args[1], (unsigned) args[2]);
 			break;
 		
 		case SYS_SEEK:
+			get_argument(f,args,2);
+			seek(args[0], (unsigned)args[1]);
 			break;
 
 		case SYS_TELL:
+			get_argument(f,args,1);
+			f->R.rax = tell(args[0]);
 			break;
 		
 		case SYS_CLOSE:
+			get_argument(f,args,1);
+			close(args[0]);
 			break;
 
 		default:

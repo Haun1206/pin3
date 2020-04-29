@@ -42,7 +42,6 @@ process_init (void) {
 	struct thread *current = thread_current ();
 }
 
-
 /* Starts the first userland program, called "initd", loaded from FILE_NAME.
  * The new thread may be scheduled (and may even exit)
  * before process_create_initd() returns. Returns the initd's
