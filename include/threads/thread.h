@@ -3,6 +3,7 @@
 
 #include <debug.h>
 #include <list.h>
+#include "threads/synch.h"
 #include <stdint.h>
 #include "threads/interrupt.h"
 #ifdef VM
