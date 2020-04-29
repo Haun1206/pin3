@@ -242,7 +242,11 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-
+	for(int i=2;i<curr->next_fd;i++)
+		process_close_file(i);
+	palloc_free_page(curr->fd_table);
+	/*close the currently running file*/
+	file_close(curr->cur_file);
 	process_cleanup ();
 }
 
@@ -385,13 +389,21 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
+	lock_acquire(&file_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
 	if (file == NULL) {
+		lock_release(&file_lock);
 		printf ("load: %s: open failed\n", f_name);
 		goto done;
 	}
-
+	/*thread's running file will be initialized to the file that will executed
+		deny the writing	
+		=>protect with lock
+	*/
+	t->cur_file = file;
+	file_deny_write(file);
+	lock_release(&file_lock);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)

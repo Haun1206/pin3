@@ -136,7 +136,73 @@ int filesize(int fd){
 	return size;
 
 }
-void string_validity(char * str, )
+int read(int fd, void *buffer, unsigned size){
+	/*	Read opeeration might occur concurrently, thus we use locks
+		find the file with fd and if fd=0 (input)-> save the keyboard input on buffer, and return the saved size
+		if not zero -> read the file as much as the given size
+	*/
+	char* rd_buf = (char *)buffer;
+	int count= 0;
+	struct file* f;
+	lock_acquire(&file_lock);
+	if(fd==STDIN_FILENO){
+		/*Save input to keyboard->use input_getc (input.h)->one by one*/
+		rd_buf[count] = input_getc();
+		/*Until the size given + if it is enter, we stop*/
+		while(count<size && rd_buf[count]!='\n'){
+			count +=1;
+			rd_buf[count] = input_getc();
+		}
+		rd_buf[count] = '\0';
+	}else{
+		if((f=process_get_file(fd))!=NULL)
+			count = file_read(f,buffer,size);
+	}
+	lock_release(&file_lock);
+	return count;
+}
+int write (int fd, const void *buffer, unsigned size){
+	/* In order to prevent concurrency, use locks. When we deal with files.
+	find the file by fd, and if it is fd=Output signal, we print the buffer
+	else, we write it of the buffer size to the file
+	*/
+	int count = 0;
+	struct file* f;
+	lock_acquire(&file_lock);
+	if(fd==STDOUT_FILENO){
+		putbuf((const char *)buffer, size);
+		count = size;
+	}else{
+		if((f=process_get_file(fd)) != NULL)
+			count = file_write(f, (const void *)buffer, size);
+	}
+	lock_release(&file_lock);
+	return count;
+}
+void seek (int fd, unsigned position){
+	/*move the offset as the amount of position/Find file by fd*/
+	struct file *f;
+	if((f=process_get_file(fd))!=NULL)
+		file_seek(f,position);
+}
+unsigned tell (int fd){
+	/*tell the offset*/
+	struct file *f;
+	unsigned offset = 0;
+	if((f=process_get_file(fd))!=NULL)
+		offset = file_tell(f);
+	return offset;
+}
+void close(int fd){
+	/*close the file of the fd and entry initialize*/
+	struct file *f;
+	if((f=process_get_file(fd)) !=NULL){
+		file_close(f);
+		struct thread *t = thread_current();
+		t->fd_table[fd] =NULL;
+	}
+}
+
 
 /* The main system call interface */
 void
