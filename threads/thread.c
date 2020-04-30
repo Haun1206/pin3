@@ -416,7 +416,7 @@ thread_exit (void) {
 	t->process_exit = 1;
 	/* now the parent process is done with waiting.*/
 	sema_up(&t->exit_sema);
-	
+	sema_down(&t->load_sema);
 	
 	do_schedule (THREAD_DYING);
 	NOT_REACHED ();
