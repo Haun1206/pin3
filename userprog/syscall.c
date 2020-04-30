@@ -320,9 +320,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			printf("%s\n", "maybe write?\n");
 			get_argument(f,args,3);
 			printf("%s\n", "maybe write?\n");
-			check_addr(args[1]);
+			check_addr(f->R.rsi);
 			printf("%s\n", "maybe write?\n");
-			f->R.rax = write(args[0], (const void *)args[1], (unsigned) args[2]);
+			f->R.rax = write(f->R.rdi, (const void *)f->R.rsi, (unsigned) f->R.rdx);
 			printf("%s\n", "maybe write?\n");
 			break;
 		
