@@ -410,15 +410,15 @@ thread_exit (void) {
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
-	struct thread *t = thread_current();
+	
 	printf("%s\n", "maybe thread_exit-1");
-    list_remove(&t->process_elem); /*clear the list of all process*/
+    list_remove(&thread_current()->process_elem); /*clear the list of all process*/
 	printf("%s\n", "maybe thread_exit-2");
 	/* tell the process descriptor that the process is done*/
 	t->process_exit = 1;
 	/* now the parent process is done with waiting.*/
-	sema_up(&t->exit_sema);
-	sema_down(&t->load_sema);
+	sema_up(&thread_current()->exit_sema);
+	sema_down(&thread_current()->load_sema);
 	printf("%s\n", "maybe thread_exit-3");
 	
 	do_schedule (THREAD_DYING);
