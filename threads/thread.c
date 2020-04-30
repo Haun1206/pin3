@@ -413,8 +413,7 @@ thread_exit (void) {
 	printf("%s\n", "maybe thread_exit-1");
     list_remove(&t->process_elem); /*clear the list of all process*/
 	printf("%s\n", "maybe thread_exit-2");
-	/* tell the process descriptor that the process is done*/
-	t->process_exit = true;
+
 	/* now the parent process is done with waiting.*/
 	if(t!= initial_thread)
 		sema_up(&t->exit_sema);
