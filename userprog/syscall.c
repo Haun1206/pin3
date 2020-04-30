@@ -45,6 +45,7 @@ struct lock file_lock;
 
 static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
+	printf("%s\n","ONCE");
     if(!(is_user_vaddr(addr)))
         return exit(-1);
 } 
@@ -177,8 +178,6 @@ int read(int fd, void *buffer, unsigned size){
 	}else{
 		if((f=process_get_file(fd))!=NULL)
 			count = file_read(f,buffer,size);
-		else
-			count =-1;
 	}
 	lock_release(&file_lock);
 	return count;
@@ -198,8 +197,6 @@ int write (int fd, const void *buffer, unsigned size){
 	else{
 		if((f=process_get_file(fd)) != NULL)
 			count = file_write(f, (const void *)buffer, size);
-		else
-			count = -1;
 	}
 	lock_release(&file_lock);
 	return count;
