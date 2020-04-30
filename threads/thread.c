@@ -411,6 +411,7 @@ thread_exit (void) {
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
 	struct thread *t = thread_current();
+	printf("%s\n", "maybe thread_exit-1");
     list_remove(&t->process_elem); /*clear the list of all process*/
 	printf("%s\n", "maybe thread_exit-2");
 	/* tell the process descriptor that the process is done*/
