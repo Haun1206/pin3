@@ -50,41 +50,6 @@ static void check_addr(void* addr){
         return exit(-1);
 } 
 
-void check_str(void *str){
-	check_addr(str);
-	/*Check it for all strings*/
-	char * temp = (char*) str;
-	while(*temp != '\0'){
-		temp++;
-		check_addr((void *)temp);
-	}
-}
-void check_buf(void *buffer, unsigned size){
-	char * temp = (char *)buffer;
-	for (int i=0; i<size;i++){
-		check_addr((void*)temp);
-		temp++;
-	}
-}
-void get_argument(struct intr_frame * f, int * arg, int count){
-	ASSERT(1<=count && count<=6);
-	switch(count){
-		case 6:
-			arg[5] = f->R.r9;
-		case 5:
-			arg[4] = f->R.r8;
-		case 4:
-			arg[3] = f->R.r10;
-		case 3:
-			arg[2] = f->R.rdx;
-		case 2:
-			arg[1] = f->R.rsi;
-		case 1:
-			arg[0] = f->R.rdi; 
-	}
-}
-
-
 void
 syscall_init (void) {
 	write_msr(MSR_STAR, ((uint64_t)SEL_UCSEG - 0x10) << 48  |
@@ -247,72 +212,63 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		
 		case SYS_EXIT:
 			printf("%s\n", "maybe exit?");
-			get_argument(f,args,1);
 			exit(f->R.rdi);
 			printf("%s\n", "maybe exit?");
 			break;
 		
 		case SYS_FORK:
 			printf("%s\n", "maybe fork?");
-			get_argument(f,args,1);
-			check_str((void *)args[0]);
+			check_addr((void *)f->R.rdi);
 			lock_acquire(&file_lock);
-			f->R.rax = fork((const char *)args[0],f);
+			f->R.rax = fork((const char *)f->R.rdi,f);
 			lock_release(&file_lock);
 			printf("%s\n", "maybe fork?");
 			break;
 
 		case SYS_EXEC:
 			printf("%s\n", "maybe exec?");
-			get_argument(f,args,1);
-			check_str((void *)args[0]);
-			f->R.rax = exec((const char *)args[0]);
+			check_addr((void *)f->R.rdi);
+			f->R.rax = exec((const char *)f->R.rdi);
 			printf("%s\n", "maybe exec?");
 			break;
 		
 		case SYS_WAIT:
 			printf("%s\n", "maybe wait?");
-			get_argument(f,args,1);
-			f->R.rax = wait(args[0]);
+			f->R.rax = wait(f->R.rdi);
 			printf("%s\n", "maybe wait?");
 			break;
 		
 		case SYS_CREATE:
 			printf("%s\n", "maybe Create?");
-			get_argument(f,args,2);
-			check_str((void *)args[0]);
-			f->R.rax = create((const char *) args[0], (unsigned) args[1]);
+			check_addr((void *)f->R.rdi);
+			f->R.rax = create((const char *) f->R.rdi, (unsigned) f->R.rsi);
 			printf("%s\n", "maybe Create?");
 			break;
 		
 		case SYS_REMOVE:
 			printf("%s\n", "maybe remove?");
-			get_argument(f,args,1);
-			check_str((void *)args[0]);
-			f->R.rax = remove((const char *) args[0]);
+			check_addr((void *)f->R.rdi);
+			f->R.rax = remove((const char *) f->R.rdi);
 			printf("%s\n", "maybe remove?");
 			break;
 
 		case SYS_OPEN:
 			printf("%s\n", "maybe open?");
-			get_argument(f,args,1);
-			check_str((void *)args[0]);
-			f->R.rax = open((const char*)args[0]);
+			check_addr((void *)f->R.rdi);
+			f->R.rax = open((const char*)f->R.rdi);
 			printf("%s\n", "maybe open?");
 			break;
 		
 		case SYS_FILESIZE:
 			printf("%s\n", "maybe fsize?");
-			get_argument(f,args,1);
-			f->R.rax = filesize(args[0]);
+			f->R.rax = filesize(f->R.rdi);
 			printf("%s\n", "maybe fsize?");
 			break;
 		
 		case SYS_READ:
 			printf("%s\n", "maybe read?");
-			get_argument(f,args,3);
-			check_buf((void *)args[1], (unsigned)args[2]);
-			f->R.rax = read(args[0], (void *)args[1], (unsigned)args[2]);
+			check_addr((void *)f->R.rsi);
+			f->R.rax = read(f->R.rdi, (void *)f->R.rsi, (unsigned)f->R.rdx);
 			printf("%s\n", "maybe read?");
 			break;
 		
@@ -328,22 +284,19 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		
 		case SYS_SEEK:
 			printf("%s\n", "maybe seek?\n");
-			get_argument(f,args,2);
-			seek(args[0], (unsigned)args[1]);
+			seek(f->R.rdi, (unsigned)f->R.rsi);
 			printf("%s\n", "maybe seek?\n");
 			break;
 
 		case SYS_TELL:
 			printf("%s\n", "maybe tell?\n");
-			get_argument(f,args,1);
-			f->R.rax = tell(args[0]);
+			f->R.rax = tell(f->R.rdi]);
 			printf("%s\n", "maybe tell?\n");
 			break;
 		
 		case SYS_CLOSE:
 			printf("%s\n", "maybe close?\n");
-			get_argument(f,args,1);
-			close(args[0]);
+			close(f->R.rdi);
 			printf("%s\n", "maybe close?\n");
 			break;
 
@@ -354,3 +307,21 @@ syscall_handler (struct intr_frame *f UNUSED) {
 	}
 
 }
+/*
+void get_argument(struct intr_frame * f, int * arg, int count){
+	ASSERT(1<=count && count<=6);
+	switch(count){
+		case 6:
+			arg[5] = f->R.r9;
+		case 5:
+			arg[4] = f->R.r8;
+		case 4:
+			arg[3] = f->R.r10;
+		case 3:
+			arg[2] = f->R.rdx;
+		case 2:
+			arg[1] = f->R.rsi;
+		case 1:
+			arg[0] = f->R.rdi; 
+	}
+}*/
