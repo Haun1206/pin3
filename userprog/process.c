@@ -277,7 +277,7 @@ process_exit (void) {
 	for(int i=2;i<curr->next_fd;i++)
 		process_close_file(i);
 		
-	printf("%s\n", "Is this working?");
+	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
@@ -288,7 +288,7 @@ process_exit (void) {
 	/*Check out the child exit staus and parent's forked*/
 	if(parent->child_status_exit==-1 && parent->forked ==1)
 		sema_up(&parent->child_fork);
-	printf("%s\n", "clean");
+	//printf("%s\n", "clean");
 	
 }
 
@@ -403,7 +403,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	int i;
     
     /* Change the file name so that it is the filename that we want*/
-    printf("%d\n", 1);
+    //printf("%d\n", 1);
     char* save_ptr;
     char* token;
     char** arguments = malloc(4*sizeof(char*));
@@ -423,7 +423,7 @@ load (const char *file_name, struct intr_frame *if_) {
     int argc = idx;
     
     char * f_name = arguments[0];
-    printf("%d\n", 2);
+    //printf("%d\n", 2);
     
 	/* Allocate and activate page directory. */
 	t->pml4 = pml4_create ();
@@ -520,11 +520,11 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
-    printf("%d\n", 3);
+    //printf("%d\n", 3);
     argument_stack(arguments,argc,if_);
 
 	success = true;
-    printf("%d\n",4);
+    //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
@@ -546,14 +546,14 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
         memcpy(*rsp, parse[count-i-1],len);
         arguments_address[i] = *rsp;
     }
-    printf("%s\n", "YES:");
+    //printf("%s\n", "YES:");
     while((uint64_t)(*rsp)%8!=0){
         *rsp = (uint64_t)(*rsp)-1;
     }
     
     *rsp -= 1;
     **rsp = 0;
-    printf("%s\n", "YES:");
+   // printf("%s\n", "YES:");
     /* setting argv[i] of having the addresses */
     for (int i = 0; i <count ; i++) {
         *rsp -= 1;
@@ -570,7 +570,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     *rsp -= 1;
     *(int*)*rsp = 0;
     int size = (uint64_t)(USER_STACK) - (uint64_t)(*rsp);
-    hex_dump((uintptr_t)(*rsp), *rsp, size, true);
+    //hex_dump((uintptr_t)(*rsp), *rsp, size, true);
     
     
 }

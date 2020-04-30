@@ -211,7 +211,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_EXIT:
-			printf("%s\n", "maybe exit?");
+			//printf("%s\n", "maybe exit?");
 			exit(f->R.rdi);
 			break;
 		
@@ -272,11 +272,11 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_WRITE:
-			printf("%s\n", "maybe write?\n");
+			//printf("%s\n", "maybe write?\n");
 			check_addr(f->R.rsi);
-			printf("%s\n", "maybe write?\n");
+			//printf("%s\n", "maybe write?\n");
 			f->R.rax = write(f->R.rdi, (const void *)f->R.rsi, (unsigned) f->R.rdx);
-			printf("%s\n", "maybe write?\n");
+			//printf("%s\n", "maybe write?\n");
 			break;
 		
 		case SYS_SEEK:
