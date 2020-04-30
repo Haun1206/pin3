@@ -15,7 +15,7 @@ void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
 void halt (void);
 void exit (int status);
-int fork(const char *thread_name);
+int fork(const char *thread_name,struct intr_frame *f);
 int exec (const char *cmd_line);
 int wait (int pid);
 bool create(const char *file, unsigned initial_size);
@@ -245,7 +245,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_str((void *)args[0]);
 			lock_acquire(&file_lock);
 			f->R.rax = fork((const char *)args[0],f);
-			lock_release(&file_lock)
+			lock_release(&file_lock);
 			break;
 
 		case SYS_EXEC:
