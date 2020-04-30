@@ -248,7 +248,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_EXIT:
 			printf("%s\n", "maybe exit?");
 			get_argument(f,args,1);
-			exit(args[0]);
+			exit(f->R.rdi);
 			printf("%s\n", "maybe exit?");
 			break;
 		
