@@ -228,7 +228,7 @@ process_exec (void *f_name) {
 	sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
-    palloc_free_page (tempo);
+    palloc_free_page (file_name);
 	if (!success)
 		return -1;
 
@@ -278,7 +278,7 @@ process_exit (void) {
 		process_close_file(i);
 		
 	//printf("%s\n", "Is this working?");
-	//palloc_free_page(curr->fd_table);
+	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
 	//file_close(curr->cur_file);
@@ -529,6 +529,7 @@ done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
 	file_close (file);
+	
 	return success;
 }
 
