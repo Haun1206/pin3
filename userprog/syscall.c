@@ -319,7 +319,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_WRITE:
 			printf("%s\n", "maybe write?\n");
 			get_argument(f,args,3);
+			printf("%s\n", "maybe write?\n");
 			check_buf((void *)args[1], (unsigned)args[2]);
+			printf("%s\n", "maybe close?\n");
 			f->R.rax = write(args[0], (const void *)args[1], (unsigned) args[2]);
 			printf("%s\n", "maybe write?\n");
 			break;
