@@ -411,11 +411,6 @@ thread_exit (void) {
 	intr_disable ();
 	struct thread *t = thread_current();
     list_remove(&t->process_elem); /*clear the list of all process*/
-
-	/* now the parent process is done with waiting.*/
-	if(t!= initial_thread)
-		sema_up(&t->exit_sema);
-	sema_down(&t->load_sema);
 	
 	do_schedule (THREAD_DYING);
 	NOT_REACHED ();
