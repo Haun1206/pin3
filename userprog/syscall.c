@@ -290,7 +290,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		case SYS_TELL:
 			printf("%s\n", "maybe tell?\n");
-			f->R.rax = tell(f->R.rdi]);
+			f->R.rax = tell(f->R.rdi);
 			printf("%s\n", "maybe tell?\n");
 			break;
 		
