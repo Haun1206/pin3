@@ -242,6 +242,7 @@ thread_create (const char *name, int priority,
 	sema_init(&(t->exit_sema), 0);
 	sema_init(&(t->child_fork),0);
 
+	t->cur_file = NULL;
 	
 	list_push_back(&thread_current()->child, &t->child_elem);
 

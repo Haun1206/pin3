@@ -278,6 +278,7 @@ process_exit (void) {
 		process_close_file(i);
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
+	curr->process_exit = true;
 	file_close(curr->cur_file);
 	process_cleanup ();
 	/*Check out the child exit staus and parent's forked*/
