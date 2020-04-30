@@ -260,7 +260,7 @@ process_wait (tid_t child_tid UNUSED) {
 	sema_down(&child -> exit_sema);
 	res_status = child->status_exit;
 	remove_child_process(child);
-	//sema_up(&child->load_sema);
+	sema_up(&child->load_sema);
 	return res_status;
 
 }
@@ -284,8 +284,8 @@ process_exit (void) {
 	/*Check out the child exit staus and parent's forked*/
 	if(parent->child_status_exit==-1 && parent->forked ==1)
 		sema_up(&parent->child_fork);
-	//sema_up(&curr->exit_sema);
-	//sema_down(&curr->load_sema);
+	
+	sema_down(&curr->load_sema);
 }
 
 /* Free the current process's resources. */
