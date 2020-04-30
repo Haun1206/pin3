@@ -230,10 +230,9 @@ thread_create (const char *name, int priority,
 	if(t->fd_table ==NULL)
 		return TID_ERROR;
 	/*Child, parent Relationship */
-	t->parent = thread_current();
 	t->success_load = 0;
 	t->process_exit = 0;
-
+	t->parent = running_thread();
 	/*Fork*/
 	t->forked = 0;
 	t->child_status_exit = 0;
@@ -410,15 +409,16 @@ thread_exit (void) {
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
+	struct thread *t = thread_current();
 	printf("%s\n", "maybe thread_exit-1");
-    list_remove(&thread_current()->process_elem); /*clear the list of all process*/
+    list_remove(&t->process_elem); /*clear the list of all process*/
 	printf("%s\n", "maybe thread_exit-2");
 	/* tell the process descriptor that the process is done*/
-	thread_current()->process_exit = true;
+	t->process_exit = true;
 	/* now the parent process is done with waiting.*/
-	if(thread_current()!= initial_thread)
-		sema_up(&thread_current()->exit_sema);
-	sema_down(&thread_current()->load_sema);
+	if(t!= initial_thread)
+		sema_up(&t->exit_sema);
+	sema_down(&t->load_sema);
 	printf("%s\n", "maybe thread_exit-3");
 	
 	do_schedule (THREAD_DYING);
