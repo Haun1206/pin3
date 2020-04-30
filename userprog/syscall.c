@@ -11,6 +11,7 @@
 static void check_addr(void* addr);
 void get_argument(struct intr_frame * f, int * arg, int count);
 void check_str(void * str);
+void check_buf(void *buffer, unsigned size);
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
 void halt (void);
@@ -274,13 +275,13 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		
 		case SYS_REMOVE:
 			get_argument(f,args,1);
-			check_str((const void *)args[0]);
+			check_str((void *)args[0]);
 			f->R.rax = remove((const char *) args[0]);
 			break;
 
 		case SYS_OPEN:
 			get_argument(f,args,1);
-			check_str((const void *)args[0]);
+			check_str((void *)args[0]);
 			f->R.rax = open((const char*)args[0]);
 			break;
 		
@@ -298,7 +299,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_WRITE:
 			printf("%s\n", "maybe?\n");
 			get_argument(f,args,3);
-			check_buf((const void *)args[1], (unsigned)args[2]);
+			check_buf((void *)args[1], (unsigned)args[2]);
 			f->R.rax = write(args[0], (const void *)args[1], (unsigned) args[2]);
 			break;
 		
