@@ -162,7 +162,7 @@ int read(int fd, void *buffer, unsigned size){
 		if not zero -> read the file as much as the given size
 	*/
 	char* rd_buf = (char *)buffer;
-	int count= 0;
+	int count= -1;
 	struct file* f;
 	lock_acquire(&file_lock);
 	if(fd==STDIN_FILENO){
@@ -186,7 +186,7 @@ int write (int fd, const void *buffer, unsigned size){
 	find the file by fd, and if it is fd=Output signal, we print the buffer
 	else, we write it of the buffer size to the file
 	*/
-	int count = 0;
+	int count = -1;
 	struct file* f;
 	lock_acquire(&file_lock);
 	if(fd==STDOUT_FILENO){
@@ -195,7 +195,7 @@ int write (int fd, const void *buffer, unsigned size){
 	}
 	else{
 		if((f=process_get_file(fd)) != NULL)
-			count = file_write(f, (const void *)buffer, size);
+			count = file_write(f, buffer, size);
 	}
 	lock_release(&file_lock);
 	return count;
@@ -294,8 +294,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_WRITE:
 			printf("%s\n", "maybe?\n");
 			get_argument(f,args,3);
-			check_buf((void *)args[1], (unsigned)args[2]);
-			f->R.rax = write(args[0], (void *)args[1], (unsigned) args[2]);
+			check_buf((const void *)args[1], (unsigned)args[2]);
+			f->R.rax = write(args[0], (const void *)args[1], (unsigned) args[2]);
 			break;
 		
 		case SYS_SEEK:
