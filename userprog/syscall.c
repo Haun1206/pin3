@@ -9,7 +9,7 @@
 #include "intrinsic.h"
 
 static void check_addr(void* addr);
-void get_argument(struct intr_frame * f, int * arg, int count);
+/*void get_argument(struct intr_frame * f, int * arg, int count);*/
 void check_str(void * str);
 void check_buf(void *buffer, unsigned size);
 void syscall_entry (void);
@@ -273,8 +273,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_WRITE:
-			printf("%s\n", "maybe write?\n");
-			get_argument(f,args,3);
 			printf("%s\n", "maybe write?\n");
 			check_addr(f->R.rsi);
 			printf("%s\n", "maybe write?\n");
