@@ -288,7 +288,7 @@ process_exit (void) {
 	/*Check out the child exit staus and parent's forked*/
 	if(parent->child_status_exit==-1 && parent->forked ==1)
 		sema_up(&parent->child_fork);
-	
+	printf("%s\n", "clean");
 	
 }
 

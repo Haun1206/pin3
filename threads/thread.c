@@ -402,10 +402,8 @@ thread_exit (void) {
 	ASSERT (!intr_context ());
 
 #ifdef USERPROG
-	printf("%s\n", "maybe thread_exit-0");
 	process_exit ();
 #endif
-	printf("%s\n", "maybe thread_exit-1");
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
