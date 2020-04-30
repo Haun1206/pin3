@@ -140,6 +140,14 @@ struct thread {
 
 	/*Current running file*/
 	struct file *cur_file;
+
+	/*semaphore for child_fork*/
+	struct semaphore child_fork;
+
+	/*Telling that there is forked thread*/
+	int forked;
+	/*Exit status of the child*/
+	int child_status_exit;
 	/* Owned by thread.c. */
 	struct intr_frame tf;               /* Information for switching */
 	unsigned magic;                     /* Detects stack overflow. */

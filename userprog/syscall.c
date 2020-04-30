@@ -15,7 +15,6 @@ void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
 void halt (void);
 void exit (int status);
-int fork(const char *thread_name);
 int exec (const char *cmd_line);
 int wait (int pid);
 bool create(const char *file, unsigned initial_size);
@@ -106,11 +105,10 @@ void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
+	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
-int fork(const char *thread_name){
 
-}
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	tid_t id = process_create_initd(cmd_line);
@@ -240,6 +238,11 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_FORK:
+			get_argument(f,args,1);
+			check_str((void *)args[0]);
+			lock_acquire(&file_lock);
+			f->R.rax = process_fork((const char *)args[0],f);
+			lock_release(&file_lock);
 			break;
 
 		case SYS_EXEC:

@@ -234,8 +234,14 @@ thread_create (const char *name, int priority,
 	t->success_load = 0;
 	t->process_exit = 0;
 
+	/*Fork*/
+	t->forked = 0;
+	t->child_status_exit = 0;
+
 	sema_init(&(t->load_sema), 0);
 	sema_init(&(t->exit_sema), 0);
+	sema_init(&(t->child_fork),0);
+
 	
 	list_push_back(&thread_current()->child, &t->child_elem);
 
