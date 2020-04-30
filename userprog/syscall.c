@@ -177,6 +177,8 @@ int read(int fd, void *buffer, unsigned size){
 	}else{
 		if((f=process_get_file(fd))!=NULL)
 			count = file_read(f,buffer,size);
+		else
+			count =-1;
 	}
 	lock_release(&file_lock);
 	return count;
@@ -192,9 +194,12 @@ int write (int fd, const void *buffer, unsigned size){
 	if(fd==STDOUT_FILENO){
 		putbuf((const char *)buffer, size);
 		count = size;
-	}else{
+	}
+	else{
 		if((f=process_get_file(fd)) != NULL)
 			count = file_write(f, (const void *)buffer, size);
+		else
+			count = -1;
 	}
 	lock_release(&file_lock);
 	return count;
