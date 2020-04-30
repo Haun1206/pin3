@@ -187,7 +187,7 @@ __do_fork (void *aux) {
 	/* Finally, switch to the newly created process. */
 	sema_up(&parent->child_fork);
 	if (succ){
-		if_R.rax = 0;
+		if_.R.rax = 0;
 		do_iret (&if_);
 	}
 error:
@@ -283,7 +283,7 @@ process_exit (void) {
 	process_cleanup ();
 	/*Check out the child exit staus and parent's forked*/
 	if(parent->child_status_exit==-1 && parent->forked ==1)
-		sema_up(parent->child_fork);
+		sema_up(&parent->child_fork);
 	//sema_up(&curr->exit_sema);
 	//sema_down(&curr->load_sema);
 }
