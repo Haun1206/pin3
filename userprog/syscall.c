@@ -240,82 +240,109 @@ syscall_handler (struct intr_frame *f UNUSED) {
 	printf("%s\n", "maybe?");
 	switch(f->R.rax){
 		case SYS_HALT:
+			printf("%s\n", "maybe halt?");
 			halt();
+			printf("%s\n", "maybe halt?");
 			break;
 		
 		case SYS_EXIT:
+			printf("%s\n", "maybe exit?");
 			get_argument(f,args,1);
 			exit(args[0]);
+			printf("%s\n", "maybe exit?");
 			break;
 		
 		case SYS_FORK:
+			printf("%s\n", "maybe fork?");
 			get_argument(f,args,1);
 			check_str((void *)args[0]);
 			lock_acquire(&file_lock);
 			f->R.rax = fork((const char *)args[0],f);
 			lock_release(&file_lock);
+			printf("%s\n", "maybe fork?");
 			break;
 
 		case SYS_EXEC:
+			printf("%s\n", "maybe exec?");
 			get_argument(f,args,1);
 			check_str((void *)args[0]);
 			f->R.rax = exec((const char *)args[0]);
+			printf("%s\n", "maybe exec?");
 			break;
 		
 		case SYS_WAIT:
+			printf("%s\n", "maybe wait?");
 			get_argument(f,args,1);
 			f->R.rax = wait(args[0]);
+			printf("%s\n", "maybe wait?");
 			break;
 		
 		case SYS_CREATE:
+			printf("%s\n", "maybe Create?");
 			get_argument(f,args,2);
 			check_str((void *)args[0]);
 			f->R.rax = create((const char *) args[0], (unsigned) args[1]);
+			printf("%s\n", "maybe Create?");
 			break;
 		
 		case SYS_REMOVE:
+			printf("%s\n", "maybe remove?");
 			get_argument(f,args,1);
 			check_str((void *)args[0]);
 			f->R.rax = remove((const char *) args[0]);
+			printf("%s\n", "maybe remove?");
 			break;
 
 		case SYS_OPEN:
+			printf("%s\n", "maybe open?");
 			get_argument(f,args,1);
 			check_str((void *)args[0]);
 			f->R.rax = open((const char*)args[0]);
+			printf("%s\n", "maybe open?");
 			break;
 		
 		case SYS_FILESIZE:
+			printf("%s\n", "maybe fsize?");
 			get_argument(f,args,1);
 			f->R.rax = filesize(args[0]);
+			printf("%s\n", "maybe fsize?");
 			break;
 		
 		case SYS_READ:
+			printf("%s\n", "maybe read?");
 			get_argument(f,args,3);
 			check_buf((void *)args[1], (unsigned)args[2]);
 			f->R.rax = read(args[0], (void *)args[1], (unsigned)args[2]);
+			printf("%s\n", "maybe read?");
 			break;
 		
 		case SYS_WRITE:
-			printf("%s\n", "maybe?\n");
+			printf("%s\n", "maybe write?\n");
 			get_argument(f,args,3);
 			check_buf((void *)args[1], (unsigned)args[2]);
 			f->R.rax = write(args[0], (const void *)args[1], (unsigned) args[2]);
+			printf("%s\n", "maybe write?\n");
 			break;
 		
 		case SYS_SEEK:
+			printf("%s\n", "maybe seek?\n");
 			get_argument(f,args,2);
 			seek(args[0], (unsigned)args[1]);
+			printf("%s\n", "maybe seek?\n");
 			break;
 
 		case SYS_TELL:
+			printf("%s\n", "maybe tell?\n");
 			get_argument(f,args,1);
 			f->R.rax = tell(args[0]);
+			printf("%s\n", "maybe tell?\n");
 			break;
 		
 		case SYS_CLOSE:
+			printf("%s\n", "maybe close?\n");
 			get_argument(f,args,1);
 			close(args[0]);
+			printf("%s\n", "maybe close?\n");
 			break;
 
 		default:
