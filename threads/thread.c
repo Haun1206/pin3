@@ -409,6 +409,7 @@ thread_exit (void) {
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
 	intr_disable ();
+	printf("%s\n", "maybe thread_exit-1");
 	struct thread *t = thread_current();
 	printf("%s\n", "maybe thread_exit-1");
     list_remove(&t->process_elem); /*clear the list of all process*/
