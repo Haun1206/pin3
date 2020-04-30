@@ -199,10 +199,9 @@ void close(int fd){
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
-	int64_t args[6];
-	printf("%s\n", "maybe?");
+	//printf("%s\n", "maybe?");
 	check_addr(f->rsp);
-	printf("%s\n", "maybe?");
+	//printf("%s\n", "maybe?");
 	switch(f->R.rax){
 		case SYS_HALT:
 			printf("%s\n", "maybe halt?");
