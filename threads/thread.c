@@ -765,7 +765,6 @@ schedule (void) {
 		if (curr && curr->status == THREAD_DYING && curr != initial_thread) {
 			ASSERT (curr != next);
 			/* shouuld delete process descriptor */
-			palloc_free_page(curr);
 			list_push_back (&destruction_req, &curr->elem);
 		}
 
