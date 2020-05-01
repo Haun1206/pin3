@@ -634,10 +634,10 @@ void process_close_file(int fd){
 	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
-	printf("HI\n");
-	printf("%d\n", fd);
+	//printf("HI\n");
+	//printf("%d\n", fd);
 	//file_close(rm_file);
-	printf("HI\n");
+	//printf("HI\n");
 	/*Initialization*/
 
 	t->fd_table[fd] = NULL;
