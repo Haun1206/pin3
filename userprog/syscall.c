@@ -88,7 +88,7 @@ void exit (int status){
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
-int fork(const char *thread_name,struct intr_frame *f){
+int fork(const char *thread_name, struct intr_frame *f){
 	return process_fork(thread_name, f);
 }
 int exec(const char *cmd_line){
@@ -239,7 +239,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		case SYS_EXEC:
 			//printf("%s\n", "maybe exec?");
-			check_str((void *)f->R.rdi);
+			check_addr((void *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;
@@ -259,14 +259,14 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		
 		case SYS_REMOVE:
 			//printf("%s\n", "maybe remove?");
-			check_str((void *)f->R.rdi);
+			check_addr((void *)f->R.rdi);
 			f->R.rax = remove((const char *) f->R.rdi);
 			//printf("%s\n", "maybe remove?");
 			break;
 
 		case SYS_OPEN:
 			//printf("%s\n", "maybe open?");
-			check_str((void *)f->R.rdi);
+			check_addr((void *)f->R.rdi);
 			f->R.rax = open((const char*)f->R.rdi);
 			//printf("%s\n", "maybe open?");
 			break;
