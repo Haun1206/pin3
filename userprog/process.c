@@ -529,7 +529,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	//file_close (file);
+	file_close (file);
 	
 	return success;
 }
@@ -634,10 +634,8 @@ void process_close_file(int fd){
 	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
-	printf("HI\n");
-	printf("%d\n", fd);
-	file_close(rm_file);
-	printf("HI\n");
+	//printf("HI\n");
+	//file_close(rm_file);
 	/*Initialization*/
 
 	t->fd_table[fd] = NULL;
