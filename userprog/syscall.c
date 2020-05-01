@@ -136,14 +136,14 @@ int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 
 	struct file *f = process_get_file(fd);
-
+	int size;
 	if(f==NULL)
 		return -1;
 
 	if(is_user_vaddr((void *)f) && (void *) pml4_get_page(thread_current()->pml4, f)!=NULL )
-		int size = file_length(f);
+		size = file_length(f);
 	else
-		return -1;
+		size =-1;
 	return size;
 
 }
