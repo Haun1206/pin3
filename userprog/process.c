@@ -173,6 +173,7 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
 	struct file ** parent_fd_table = parent->fd_table;
 	struct file ** child_fd_table = current->fd_table;
+	printf("Hi\n");
 	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
