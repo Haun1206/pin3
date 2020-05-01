@@ -173,7 +173,7 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
 	struct file ** parent_fd_table = parent->fd_table;
 	struct file ** child_fd_table = current->fd_table;
-	printf("Hi\n");
+
 	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
@@ -637,12 +637,15 @@ void process_close_file(int fd){
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
+	/*
 	if(!is_user_vaddr((void *)rm_file))
 		t->fd_table[fd] = NULL;
 	else if ((void *) pml4_get_page(thread_current()->pml4, rm_file)==NULL)
 		t->fd_table[fd] = NULL;
 	else
 		file_close(rm_file);
+		*/
+	file_close(rm_file);
 	//printf("HI\n");
 	/*Initialization*/
 	t->fd_table[fd] = NULL;

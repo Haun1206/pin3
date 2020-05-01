@@ -109,14 +109,14 @@ int wait(int pid){
 	return status;
 }
 bool create(const char*file, unsigned initial_size){
-	if(file==NULL){ 
+	if(file==NULL)
 		exit(-1);
-		return false;
-	}
 	//check_str(file);
 	return filesys_create(file, initial_size);
 }
 bool remove(const char *file){
+	if(file==NULL)
+		exit(-1);
 	return filesys_remove(file);
 }
 int open (const char *file){
@@ -131,10 +131,8 @@ int open (const char *file){
 	int fd;
 	if(res==NULL)
 		fd =-1;
-	if(!strcmp(thread_current()->name, file))
-        file_deny_write(res);
-    
-	fd = process_add_file(res);
+    else
+		fd = process_add_file(res);
 	lock_release(&file_lock);
 	return fd;
 }
