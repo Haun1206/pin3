@@ -635,6 +635,7 @@ void process_close_file(int fd){
 		return;
 	
 	printf("HI\n");
+	printf("%d\n", fd);
 	file_close(rm_file);
 	printf("HI\n");
 	/*Initialization*/
