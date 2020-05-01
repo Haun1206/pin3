@@ -225,7 +225,7 @@ process_exec (void *f_name) {
 	t->success_load = success;
 
 	/*If succcessful, the do the parent again*/
-	sema_up(&(t->load_sema));
+	//sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
     palloc_free_page (tempo);
