@@ -179,7 +179,6 @@ __do_fork (void *aux) {
 		struct file *child_f = file_duplicate(f);
 		if(child_f==NULL)
 			goto error;
-		current
 		child_fd_table[i] = child_f;
 		if(i>=current->next_fd)
 			current->next_fd = i+1;
@@ -279,7 +278,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
-    	process_close_file(cur->fd_table[curr->next_fd]);
+    	process_close_file(curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
