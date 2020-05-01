@@ -405,8 +405,14 @@ thread_exit (void) {
 #endif
 	/* Just set our status to dying and schedule another process.
 	   We will be destroyed during the call to schedule_tail(). */
+	struct list_elem *temp;
+	struct thread * t = thread_current();
+	for (temp = list_begin(&t->child);temp!=list_end(&t->child);){
+		struct thread *th = list_entry(temp, struct thread, child_elem);
+		temp = list_remove(temp);
+		sema_up(&t->load_sema);
+	}
 	intr_disable ();
-	struct thread *t = thread_current();
     list_remove(&t->process_elem); /*clear the list of all process*/
 	sema_up(&t->exit_sema);
 	sema_down(&t->load_sema);
