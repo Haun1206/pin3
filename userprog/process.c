@@ -179,7 +179,6 @@ __do_fork (void *aux) {
 		struct file *child_f = file_duplicate(f);
 		if(child_f==NULL)
 			goto error;
-		current
 		child_fd_table[i] = child_f;
 		if(i>=current->next_fd)
 			current->next_fd = i+1;
