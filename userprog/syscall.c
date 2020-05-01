@@ -149,7 +149,7 @@ int read(int fd, void *buffer, unsigned size){
 		if not zero -> read the file as much as the given size
 	*/
 	char* rd_buf = (char *)buffer;
-	int count= -1;
+	int count= 0;
 	struct file* f;
 	lock_acquire(&file_lock);
 	if(fd==STDIN_FILENO){
@@ -164,6 +164,8 @@ int read(int fd, void *buffer, unsigned size){
 	}else{
 		if((f=process_get_file(fd))!=NULL)
 			count = file_read(f,buffer,size);
+		else
+			count =-1;
 	}
 	lock_release(&file_lock);
 	return count;
