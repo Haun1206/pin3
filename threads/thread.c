@@ -417,7 +417,7 @@ thread_exit (void) {
 	intr_disable ();
     list_remove(&t->process_elem); /*clear the list of all process*/
 	sema_up(&t->exit_sema);
-	sema_down(&t->load_sema);
+	//sema_down(&t->load_sema);
 	do_schedule (THREAD_DYING);
 	NOT_REACHED ();
 }
@@ -765,7 +765,7 @@ schedule (void) {
 		if (curr && curr->status == THREAD_DYING && curr != initial_thread) {
 			ASSERT (curr != next);
 			/* shouuld delete process descriptor */
-			//palloc_free_page(curr);
+			palloc_free_page(curr);
 			list_push_back (&destruction_req, &curr->elem);
 		}
 
