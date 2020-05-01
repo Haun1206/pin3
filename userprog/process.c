@@ -281,7 +281,6 @@ process_exit (void) {
 		process_close_file(i);
 		
 	//printf("%s\n", "Is this working?");
-	curr->fd_table +=2;
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
@@ -609,8 +608,10 @@ int process_add_file(struct file *f){
 	struct thread* t = thread_current();
 	struct file ** fd_tab = t->fd_table;
 	int next = t->next_fd;
-	if(fd_tab==NULL)
+	if(fd_tab==NULL){
+		file_close(f);
 		return -1;
+	}
 	
 	fd_tab[next] = f;
 	t->next_fd +=1;
@@ -632,7 +633,7 @@ void process_close_file(int fd){
 	
 	if(rm_file==NULL|| fd<=2)
 		return;
-	//file_close(rm_file);
+	file_close(rm_file);
 	/*Initialization*/
 	struct thread* t = thread_current();
 	t->fd_table[fd] = NULL;
