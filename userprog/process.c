@@ -105,6 +105,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 		}
 		else
 			break;
+		e = list_next(&t->child);
 	}
 
 	
