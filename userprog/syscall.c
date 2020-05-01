@@ -128,7 +128,7 @@ int open (const char *file){
 	if(file==NULL)
 		return -1;
 	lock_acquire(&file_lock);
-	struct file * res= palloc_get_page(0);
+	struct file * res= pml4_get_page(0);
 	res=filesys_open(file);
 	int fd;
 	if(res==NULL)
@@ -136,7 +136,7 @@ int open (const char *file){
 	else
 		fd = process_add_file(res);
 	lock_release(&file_lock);
-	palloc_free_page(res);
+	pml4_free_page(res);
 	return fd;
 }
 int filesize(int fd){
