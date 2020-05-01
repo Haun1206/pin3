@@ -135,6 +135,7 @@ int open (const char *file){
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 	printf("Maybe here?\n");
+	printf("%d\n", fd);
 	struct file *f = process_get_file(fd);
 	printf("Maybe here?\n");
 	if(f==NULL)
