@@ -173,7 +173,7 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
 	struct file ** parent_fd_table = parent->fd_table;
 	struct file ** child_fd_table = current->fd_table;
-	for(int i=3; i<parent->next_fd;i++){
+	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
 		struct file *child_f = file_duplicate(f);
@@ -281,7 +281,7 @@ process_exit (void) {
 		process_close_file(i);
 		
 	//printf("%s\n", "Is this working?");
-	palloc_free_page(curr->fd_table);
+	//palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
 	//file_close(curr->cur_file);
