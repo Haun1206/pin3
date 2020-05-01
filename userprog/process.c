@@ -91,11 +91,23 @@ tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
 	struct thread *t = thread_current();
+	struct list_elem *e;
+	tid_t id;
 	t->forked =1;
-	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
+	id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	sema_down(&t->child_fork);
-	if(t->child_status_exit ==TID_ERROR)
-		id = TID_ERROR;
+	e = list_begin(&t->child);
+	while(e!=list_end(&t->child)){
+		struct thread *temp = list_entry(e, struct thread, child);
+		if(temp->child_status_exit ==-1) {
+			process_wait(id);
+			id = TID_ERROR;
+		}
+		else
+			break;
+	}
+
+	
 	return id;
 }
 
