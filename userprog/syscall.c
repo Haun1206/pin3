@@ -113,7 +113,7 @@ bool create(const char*file, unsigned initial_size){
 		exit(-1);
 		return false;
 	}
-	check_str(file);
+	//check_str(file);
 	return filesys_create(file, initial_size);
 }
 bool remove(const char *file){
