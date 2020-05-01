@@ -52,14 +52,12 @@ static void check_addr(void* addr){
     if (page_ptr == NULL)
         exit(-1);
 } 
-void check_str(void * str){
-	check_addr(str);
-	char * char_str = (char *)str;
-	while(*char_str != '\0'){
-		char_str +=1;
-		check_addr((void*)char_str);
+void check_buffer(void *buffer, unsigned size){
+	char *ptr = (char *)buffer;
+	for(int i=0;i<size;i++){
+		check_addr((void *)ptr);
+		ptr++;
 	}
-
 }
 
 void
@@ -292,10 +290,12 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_READ:
-			//printf("%s\n", "maybe read?");
+			printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
+			page_ptr = pml4_get_page(thread_current()->pml4, (const void *)f->R.rsi);
+			f->R.rsi = (int)page_ptr;
 			f->R.rax = read(f->R.rdi, (void *)f->R.rsi, (unsigned)f->R.rdx);
-			//printf("%s\n", "maybe read?");
+			printf("%s\n", "maybe read?");
 			break;
 		
 		case SYS_WRITE:
