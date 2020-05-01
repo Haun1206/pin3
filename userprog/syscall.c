@@ -123,6 +123,7 @@ int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
+
 	check_addr(file);
 	if(file==NULL)
 		return -1;
@@ -130,9 +131,9 @@ int open (const char *file){
 	struct file * res= filesys_open(file);
 	int fd;
 	if(res==NULL)
-		fd =-1;
-    else
-		fd = process_add_file(res);
+		return -1;
+	fd = process_add_file(res);
+	printf("%d\n", fd);
 	lock_release(&file_lock);
 	return fd;
 }
