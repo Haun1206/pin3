@@ -284,7 +284,7 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
-	//file_close(curr->cur_file);
+	file_close(curr->cur_file);
 	process_cleanup ();
 	/*Check out the child exit staus and parent's forked*/
 	if(parent->child_status_exit==-1 && parent->forked ==1)
@@ -628,7 +628,7 @@ struct file* process_get_file(int fd){
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
 	struct file * rm_file = process_get_file(fd);
-	printf("%d\n",fd);
+	
 	if(rm_file==NULL|| fd<=2)
 		return;
 	//file_close(rm_file);
