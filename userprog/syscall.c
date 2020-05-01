@@ -132,8 +132,9 @@ int open (const char *file){
 	res=filesys_open(file);
 	int fd;
 	if(res==NULL)
-		return -1;
-	fd = process_add_file(res);
+		fd=-1;
+	else
+		fd = process_add_file(res);
 	lock_release(&file_lock);
 	palloc_free_page(res);
 	return fd;
@@ -141,10 +142,12 @@ int open (const char *file){
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 
-	struct file *f = process_get_file(fd);
+	struct file *f = palloc_get_page(0);
+	f = process_get_file(fd);
 
 
 	int size = file_length(f);
+	palloc_free_page(f);
 	
 	return size;
 
