@@ -179,6 +179,7 @@ __do_fork (void *aux) {
 		struct file *child_f = file_duplicate(f);
 		if(child_f==NULL)
 			goto error;
+		current
 		child_fd_table[i] = child_f;
 		if(i>=current->next_fd)
 			current->next_fd = i+1;
@@ -277,8 +278,8 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	for(int i=2;i<curr->next_fd;i++)
-		process_close_file(i);
+	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
+    	file_close (curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
@@ -529,7 +530,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	file_close (file);
+	//file_close (file);
 	
 	return success;
 }
@@ -636,7 +637,7 @@ void process_close_file(int fd){
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
-	//file_close(rm_file);
+	file_close(rm_file);
 	//printf("HI\n");
 	/*Initialization*/
 
