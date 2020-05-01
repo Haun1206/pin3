@@ -292,7 +292,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_READ:
 			printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
-			page_ptr = pml4_get_page(thread_current()->pml4, (const void *)f->R.rsi);
+			void *page_ptr = pml4_get_page(thread_current()->pml4, (const void *)f->R.rsi);
 			f->R.rsi = (int)page_ptr;
 			f->R.rax = read(f->R.rdi, (void *)f->R.rsi, (unsigned)f->R.rdx);
 			printf("%s\n", "maybe read?");
