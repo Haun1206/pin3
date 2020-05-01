@@ -173,8 +173,8 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
 	struct file ** parent_fd_table = parent->fd_table;
 	struct file ** child_fd_table = current->fd_table;
-	for(int i=2; i<parent->next_fd;i++){
-		/*SHOULD IT BE 3? LITTE CONFUSED*/
+	for(int i=3; i<parent->next_fd;i++){
+		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
 		struct file *child_f = file_duplicate(f);
 		child_fd_table[i] = child_f;
@@ -616,7 +616,7 @@ int process_add_file(struct file *f){
 struct file* process_get_file(int fd){
 	/*return the file that has the fd, but if the fd is invalid, we might not get the file*/
 	struct thread* t = thread_current();
-	if(fd>= t->next_fd)
+	if(fd>= t->next_fd||fd<=1)
 		return NULL;
 	struct file *ret_file = t->fd_table[fd];
 	return ret_file;
