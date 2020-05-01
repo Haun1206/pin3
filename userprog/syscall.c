@@ -128,12 +128,14 @@ int open (const char *file){
 	if(file==NULL)
 		return -1;
 	lock_acquire(&file_lock);
-	struct file * res= filesys_open(file);
+	struct file * res= palloc_get_page(0);
+	res=filesys_open(file);
 	int fd;
 	if(res==NULL)
 		return -1;
 	fd = process_add_file(res);
 	lock_release(&file_lock);
+	palloc_free_page(res);
 	return fd;
 }
 int filesize(int fd){
@@ -156,7 +158,7 @@ int read(int fd, void *buffer, unsigned size){
 	char* rd_buf = (char *)buffer;
 	printf("HERE-1");
 	int count= 0;
-	struct file* f;
+	struct file* f=palloc_get_page(0);
 	lock_acquire(&file_lock);
 	printf("HERE-1");
 	if(fd==STDIN_FILENO){
@@ -178,6 +180,7 @@ int read(int fd, void *buffer, unsigned size){
 		printf("HERE-1");
 	}
 	lock_release(&file_lock);
+	palloc_free_page(f);
 	printf("HERE-1");
 	return count;
 }
