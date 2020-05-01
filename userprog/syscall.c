@@ -284,7 +284,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_FILESIZE:
-			//printf("%s\n", "maybe fsize?");
+			printf("%s\n", "maybe fsize?");
 			f->R.rax = filesize(f->R.rdi);
 			//printf("%s\n", "maybe fsize?");
 			break;
