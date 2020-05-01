@@ -48,7 +48,7 @@ static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
     if(!is_user_vaddr(addr))
         exit(-1);
-	void *page_ptr = (void *) pagedir_get_page(thread_current()->pml4, addr);
+	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
     if (page_ptr == NULL)
         exit(-1);
 } 
