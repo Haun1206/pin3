@@ -49,6 +49,14 @@ static void check_addr(void* addr){
     if(!(is_user_vaddr(addr)))
         return exit(-1);
 } 
+void check_str(void * str){
+	char * char_str = (char *)str;
+	while(*char_str != '\0'){
+		check_addr((void*)char_str);
+		char_str +=1;
+	}
+
+}
 
 void
 syscall_init (void) {
@@ -229,7 +237,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		case SYS_EXEC:
 			//printf("%s\n", "maybe exec?");
-			check_addr((void *)f->R.rdi);
+			check_str((void *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;
@@ -242,21 +250,21 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		
 		case SYS_CREATE:
 			//printf("%s\n", "maybe Create?");
-			check_addr((void *)f->R.rdi);
+			check_str((void *)f->R.rdi);
 			f->R.rax = create((const char *) f->R.rdi, (unsigned) f->R.rsi);
 			//printf("%s\n", "maybe Create?");
 			break;
 		
 		case SYS_REMOVE:
 			//printf("%s\n", "maybe remove?");
-			check_addr((void *)f->R.rdi);
+			check_str((void *)f->R.rdi);
 			f->R.rax = remove((const char *) f->R.rdi);
 			//printf("%s\n", "maybe remove?");
 			break;
 
 		case SYS_OPEN:
 			//printf("%s\n", "maybe open?");
-			check_addr((void *)f->R.rdi);
+			check_str((void *)f->R.rdi);
 			f->R.rax = open((const char*)f->R.rdi);
 			//printf("%s\n", "maybe open?");
 			break;
