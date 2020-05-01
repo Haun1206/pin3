@@ -50,10 +50,11 @@ static void check_addr(void* addr){
         return exit(-1);
 } 
 void check_str(void * str){
+	check_addr(str);
 	char * char_str = (char *)str;
 	while(*char_str != '\0'){
-		check_addr((void*)char_str);
 		char_str +=1;
+		check_addr((void*)char_str);
 	}
 
 }
