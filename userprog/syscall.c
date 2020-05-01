@@ -112,10 +112,10 @@ int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
+	if(file==NULL)
+		return -1;
 	struct file * res;
-	lock_acquire(&file_lock);
 	res = filesys_open(file);
-	lock_release(&file_lock);
 	if(res==NULL)
 		return -1;
 	int fd = process_add_file(res);
