@@ -638,7 +638,7 @@ void process_close_file(int fd){
 	//printf("%d\n", fd);
 	if(!is_user_vaddr((void *)rm_file))
 		t->fd_table[fd] = NULL;
-	else if ((void *) pml4_get_page(thread_current()->pml4, addr)==NULL)
+	else if ((void *) pml4_get_page(thread_current()->pml4, rm_file)==NULL)
 		t->fd_table[fd] = NULL;
 	else
 		file_close(rm_file);
