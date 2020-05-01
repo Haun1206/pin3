@@ -284,8 +284,6 @@ process_exit (void) {
 	curr->process_exit = true;
 	//file_close(curr->cur_file);
 	process_cleanup ();
-	sema_up(&curr->exit_sema);
-	sema_down(&curr->load_sema);
 	/*Check out the child exit staus and parent's forked*/
 	if(parent->child_status_exit==-1 && parent->forked ==1)
 		sema_up(&parent->child_fork);
