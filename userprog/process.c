@@ -98,7 +98,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	sema_down(&t->child_fork);
 	e = list_begin(&t->child);
 	while(e!=list_end(&t->child)){
-		struct thread *temp = list_entry(e, struct thread, child);
+		struct thread *temp = list_entry(e, struct thread, child_elem);
 		if(temp->child_status_exit ==-1) {
 			process_wait(id);
 			id = TID_ERROR;
