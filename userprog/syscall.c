@@ -148,10 +148,13 @@ int read(int fd, void *buffer, unsigned size){
 		find the file with fd and if fd=0 (input)-> save the keyboard input on buffer, and return the saved size
 		if not zero -> read the file as much as the given size
 	*/
+	printf("HERE-1");
 	char* rd_buf = (char *)buffer;
+	printf("HERE-1");
 	int count= 0;
 	struct file* f;
 	lock_acquire(&file_lock);
+	printf("HERE-1");
 	if(fd==STDIN_FILENO){
 		/*Save input to keyboard->use input_getc (input.h)->one by one*/
 		rd_buf[count] = input_getc();
@@ -160,14 +163,18 @@ int read(int fd, void *buffer, unsigned size){
 			count +=1;
 			rd_buf[count] = input_getc();
 		}
+		printf("HERE-1");
 		rd_buf[count] = '\0';
 	}else{
+		printf("HERE-1");
 		if((f=process_get_file(fd))!=NULL)
 			count = file_read(f,buffer,size);
 		else
 			count =-1;
+		printf("HERE-1");
 	}
 	lock_release(&file_lock);
+	printf("HERE-1");
 	return count;
 }
 int write (int fd, const void *buffer, unsigned size){
