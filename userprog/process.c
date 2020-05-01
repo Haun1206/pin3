@@ -277,10 +277,8 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	for(int i=2;i<curr->next_fd;i++){
-		if(curr->fd_table[i] !=NULL)
-			file_close(curr->fd_table[i]);
-	}
+	for(int i=2;i<curr->next_fd;i++)
+		process_close_file(i);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
@@ -531,7 +529,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	//file_close (file);
+	file_close (file);
 	
 	return success;
 }
@@ -611,6 +609,7 @@ int process_add_file(struct file *f){
 	struct file ** fd_tab = t->fd_table;
 	int next = t->next_fd;
 	if(fd_tab==NULL){
+		file_close(f);
 		return -1;
 	}
 	
@@ -635,8 +634,10 @@ void process_close_file(int fd){
 	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
-	//printf("HI\n");
-	file_close(rm_file);
+	printf("HI\n");
+	printf("%d\n", fd);
+	//file_close(rm_file);
+	printf("HI\n");
 	/*Initialization*/
 
 	t->fd_table[fd] = NULL;
