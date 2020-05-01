@@ -123,21 +123,26 @@ int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
+	check_addr(file);
 	if(file==NULL)
 		return -1;
-	struct file * res;
-	res = filesys_open(file);
+	lock_acquire(&file_lock);
+	struct file * res= filesys_open(file);
+	int fd;
 	if(res==NULL)
-		return -1;
-	int fd = process_add_file(res);
+		fd =-1;
+	fd = process_add_file(res);
+	lock_release(&file_lock);
 	return fd;
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 
 	struct file *f = process_get_file(fd);
-	int size;
-	printf("%p\n", f);
+
+
+	int size = file_length(f);
+	
 	return size;
 
 }
