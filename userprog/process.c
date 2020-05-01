@@ -631,7 +631,7 @@ Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
 	struct file * rm_file = process_get_file(fd);
 	
-	if(rm_file==NULL|| fd<=2)
+	if(rm_file==NULL|| fd<2)
 		return;
 	
 	printf("HI\n");
