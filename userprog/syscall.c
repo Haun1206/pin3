@@ -264,10 +264,10 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 
 		case SYS_OPEN:
-			printf("%s\n", "maybe open?");
+			//printf("%s\n", "maybe open?");
 			check_str((void *)f->R.rdi);
 			f->R.rax = open((const char*)f->R.rdi);
-			printf("%s\n", "maybe open?");
+			//printf("%s\n", "maybe open?");
 			break;
 		
 		case SYS_FILESIZE:
