@@ -137,13 +137,7 @@ int filesize(int fd){
 
 	struct file *f = process_get_file(fd);
 	int size;
-	if(f==NULL)
-		return -1;
-
-	if(is_user_vaddr((void *)f) && (void *) pml4_get_page(thread_current()->pml4, f)!=NULL )
-		size = file_length(f);
-	else
-		size =-1;
+	printf("%p\n", f);
 	return size;
 
 }
