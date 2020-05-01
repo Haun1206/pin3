@@ -636,6 +636,7 @@ void process_close_file(int fd){
 	
 	printf("HI\n");
 	file_close(rm_file);
+	printf("HI\n");
 	/*Initialization*/
 	struct thread* t = thread_current();
 	t->fd_table[fd] = NULL;
