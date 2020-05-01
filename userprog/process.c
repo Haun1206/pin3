@@ -629,9 +629,10 @@ struct file* process_get_file(int fd){
 /*close the file for the fd
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
+	struct thread* t = thread_current();
 	if(fd<2 || t->next_fd <= fd )
 		return;
-	struct thread* t = thread_current();
+
 	file_close(t->fd_table[fd]);
 	
 	
