@@ -281,7 +281,7 @@ process_exit (void) {
 		process_close_file(i);
 		
 	//printf("%s\n", "Is this working?");
-	curr->fd_table +=2;s
+	curr->fd_table +=2;
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
