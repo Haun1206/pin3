@@ -224,18 +224,20 @@ thread_create (const char *name, int priority,
 	init_thread (t, name, priority);
 	tid = t->tid = allocate_tid ();
 
+	t->status_exit= 0;
 	/*File descriptor part*/
 	t->next_fd = 2;
 	t->fd_table = palloc_get_page(0);
+
 	if(t->fd_table ==NULL)
 		return TID_ERROR;
 	/*Child, parent Relationship */
-	t->success_load = 0;
-	t->process_exit = 0;
+	t->success_load = false;
+	t->process_exit = false;
 	t->parent = running_thread();
 	/*Fork*/
-	t->forked = 0;
-	t->child_status_exit = 0;
+	t->forked = false;
+	t->child_status_exit = false;
 
 	sema_init(&(t->load_sema), 0);
 	sema_init(&(t->exit_sema), 0);
@@ -257,7 +259,6 @@ thread_create (const char *name, int priority,
 	t->tf.ss = SEL_KDSEG;
 	t->tf.cs = SEL_KCSEG;
 	t->tf.eflags = FLAG_IF;
-
 
 
 	/* Add to run queue. */

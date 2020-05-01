@@ -94,7 +94,7 @@ int fork(const char *thread_name, struct intr_frame *f){
 }
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
-	tid_t id = process_create_initd(cmd_line);
+	tid_t id = process_execute(cmd_line);
 	struct thread * child = get_child_process(id);
 	/*Wait until the child process is loaded*/
 	sema_down(&(child->load_sema));
