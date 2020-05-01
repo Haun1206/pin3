@@ -134,10 +134,14 @@ int open (const char *file){
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
+	printf("Maybe here?\n");
 	struct file *f = process_get_file(fd);
+	printf("Maybe here?\n");
 	if(f==NULL)
 		return -1;
+	printf("Maybe here?\n");
 	int size = file_length(f);
+	printf("Maybe here?\n");
 	return size;
 
 }
