@@ -190,6 +190,8 @@ __do_fork (void *aux) {
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
 		struct file *child_f = file_duplicate(f);
+		if(child_f==NULL)
+			goto error;
 		child_fd_table[i] = child_f;
 		if(i>=current->next_fd)
 			current->next_fd = i+1;
@@ -204,8 +206,9 @@ __do_fork (void *aux) {
 		do_iret (&if_);
 	}
 error:
-	parent->child_status_exit = -1;
 	pml4_destroy(current->pml4);
+	parent->child_status_exit = -1;
+	sema_up(&parent->child_fork);
 	thread_exit ();
 }
 
