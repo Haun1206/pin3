@@ -636,7 +636,7 @@ void process_close_file(int fd){
 	
 	printf("HI\n");
 	printf("%d\n", fd);
-	file_close(rm_file);
+	//file_close(rm_file);
 	printf("HI\n");
 	/*Initialization*/
 	struct thread* t = thread_current();
