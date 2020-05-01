@@ -99,6 +99,10 @@ int wait(int pid){
 	return status;
 }
 bool create(const char*file, unsigned initial_size){
+	if(file==NULL){ 
+		exit(-1);
+		return false;
+	}
 	return filesys_create(file, initial_size);
 }
 bool remove(const char *file){
@@ -237,10 +241,10 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_CREATE:
-			printf("%s\n", "maybe Create?");
+			//printf("%s\n", "maybe Create?");
 			check_addr((void *)f->R.rdi);
 			f->R.rax = create((const char *) f->R.rdi, (unsigned) f->R.rsi);
-			printf("%s\n", "maybe Create?");
+			//printf("%s\n", "maybe Create?");
 			break;
 		
 		case SYS_REMOVE:
