@@ -615,6 +615,7 @@ int process_add_file(struct file *f){
 	}
 	
 	fd_tab[next] = f;
+	printf("%d\n",next);
 	t->next_fd = t->next_fd +1;
 	return next;
 }
@@ -630,6 +631,7 @@ struct file* process_get_file(int fd){
 /*close the file for the fd
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
+
 	struct file * rm_file = process_get_file(fd);
 	struct thread* t = thread_current();
 	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
