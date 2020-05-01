@@ -128,26 +128,22 @@ int open (const char *file){
 	if(file==NULL)
 		return -1;
 	lock_acquire(&file_lock);
-	struct file * res= pml4_get_page(0);
-	res=filesys_open(file);
+	struct file * res= filesys_open(file);
 	int fd;
 	if(res==NULL)
-		fd=-1;
-	else
-		fd = process_add_file(res);
+		return -1;
+	fd = process_add_file(res);
+
 	lock_release(&file_lock);
-	pml4_free_page(res);
 	return fd;
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 
-	struct file *f = palloc_get_page(0);
-	f = process_get_file(fd);
+	struct file *f = process_get_file(fd);
 
 
 	int size = file_length(f);
-	palloc_free_page(f);
 	
 	return size;
 
@@ -161,7 +157,7 @@ int read(int fd, void *buffer, unsigned size){
 	char* rd_buf = (char *)buffer;
 	printf("HERE-1");
 	int count= 0;
-	struct file* f=palloc_get_page(0);
+	struct file* f;
 	lock_acquire(&file_lock);
 	printf("HERE-1");
 	if(fd==STDIN_FILENO){
@@ -183,7 +179,6 @@ int read(int fd, void *buffer, unsigned size){
 		printf("HERE-1");
 	}
 	lock_release(&file_lock);
-	palloc_free_page(f);
 	printf("HERE-1");
 	return count;
 }
