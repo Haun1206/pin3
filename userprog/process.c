@@ -631,7 +631,7 @@ void process_close_file(int fd){
 	printf("%d\n",fd);
 	if(rm_file==NULL|| fd<=2)
 		return;
-	file_close(rm_file);
+	//file_close(rm_file);
 	/*Initialization*/
 	struct thread* t = thread_current();
 	t->fd_table[fd] = NULL;
