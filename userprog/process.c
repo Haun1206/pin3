@@ -278,7 +278,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	for(int i=2;i<curr->next_fd;i++)
-		file_close(i);
+		file_close(fd_table[i]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
