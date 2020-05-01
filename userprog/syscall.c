@@ -216,14 +216,14 @@ unsigned tell (int fd){
 }
 void close(int fd){
 	/*close the file of the fd and entry initialize*/
-	/*
+	
 	struct file *f;
 	if((f=process_get_file(fd)) !=NULL){
 		file_close(f);
 		struct thread *t = thread_current();
 		t->fd_table[fd] =NULL;
-	} */
-	process_close_file(fd);
+	} 
+	//process_close_file(fd);
 }
 
 
