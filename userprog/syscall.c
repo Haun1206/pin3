@@ -46,8 +46,9 @@ struct lock file_lock;
 
 static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
-    if(!(is_user_vaddr(addr)))
-        return exit(-1);
+    if(is_user_vaddr(addr)==false)
+        exit(-1);
+		return;
 } 
 void check_str(void * str){
 	check_addr(str);
