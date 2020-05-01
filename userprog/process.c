@@ -225,7 +225,7 @@ process_exec (void *f_name) {
 	t->success_load = success;
 
 	/*If succcessful, the do the parent again*/
-	//sema_up(&(t->load_sema));
+	sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
     palloc_free_page (tempo);
@@ -259,8 +259,9 @@ process_wait (tid_t child_tid UNUSED) {
 	/*Wait until the process of child is done */
 	sema_down(&child -> exit_sema);
 	res_status = child->status_exit;
-	remove_child_process(child);
 	sema_up(&child->load_sema);
+	remove_child_process(child);
+
 	return res_status;
 
 }
