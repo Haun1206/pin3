@@ -204,9 +204,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
 	//printf("%s\n", "maybe?");
 	switch(f->R.rax){
 		case SYS_HALT:
-			printf("%s\n", "maybe halt?");
+			//printf("%s\n", "maybe halt?");
 			halt();
-			printf("%s\n", "maybe halt?");
+			//printf("%s\n", "maybe halt?");
 			break;
 		
 		case SYS_EXIT:
@@ -215,59 +215,59 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_FORK:
-			printf("%s\n", "maybe fork?");
+			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			lock_acquire(&file_lock);
 			f->R.rax = fork((const char *)f->R.rdi,f);
 			lock_release(&file_lock);
-			printf("%s\n", "maybe fork?");
+			//printf("%s\n", "maybe fork?");
 			break;
 
 		case SYS_EXEC:
-			printf("%s\n", "maybe exec?");
+			//printf("%s\n", "maybe exec?");
 			check_addr((void *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
-			printf("%s\n", "maybe exec?");
+			//printf("%s\n", "maybe exec?");
 			break;
 		
 		case SYS_WAIT:
-			printf("%s\n", "maybe wait?");
+			//printf("%s\n", "maybe wait?");
 			f->R.rax = wait(f->R.rdi);
-			printf("%s\n", "maybe wait?");
+			//printf("%s\n", "maybe wait?");
 			break;
 		
 		case SYS_CREATE:
-			printf("%s\n", "maybe Create?");
+			//printf("%s\n", "maybe Create?");
 			check_addr((void *)f->R.rdi);
 			f->R.rax = create((const char *) f->R.rdi, (unsigned) f->R.rsi);
-			printf("%s\n", "maybe Create?");
+			//printf("%s\n", "maybe Create?");
 			break;
 		
 		case SYS_REMOVE:
-			printf("%s\n", "maybe remove?");
+			//printf("%s\n", "maybe remove?");
 			check_addr((void *)f->R.rdi);
 			f->R.rax = remove((const char *) f->R.rdi);
-			printf("%s\n", "maybe remove?");
+			//printf("%s\n", "maybe remove?");
 			break;
 
 		case SYS_OPEN:
-			printf("%s\n", "maybe open?");
+			//printf("%s\n", "maybe open?");
 			check_addr((void *)f->R.rdi);
 			f->R.rax = open((const char*)f->R.rdi);
-			printf("%s\n", "maybe open?");
+			//printf("%s\n", "maybe open?");
 			break;
 		
 		case SYS_FILESIZE:
-			printf("%s\n", "maybe fsize?");
+			//printf("%s\n", "maybe fsize?");
 			f->R.rax = filesize(f->R.rdi);
-			printf("%s\n", "maybe fsize?");
+			//printf("%s\n", "maybe fsize?");
 			break;
 		
 		case SYS_READ:
-			printf("%s\n", "maybe read?");
+			//printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
 			f->R.rax = read(f->R.rdi, (void *)f->R.rsi, (unsigned)f->R.rdx);
-			printf("%s\n", "maybe read?");
+			//printf("%s\n", "maybe read?");
 			break;
 		
 		case SYS_WRITE:
@@ -279,21 +279,21 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_SEEK:
-			printf("%s\n", "maybe seek?\n");
+			//printf("%s\n", "maybe seek?\n");
 			seek(f->R.rdi, (unsigned)f->R.rsi);
-			printf("%s\n", "maybe seek?\n");
+			//printf("%s\n", "maybe seek?\n");
 			break;
 
 		case SYS_TELL:
-			printf("%s\n", "maybe tell?\n");
+			//printf("%s\n", "maybe tell?\n");
 			f->R.rax = tell(f->R.rdi);
-			printf("%s\n", "maybe tell?\n");
+			//printf("%s\n", "maybe tell?\n");
 			break;
 		
 		case SYS_CLOSE:
-			printf("%s\n", "maybe close?\n");
+			//printf("%s\n", "maybe close?\n");
 			close(f->R.rdi);
-			printf("%s\n", "maybe close?\n");
+			//printf("%s\n", "maybe close?\n");
 			break;
 
 		default:
