@@ -134,16 +134,16 @@ int open (const char *file){
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
-	printf("Maybe here?\n");
-	printf("%d\n", fd);
+
 	struct file *f = process_get_file(fd);
-	printf("Maybe here?\n");
+
 	if(f==NULL)
 		return -1;
-	printf("Maybe here?\n");
-	printf("%p\n",f);
-	int size = file_length(f);
-	printf("Maybe here?\n");
+
+	if(is_user_vaddr((void *)f) && (void *) pml4_get_page(thread_current()->pml4, f)!=NULL )
+		int size = file_length(f);
+	else
+		return -1;
 	return size;
 
 }
