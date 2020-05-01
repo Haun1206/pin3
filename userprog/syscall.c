@@ -109,42 +109,40 @@ int wait(int pid){
 	return status;
 }
 bool create(const char*file, unsigned initial_size){
-	if(file==NULL)
+	if(file==NULL){ 
 		exit(-1);
+		return false;
+	}
 	//check_str(file);
 	return filesys_create(file, initial_size);
 }
 bool remove(const char *file){
-	if(file==NULL)
-		exit(-1);
 	return filesys_remove(file);
 }
 int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
-
-	check_addr(file);
 	if(file==NULL)
 		return -1;
-	lock_acquire(&file_lock);
-	struct file * res= filesys_open(file);
-	int fd;
+	struct file * res;
+	res = filesys_open(file);
 	if(res==NULL)
 		return -1;
-	fd = process_add_file(res);
-
-	lock_release(&file_lock);
+	int fd = process_add_file(res);
 	return fd;
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
-
+	printf("Maybe here?\n");
+	printf("%d\n", fd);
 	struct file *f = process_get_file(fd);
-
-
+	printf("Maybe here?\n");
+	if(f==NULL)
+		return -1;
+	printf("Maybe here?\n");
 	int size = file_length(f);
-	
+	printf("Maybe here?\n");
 	return size;
 
 }
@@ -217,14 +215,14 @@ unsigned tell (int fd){
 }
 void close(int fd){
 	/*close the file of the fd and entry initialize*/
-	
+	/*
 	struct file *f;
 	if((f=process_get_file(fd)) !=NULL){
 		file_close(f);
 		struct thread *t = thread_current();
 		t->fd_table[fd] =NULL;
-	} 
-	//process_close_file(fd);
+	} */
+	process_close_file(fd);
 }
 
 
