@@ -208,7 +208,6 @@ __do_fork (void *aux) {
 error:
 	pml4_destroy(current->pml4);
 	parent->child_status_exit = -1;
-	sema_up(&parent->child_fork);
 	thread_exit ();
 }
 
@@ -642,11 +641,11 @@ struct file* process_get_file(int fd){
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
 	struct file * rm_file = process_get_file(fd);
-	if(rm_file==NULL)
-		return ;
+	if(rm_file==NULL|| fd<=2)
+		return;
 	file_close(rm_file);
 	/*Initialization*/
-	struct thread *t = thread_current();
+	
 	t->fd_table[fd] = NULL;
 }
 
