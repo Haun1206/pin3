@@ -141,6 +141,7 @@ int filesize(int fd){
 	if(f==NULL)
 		return -1;
 	printf("Maybe here?\n");
+	printf("%p\n",f);
 	int size = file_length(f);
 	printf("Maybe here?\n");
 	return size;
