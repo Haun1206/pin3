@@ -609,7 +609,6 @@ int process_add_file(struct file *f){
 	struct file ** fd_tab = t->fd_table;
 	int next = t->next_fd;
 	if(fd_tab==NULL){
-		file_close(f);
 		return -1;
 	}
 	
