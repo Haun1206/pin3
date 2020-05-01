@@ -228,7 +228,7 @@ process_exec (void *f_name) {
 	sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
-    palloc_free_page (file_name);
+    palloc_free_page (tempo);
 	if (!success)
 		return -1;
 
