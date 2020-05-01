@@ -180,7 +180,8 @@ __do_fork (void *aux) {
 		if(child_f==NULL)
 			goto error;
 		child_fd_table[i] = child_f;
-		current->next_fd = parent->next_fd;
+		if(i>=current->next_fd)
+			current->next_fd = i+1;
 	}
 
 	process_init ();
@@ -613,7 +614,7 @@ int process_add_file(struct file *f){
 	}
 	
 	fd_tab[next] = f;
-	t->next_fd +=1;
+	t->next_fd = t->next_fd +1;
 	return next;
 }
 struct file* process_get_file(int fd){
@@ -629,8 +630,8 @@ struct file* process_get_file(int fd){
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
 	struct file * rm_file = process_get_file(fd);
-	
-	if(rm_file==NULL|| fd<2)
+	struct thread* t = thread_current();
+	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
 	printf("HI\n");
@@ -638,7 +639,7 @@ void process_close_file(int fd){
 	file_close(rm_file);
 	printf("HI\n");
 	/*Initialization*/
-	struct thread* t = thread_current();
+
 	t->fd_table[fd] = NULL;
 }
 
