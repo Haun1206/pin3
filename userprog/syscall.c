@@ -82,7 +82,7 @@ void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
-
+	t->process_exit = true;
 	/*check the fork status*/
 	if(t->parent->forked ==1 && status ==-1)
 		t->parent->child_status_exit =-1;
@@ -125,24 +125,22 @@ int open (const char *file){
 	*/
 	if(file==NULL)
 		return -1;
-	struct file * res;
-	res = filesys_open(file);
-	if(res==NULL)
-		return -1;
-	int fd = process_add_file(res);
+	lock_acquire(&file_lock);
+	int fd = process_add_file(filesys_open(file));
+	lock_release(&file_lock);
 	return fd;
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
-	printf("Maybe here?\n");
-	printf("%d\n", fd);
+//	printf("Maybe here?\n");
+//	printf("%d\n", fd);
 	struct file *f = process_get_file(fd);
-	printf("Maybe here?\n");
+//	printf("Maybe here?\n");
 	if(f==NULL)
 		return -1;
-	printf("Maybe here?\n");
+//	printf("Maybe here?\n");
 	int size = file_length(f);
-	printf("Maybe here?\n");
+//	printf("Maybe here?\n");
 	return size;
 
 }
