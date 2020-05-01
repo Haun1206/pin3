@@ -290,14 +290,14 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FILESIZE:
 			printf("%s\n", "maybe fsize?");
 			f->R.rax = filesize(f->R.rdi);
-			//printf("%s\n", "maybe fsize?");
+			printf("%s\n", "maybe fsize?");
 			break;
 		
 		case SYS_READ:
-			printf("%s\n", "maybe read?");
+			//printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
 			f->R.rax = read(f->R.rdi, (void *) f->R.rsi, (unsigned)f->R.rdx);
-			printf("%s\n", "maybe read?");
+			//printf("%s\n", "maybe read?");
 			break;
 		
 		case SYS_WRITE:
