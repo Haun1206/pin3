@@ -634,7 +634,7 @@ void process_close_file(int fd){
 	if(fd<2 || t->next_fd <= fd )
 		return;
 
-	file_close(t->fd_table[fd]);
+	//file_close(t->fd_table[fd]);
 	
 	
 
