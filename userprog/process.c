@@ -228,9 +228,8 @@ process_exec (void *f_name) {
     strlcpy(tempo, file_name, strlen(file_name)+1);
     tempo = strtok_r(tempo," ", &saveptr);
 	/* And then load the binary */
-	lock_acquire(&file_lock);
+
 	success = load (file_name, &_if);
-	lock_release(&file_lock);
 	/*Write the success status to the threads*/
 	struct thread * t  = thread_current();
 	t->success_load = success;
@@ -459,11 +458,11 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-	lock_acquire(&co_lock);
+	lock_acquire(&file_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
+	lock_release(&file_lock);
 	if (file == NULL) {
-		lock_release(&co_lock);
 		printf ("load: %s: open failed\n", f_name);
 		goto done;
 	}
@@ -473,7 +472,6 @@ load (const char *file_name, struct intr_frame *if_) {
 	*/
 	t->cur_file = file;
 	file_deny_write(file);
-	lock_release(&co_lock);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
