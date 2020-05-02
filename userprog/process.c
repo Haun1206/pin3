@@ -266,21 +266,21 @@ process_wait (tid_t child_tid UNUSED) {
 	 * XXX:       to add infinite loop here before
 	 * XXX:       implementing the process_wait. */
 	int res_status;
-	printf("Here\n");
+	//printf("Here\n");
 	struct thread* child = get_child_process((int)child_tid);
 	printf("Here\n");
 	if(child ==NULL || child->child_status_exit==-1){
 		//list_remove(&child->child_elem);
 		return -1;
 	}
-	printf("Here\n");
+	//printf("Here\n");
 		
 	/*Wait until the process of child is done */
 	sema_down(&child -> wait_sema);
-	printf("Here\n");
+	//printf("Here\n");
 	list_remove(&child->child_elem);
 	res_status = child->status_exit;
-	printf("Here\n");
+	//printf("Here\n");
 
 
 	sema_up(&child->exit_sema);
