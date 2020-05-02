@@ -92,14 +92,18 @@ void halt(void){
 
 }
 void exit (int status){
+	printf("H\n");
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
+	printf("H\n");
 	if(lock_held_by_current_thread(&file_lock))
 		lock_release(&file_lock);
 	/*check the fork status*/
+	printf("H\n");
 	if(t->parent->forked ==1 && status ==-1)
 		t->parent->child_status_exit =-1;
+	printf("H\n");
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
