@@ -1,6 +1,7 @@
 #include "userprog/syscall.h"
 #include "userprog/process.h"
 #include <stdio.h>
+#include <list.h>
 #include <syscall-nr.h>
 #include "filesys/filesys.h"
 #include "filesys/file.h"
