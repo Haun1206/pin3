@@ -124,11 +124,15 @@ int open (const char *file){
 	*/
 	if(file==NULL)
 		return -1;
+	lock_acquire(&file_lock);
 	struct file * res;
 	res = filesys_open(file);
-	if(res==NULL)
+	if(res==NULL){
+		lock_release(&file_lock);
 		return -1;
+	}
 	int fd = process_add_file(res);
+	lock_release(&file_lock);
 	return fd;
 }
 int filesize(int fd){
@@ -248,9 +252,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FORK:
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
-			lock_acquire(&file_lock);
 			f->R.rax = fork((const char *)f->R.rdi,f);
-			lock_release(&file_lock);
 			//printf("%s\n", "maybe fork?");
 			break;
 
