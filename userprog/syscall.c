@@ -41,8 +41,7 @@ void close(int fd);
 #define MSR_STAR 0xc0000081         /* Segment selector msr */
 #define MSR_LSTAR 0xc0000082        /* Long mode SYSCALL target */
 #define MSR_SYSCALL_MASK 0xc0000084 /* Mask for the eflags */
-
-struct lock file_lock;	
+	
 
 static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
