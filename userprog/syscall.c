@@ -95,7 +95,8 @@ void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
-
+	if(lock_held_by_current_thread(&file_lock))
+		lock_release(&file_lock);
 	/*check the fork status*/
 	if(t->parent->forked ==1 && status ==-1)
 		t->parent->child_status_exit =-1;
@@ -257,9 +258,7 @@ void close(int fd){
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
-	printf("%s\n", "maybe?");
 	check_addr(f->rsp);
-	printf("%s\n", "maybe?");
 	switch(f->R.rax){
 		case SYS_HALT:
 			//printf("%s\n", "maybe halt?");
