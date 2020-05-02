@@ -617,6 +617,7 @@ int process_add_file(struct file *f){
 	t->next_fd = t->next_fd +1;
 	return next;
 }
+
 struct file* process_get_file(int fd){
 	/*return the file that has the fd, but if the fd is invalid, we might not get the file*/
 	struct thread* t = thread_current();
