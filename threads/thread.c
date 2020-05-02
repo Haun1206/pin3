@@ -227,7 +227,7 @@ thread_create (const char *name, int priority,
 	t->status_exit= 0;
 	/*File descriptor part*/
 	t->next_fd = 2;
-	t->fd_table = palloc_get_page(PAL_USER);
+	t->fd_table = palloc_get_page(PAL_USER | PAL_ZERO);
 
 	if(t->fd_table ==NULL)
 		return TID_ERROR;
