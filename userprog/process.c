@@ -59,7 +59,7 @@ process_create_initd (const char *file_name) {
 	fn_copy = palloc_get_page (0);
 	if (fn_copy == NULL)
 		return TID_ERROR;
-	strlcpy (fn_copy, file_name, strlen(file_name)+2);
+	strlcpy (fn_copy, file_name, strlen(file_name)+1);
     /*
      My addition
      */
@@ -225,7 +225,7 @@ process_exec (void *f_name) {
     char *tempo;
     char * saveptr;
     tempo = palloc_get_page(0);
-    strlcpy(tempo, file_name, strlen(file_name)+2);
+    strlcpy(tempo, file_name, strlen(file_name)+1);
     tempo = strtok_r(tempo," ", &saveptr);
 	/* And then load the binary */
 	lock_acquire(&file_lock);
