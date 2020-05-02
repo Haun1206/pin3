@@ -161,7 +161,7 @@ check_file (const char *file_name, const void *buf, size_t size)
          file_name);
   /*DEBUG*/
   printf("check_file %d\n", fd);
-  printf("%s\n",filename);
+  printf("%s\n",file_name);
 
   check_file_handle (fd, file_name, buf, size);
   msg ("close \"%s\"", file_name);
