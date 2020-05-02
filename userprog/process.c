@@ -34,7 +34,7 @@ void remove_child_process(struct thread *cp);
 int process_add_file(struct file *f);
 struct file *process_get_file(int fd);
 void process_close_file(int fd);
-
+struct lock co_lock;
 
 /* General process initializer for initd and other process. */
 static void
@@ -435,11 +435,11 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-	lock_acquire(&file_lock);
+	lock_acquire(&co_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
 	if (file == NULL) {
-		lock_release(&file_lock);
+		lock_release(&co_lock);
 		printf ("load: %s: open failed\n", f_name);
 		goto done;
 	}
