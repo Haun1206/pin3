@@ -125,7 +125,7 @@ int open (const char *file){
 	*/
 	if(file==NULL)
 		return -1;
-	struct file * res;
+	struct file * res=palloc_get_page(0);
 	res = filesys_open(file);
 	if(res==NULL)
 		return -1;
