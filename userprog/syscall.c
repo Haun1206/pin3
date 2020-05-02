@@ -285,6 +285,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_EXEC:
 			//printf("%s\n", "maybe exec?");
 			check_addr((void *)f->R.rdi);
+			//printf("maybe exec?\n");
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;
