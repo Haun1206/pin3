@@ -3,6 +3,7 @@
    in each case. */
 
 #include <syscall.h>
+#include <stdio.h>
 #include "tests/lib.h"
 #include "tests/main.h"
 
