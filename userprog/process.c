@@ -36,7 +36,7 @@ void remove_child_process(struct thread *cp);
 int process_add_file(struct file *f);
 struct file *process_get_file(int fd);
 void process_close_file(int fd);
-struct lock co_lock;
+struct lock open_lock;
 
 /* General process initializer for initd and other process. */
 static void
@@ -53,7 +53,7 @@ tid_t
 process_create_initd (const char *file_name) {
 	char *fn_copy;
 	tid_t tid;
-	lock_init(&co_lock);
+	lock_init(&open_lock);
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
 	fn_copy = palloc_get_page (0);
@@ -460,10 +460,10 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-	lock_acquire(&file_lock);
+	lock_acquire(&open_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
-	lock_release(&file_lock);
+	lock_release(&open_lock);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", f_name);
 		goto done;
