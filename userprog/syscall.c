@@ -128,7 +128,7 @@ int open (const char *file){
 	lock_acquire(&file_lock);
 	int fd = process_add_file(filesys_open(file));
 	lock_release(&file_lock);
-	printf("%d\n", fd);
+	//printf("%d\n", fd);
 	return fd;
 }
 int filesize(int fd){

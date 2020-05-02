@@ -608,7 +608,7 @@ int process_add_file(struct file *f){
 	Make the file descriptor's maximum value incremented */
 	struct thread* t = thread_current();
 	struct file ** fd_tab = t->fd_table;
-	printf("process_add_file,%d\n",t->next_fd);
+	//printf("process_add_file,%d\n",t->next_fd);
 	int next = t->next_fd ++;
 	if(fd_tab==NULL){
 		file_close(f);
