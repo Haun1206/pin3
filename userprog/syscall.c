@@ -149,9 +149,8 @@ int open (const char *file){
 		lock_release(&file_lock);
 		return -1;
 	}
-	if(thread_current()->forked==0 &&strcmp(res,thread_current()->name)){
+	if(!strcmp(file,thread_current()->name))
 		file_deny_write(res);
-	}
 	int fd = process_add_file(res);
 	//printf("open %d\n",fd);
 	lock_release(&file_lock);
@@ -332,7 +331,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		 
 		case SYS_WRITE:
 			//printf("%s\n", "maybe write?\n");
-			check_addr((void *)f->R.rsi);
+			check_addr(f->R.rsi);
 			//printf("%s\n", "maybe write?\n");
 			f->R.rax = write(f->R.rdi, (const void *)f->R.rsi, (unsigned) f->R.rdx);
 			//printf("%s\n", "maybe write?\n");
