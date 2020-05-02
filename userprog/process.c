@@ -424,13 +424,16 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
  * Returns true if successful, false otherwise. */
 static bool
 load (const char *file_name, struct intr_frame *if_) {
+	if(file_name ==NULL){
+		printf ("load: %s: open failed\n", f_name);
+		goto done;
+	}
 	struct thread *t = thread_current ();
 	struct ELF ehdr;
 	struct file *file = NULL;
 	off_t file_ofs;
 	bool success = false;
 	int i;
-    
     /* Change the file name so that it is the filename that we want*/
     //printf("%d\n", 1);
     char* save_ptr;
@@ -456,8 +459,10 @@ load (const char *file_name, struct intr_frame *if_) {
     
 	/* Allocate and activate page directory. */
 	t->pml4 = pml4_create ();
-	if (t->pml4 == NULL)
+	if (t->pml4 == NULL){
+		free(arguments);
 		goto done;
+	}
 	process_activate (thread_current ());
 
 	lock_acquire(&file_lock);
@@ -466,6 +471,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	lock_release(&file_lock);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", f_name);
+		free(arguments);
 		goto done;
 	}
 	/*thread's running file will be initialized to the file that will executed
@@ -483,6 +489,7 @@ load (const char *file_name, struct intr_frame *if_) {
 			|| ehdr.e_phentsize != sizeof (struct Phdr)
 			|| ehdr.e_phnum > 1024) {
 		printf ("load: %s: error loading executable\n", file_name);
+		free(arguments);
 		goto done;
 	}
 
@@ -553,11 +560,13 @@ load (const char *file_name, struct intr_frame *if_) {
     argument_stack(arguments,argc,if_);
 
 	success = true;
+	free(arguments);
     //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
 	file_close (file);
+	//free(arguments);
 	
 	return success;
 }
