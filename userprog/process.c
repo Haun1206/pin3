@@ -267,12 +267,15 @@ process_wait (tid_t child_tid UNUSED) {
 	 * XXX:       implementing the process_wait. */
 	int res_status;
 	struct thread* child = get_child_process((int)child_tid);
-	if(child ==NULL || child->child_status_exit==-1)
+	if(child ==NULL || child->child_status_exit==-1){
+		list_remove(&child->child_elem);
 		return -1;
+	}
+		
 	/*Wait until the process of child is done */
 	sema_down(&child -> exit_sema);
 	//remove_child_process(child);
-	list_remove(&child->child_elem);
+	
 	res_status = child->status_exit;
 
 

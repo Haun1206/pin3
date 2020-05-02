@@ -53,11 +53,15 @@ void close(int fd);
 
 static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
-    if(is_kernel_vaddr(addr)|| (uint64_t)addr ==0x0 || addr ==NULL)
+    if(is_kernel_vaddr(addr)|| (uint64_t)addr ==0x0 || addr ==NULL){
         exit(-1);
+		return;
+	}
 	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
-    if (page_ptr == NULL)
+    if (page_ptr == NULL){
+		return;
         exit(-1);
+	}
 } 
 void check_buffer(void *buffer, unsigned size){
 	char *ptr = (char *)buffer;
