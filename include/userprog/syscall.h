@@ -1,6 +1,18 @@
 #ifndef USERPROG_SYSCALL_H
 #define USERPROG_SYSCALL_H
 
+#include "userprog/syscall.h"
+#include <stdio.h>
+#include <syscall-nr.h>
+#include "filesys/filesys.h"
+#include "filesys/file.h"
+#include "threads/interrupt.h"
+#include "threads/thread.h"
+#include "threads/loader.h"
+#include "threads/palloc.h"
+#include "userprog/gdt.h"
+#include "threads/flags.h"
+#include "intrinsic.h"
 void syscall_init (void);
 static void check_addr(void* addr);
 /*void get_argument(struct intr_frame * f, int * arg, int count);*/
