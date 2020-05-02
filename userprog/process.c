@@ -291,7 +291,6 @@ process_exit (void) {
 	if(parent->child_status_exit==-1 && parent->forked ==1)
 		sema_up(&parent->child_fork);
 	//printf("%s\n", "clean");
-	
 }
 
 /* Free the current process's resources. */
