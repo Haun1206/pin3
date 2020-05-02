@@ -110,6 +110,8 @@ int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
 	int id = process_exec(cmd_line);
+	if(id==-1)
+		exit(-1);
 	//printf("3\n");
 	//lock_release(&file_lock);
 	//printf("4\n");
@@ -290,6 +292,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
 			f->R.rax = exec((const char *)f->R.rdi);
+			if
 			//printf("%s\n", "maybe exec?");
 			break;
 		
