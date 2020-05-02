@@ -719,7 +719,7 @@ do_schedule(int status) {
 	ASSERT (thread_current()->status == THREAD_RUNNING);
 	while (!list_empty (&destruction_req)) {
 		struct thread *victim;
-		printf("%p\n",destruction_req);
+		//printf("%p\n",destruction_req);
 		victim = list_entry (list_pop_front (&destruction_req), struct thread, elem);
 		palloc_free_page(victim);
 	}
