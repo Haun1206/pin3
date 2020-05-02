@@ -148,7 +148,8 @@ int filesize(int fd){
 	if(f==NULL)
 		return -1;
 	//printf("Maybe here?\n");
-	int size = file_length(f);
+	struct thread *t  = thread_current();
+	int size = file_length(t->fd_table[fd]);
 	//printf("Maybe here?\n");
 	return size;
 
