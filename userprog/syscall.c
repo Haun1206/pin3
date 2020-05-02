@@ -136,7 +136,7 @@ int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 	printf("Maybe here?\n");
 	printf("%d\n", fd);
-	struct file *f = process_get_file(fd);
+	struct file *f = process_get_file(fd+2);
 	printf("Maybe here?\n");
 	if(f==NULL)
 		return -1;
