@@ -207,8 +207,9 @@ error:
  * Returns -1 on fail. */
 int
 process_exec (void *f_name) {
-	
-	char *file_name = (char *)f_name;
+	printf()
+	char *file_name = malloc(strlen(f_name)+1);
+	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
 
 	/* We cannot use the intr_frame in the thread structure.
@@ -221,12 +222,14 @@ process_exec (void *f_name) {
 
 	/* We first kill the current context */
 	process_cleanup ();
+	/*
     char *tempo;
     char * saveptr;
     tempo = palloc_get_page(0);
     strlcpy(tempo, file_name, strlen(file_name)+1);
     tempo = strtok_r(tempo," ", &saveptr);
-	/* And then load the binary */
+	// And then load the binary 
+	*/
 
 	success = load (file_name, &_if);
 	/*Write the success status to the threads*/
@@ -237,7 +240,7 @@ process_exec (void *f_name) {
 	//sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
-    palloc_free_page (tempo);
+    free(file_name);
 	if (!success){
 		thread_exit();
 		return -1;
