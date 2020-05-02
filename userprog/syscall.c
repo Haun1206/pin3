@@ -100,6 +100,7 @@ void exit (int status){
 	if(t->parent->forked ==1 && status ==-1)
 		t->parent->child_status_exit =-1;
 	printf("%s: exit(%d)\n", t->name, status);
+	sema_up(&t->parent->child_fork);
 	thread_exit();
 }
 int fork(const char *thread_name, struct intr_frame *f){
@@ -275,8 +276,11 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FORK:
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
-			f->R.rax = fork((const char *)f->R.rdi,f);
+			int pid = fork((const char *)f->R.rdi,f);
 			//printf("%s\n", "maybe fork?");
+			if(pid>0)
+				sema_down(&thread_current()->child_fork);
+			return pid;
 			break;
 
 		case SYS_EXEC:
