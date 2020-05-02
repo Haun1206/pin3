@@ -302,7 +302,7 @@ process_exit (void) {
 
 
 	//printf("%s\n", "clean");
-	sema_down(*curr->load_sema);
+	sema_down(&curr->load_sema);
 	
 }
 
