@@ -132,22 +132,22 @@ int open (const char *file){
 		return -1;
 	}
 	int fd = process_add_file(res);
-	printf("%d\n",fd);
+	printf("open %d\n",fd);
 	lock_release(&file_lock);
 	return fd;
 }
 int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
-	printf("Maybe here?\n");
-	printf("%d\n", fd);
+	//printf("Maybe here?\n");
+	//printf("%d\n", fd);
 	struct file *f = palloc_get_page(0);
 	f = process_get_file(fd);
-	printf("Maybe here?\n");	
+	//printf("Maybe here?\n");	
 	if(f==NULL)
 		return -1;
-	printf("Maybe here?\n");
+	//printf("Maybe here?\n");
 	int size = file_length(f);
-	printf("Maybe here?\n");
+	//printf("Maybe here?\n");
 	return size;
 
 }
