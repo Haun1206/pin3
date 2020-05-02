@@ -267,10 +267,12 @@ process_wait (tid_t child_tid UNUSED) {
 		return -1;
 	/*Wait until the process of child is done */
 	sema_down(&child -> exit_sema);
+	//remove_child_process(child);
+	list_remove(&child->child_elem);
 	res_status = child->status_exit;
-	remove_child_process(child);
 
-	/*MAYBE?*/
+
+
 	sema_up(&child->load_sema);
 	return res_status;
 
