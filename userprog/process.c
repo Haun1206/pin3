@@ -278,7 +278,7 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	process_close_file(curr->fd_table[curr->next_fd]-1);
+	process_close_file(curr->fd_table[curr->next_fd-1]);
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--){
     	process_close_file(curr->fd_table[curr->next_fd]);
 	}
