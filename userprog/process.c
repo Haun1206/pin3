@@ -273,7 +273,7 @@ process_wait (tid_t child_tid UNUSED) {
 		//list_remove(&child->child_elem);
 		return -1;
 	}
-	printf("Here");
+	//printf("Here");
 		
 	/*Wait until the process of child is done */
 	sema_down(&child -> exit_sema);
