@@ -607,14 +607,13 @@ int process_add_file(struct file *f){
 	/*Add the file to the file descriptor table
 	Make the file descriptor's maximum value incremented */
 	struct thread* t = thread_current();
-	struct file ** fd_tab = t->fd_table;
 	int next = t->next_fd;
-	if(fd_tab==NULL){
+	if( t->fd_table==NULL){
 		file_close(f);
 		return -1;
 	}
 	
-	fd_tab[next] = f;
+	t->fd_table[next] = f;
 	t->next_fd = t->next_fd +1;
 	return next;
 }
@@ -623,8 +622,7 @@ struct file* process_get_file(int fd){
 	struct thread* t = thread_current();
 	if(fd>= t->next_fd||fd<=1)
 		return NULL;
-	struct file *ret_file = t->fd_table[fd];
-	return ret_file;
+	return t->fd_table[fd];
 }
 
 /*close the file for the fd
