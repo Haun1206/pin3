@@ -321,7 +321,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_READ:
-			printf("%s\n", "maybe read?");
+			//printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
 			f->R.rax = read(f->R.rdi, (void *) f->R.rsi, (unsigned)f->R.rdx);
 			//printf("%s\n", "maybe read?");
@@ -329,7 +329,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		 
 		case SYS_WRITE:
 			//printf("%s\n", "maybe write?\n");
-			check_addr(f->R.rsi);
+			check_addr((void *)f->R.rsi);
 			//printf("%s\n", "maybe write?\n");
 			f->R.rax = write(f->R.rdi, (const void *)f->R.rsi, (unsigned) f->R.rdx);
 			//printf("%s\n", "maybe write?\n");
