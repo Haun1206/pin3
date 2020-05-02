@@ -278,8 +278,8 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	process_close_file(curr->fd_table[curr->next_fd-1]);
-	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--){
+	//file_close(curr->fd_table[curr->next_fd-1]);
+	for (int i = curr->next_fd-1; curr->i >= 2; i--){
     	process_close_file(curr->fd_table[curr->next_fd]);
 	}
 		
@@ -630,17 +630,17 @@ struct file* process_get_file(int fd){
 /*close the file for the fd
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
-	struct file * rm_file = process_get_file(fd);
+
 	struct thread* t = thread_current();
 	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
-	//file_close(rm_file);
+	file_close(t->fd_table[fd]);
 	//printf("HI\n");
 	/*Initialization*/
-
+	t->next_fd = fd;
 	t->fd_table[fd] = NULL;
 }
 
