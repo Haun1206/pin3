@@ -104,6 +104,7 @@ int exec(const char *cmd_line){
 	else 
 		return id;
 }
+
 int wait(int pid){
 	int status  = process_wait(pid);
 	return status;
