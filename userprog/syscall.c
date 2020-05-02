@@ -260,10 +260,10 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_FORK:
-			printf("%s\n", "maybe fork?");
+			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			f->R.rax = fork((const char *)f->R.rdi,f);
-			printf("%s\n", "maybe fork?");
+			//printf("%s\n", "maybe fork?");
 			break;
 
 		case SYS_EXEC:
