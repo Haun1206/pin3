@@ -635,7 +635,7 @@ void process_close_file(int fd){
 	//rm_file = process_get_file(fd);
 	struct file *rm_file = process_get_file(fd);
 	struct thread* t = thread_current();
-	if(rm_file==NULL|| fd<3 || t->next_fd < fd )
+	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
 	//printf("HI\n");
