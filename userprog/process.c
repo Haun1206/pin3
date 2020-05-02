@@ -181,9 +181,9 @@ __do_fork (void *aux) {
 		struct file *child_f = file_duplicate(f);
 		if(child_f==NULL)
 			goto error;
+		current->next_fd = i+1;
 		child_fd_table[i] = child_f;
-		if(i>=current->next_fd)
-			current->next_fd = i+1;
+
 	}
 
 	process_init ();
@@ -262,14 +262,16 @@ process_wait (tid_t child_tid UNUSED) {
 	 * XXX:       to add infinite loop here before
 	 * XXX:       implementing the process_wait. */
 	int res_status;
-	struct thread* child;
-	if((child = get_child_process((int)child_tid))==NULL)
+	struct thread* child = get_child_process((int)child_tid));
+	if((child ==NULL || child->child_status_exit==-1)
 		return -1;
 	/*Wait until the process of child is done */
 	sema_down(&child -> exit_sema);
 	res_status = child->status_exit;
 	remove_child_process(child);
 
+	/*MAYBE?*/
+	sema_up(&child->load_sema);
 	return res_status;
 
 }
@@ -291,11 +293,16 @@ process_exit (void) {
 	/*close the currently running file*/
 	curr->process_exit = true;
 	//file_close(curr->cur_file);
-	process_cleanup ();
 	/*Check out the child exit staus and parent's forked*/
-	if(parent->child_status_exit==-1 && parent->forked ==1)
+	if(curr->child_status_exit==-1 && parent->forked ==1){
 		sema_up(&parent->child_fork);
+		list_remove(&curr->child_elem);
+	}
+	process_cleanup ();
+
+
 	//printf("%s\n", "clean");
+	sema_down(*curr->load_sema);
 	
 }
 
@@ -605,7 +612,7 @@ void remove_child_process(struct thread *cp){
 		return;
 	if(cp->process_exit ==true)
 		list_remove(&(cp->child_elem));
-	palloc_free_page(cp);
+	//palloc_free_page(cp);
 }
 
 int process_add_file(struct file *f){
