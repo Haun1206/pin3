@@ -140,7 +140,7 @@ int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 	//printf("Maybe here?\n");
 	//printf("%d\n", fd);
-	struct file *f = page_get_page(PAL_USER);
+	struct file *f = palloc_get_page(PAL_USER);
 	f = process_get_file(fd);
 	printf("filesize: fd %d\n", fd);
 	//printf("Maybe here?\n");	
