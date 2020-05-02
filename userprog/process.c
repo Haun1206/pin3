@@ -171,7 +171,7 @@ __do_fork (void *aux) {
 	/* TODO: Your code goes here.
 	 * TODO: Hint) To duplicate the file object, use `file_duplicate`
 	 * TODO:       in include/filesys/file.h. Note that parent should not return
-	 * TODO:       from the fork() until this function successfully duplicates
+	 * TODO:       from the fork() until this function successfully duplicates ->sema
 	 * TODO:       the resources of parent.*/
 	struct file ** parent_fd_table = parent->fd_table;
 	struct file ** child_fd_table = current->fd_table;
