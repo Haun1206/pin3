@@ -278,10 +278,8 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	//file_close(curr->fd_table[curr->next_fd-1]);
-	for (int i = curr->next_fd-1; i >= 2; i--){
+	for (curr->next_fd--; curr->next_fd >= 4; curr->next_fd--)
     	process_close_file(curr->fd_table[curr->next_fd]);
-	}
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
@@ -293,6 +291,7 @@ process_exit (void) {
 	if(parent->child_status_exit==-1 && parent->forked ==1)
 		sema_up(&parent->child_fork);
 	//printf("%s\n", "clean");
+	
 }
 
 /* Free the current process's resources. */
@@ -630,19 +629,18 @@ struct file* process_get_file(int fd){
 /*close the file for the fd
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
-
+	struct file * rm_file = process_get_file(fd);
 	struct thread* t = thread_current();
-	if(t->fd_table[fd]==NULL|| fd<2 || t->next_fd <= fd )
+	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
-	//file_close(t->fd_table[fd]);
+	file_close(rm_file);
 	//printf("HI\n");
 	/*Initialization*/
-	t->next_fd = fd;
+
 	t->fd_table[fd] = NULL;
-	//palloc_free_page(t->fd_table[fd]);
 }
 
 /* Checks whether PHDR describes a valid, loadable segment in
