@@ -279,7 +279,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	//file_close(curr->fd_table[curr->next_fd-1]);
-	for (int i = curr->next_fd-1; curr->i >= 2; i--){
+	for (int i = curr->next_fd-1; i >= 2; i--){
     	process_close_file(curr->fd_table[curr->next_fd]);
 	}
 		
