@@ -279,7 +279,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
-    	file_close(curr->fd_table[curr->next_fd]);
+    	process_close_file(curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
@@ -608,15 +608,14 @@ int process_add_file(struct file *f){
 	Make the file descriptor's maximum value incremented */
 	struct thread* t = thread_current();
 	struct file ** fd_tab = t->fd_table;
-	//printf("process_add_file,%d\n",t->next_fd);
-	int next = t->next_fd ++;
+	int next = t->next_fd;
 	if(fd_tab==NULL){
 		file_close(f);
 		return -1;
 	}
 	
 	fd_tab[next] = f;
-	
+	t->next_fd = t->next_fd +1;
 	return next;
 }
 struct file* process_get_file(int fd){
@@ -624,19 +623,23 @@ struct file* process_get_file(int fd){
 	struct thread* t = thread_current();
 	if(fd>= t->next_fd||fd<=1)
 		return NULL;
-	return t->fd_table[fd];
+	struct file *ret_file = t->fd_table[fd];
+	return ret_file;
 }
 
 /*close the file for the fd
 Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
+	struct file * rm_file = process_get_file(fd);
 	struct thread* t = thread_current();
-	if(fd<2 || t->next_fd <= fd )
+	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
-
-	//file_close(t->fd_table[fd]);
 	
-	
+	//printf("HI\n");
+	//printf("%d\n", fd);
+	//file_close(rm_file);
+	//printf("HI\n");
+	/*Initialization*/
 
 	t->fd_table[fd] = NULL;
 }
