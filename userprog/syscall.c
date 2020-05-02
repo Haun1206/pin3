@@ -146,7 +146,7 @@ int filesize(int fd){
 	//printf("Maybe here?\n");
 	//printf("%d\n", fd);
 	struct file *f = process_get_file(fd);
-	printf("filesize: fd %d\n", fd);
+	//printf("filesize: fd %d\n", fd);
 	//printf("Maybe here?\n");	
 	if(f==NULL)
 		return -1;
@@ -298,9 +298,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		
 		case SYS_FILESIZE:
-			printf("%s\n", "maybe fsize?");
+			//printf("%s\n", "maybe fsize?");
 			f->R.rax = filesize(f->R.rdi);
-			printf("%s\n", "maybe fsize?");
+			//printf("%s\n", "maybe fsize?");
 			break;
 		
 		case SYS_READ:
