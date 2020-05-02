@@ -239,7 +239,7 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     palloc_free_page (tempo);
 	if (!success){
-		thread_exit();
+		//thread_exit();
 		return -1;
 	}
 
