@@ -3,7 +3,6 @@
    in each case. */
 
 #include <syscall.h>
-#include <stdio.h>
 #include "tests/lib.h"
 #include "tests/main.h"
 
@@ -13,7 +12,6 @@ test_main (void)
   int h1 = open ("sample.txt");
   int h2 = open ("sample.txt");  
 
-  printf("%d %d\n",h1,h2);
   CHECK ((h1 = open ("sample.txt")) > 1, "open \"sample.txt\" once");
   CHECK ((h2 = open ("sample.txt")) > 1, "open \"sample.txt\" again");
   if (h1 == h2)
