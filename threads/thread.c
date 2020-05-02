@@ -3,7 +3,6 @@
 #include <stddef.h>
 #include <random.h>
 #include <stdio.h>
-#include <list.h>
 #include <string.h>
 #include "threads/flags.h"
 #include "threads/interrupt.h"
