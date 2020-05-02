@@ -424,15 +424,17 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
  * Returns true if successful, false otherwise. */
 static bool
 load (const char *file_name, struct intr_frame *if_) {
+	bool success = false;
 	if(file_name ==NULL){
 		printf ("load: %s: open failed\n", f_name);
+
 		goto done;
 	}
 	struct thread *t = thread_current ();
 	struct ELF ehdr;
 	struct file *file = NULL;
 	off_t file_ofs;
-	bool success = false;
+	
 	int i;
     /* Change the file name so that it is the filename that we want*/
     //printf("%d\n", 1);
