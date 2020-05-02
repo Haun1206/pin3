@@ -412,8 +412,6 @@ thread_exit (void) {
 	} */
 	intr_disable ();
     list_remove(&t->process_elem); /*clear the list of all process*/
-	sema_up(&t->exit_sema);
-	//sema_down(&t->load_sema);
 	do_schedule (THREAD_DYING);
 	NOT_REACHED ();
 }
