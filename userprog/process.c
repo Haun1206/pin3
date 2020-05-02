@@ -283,13 +283,14 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	/*
+	
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
     	process_close_file(curr->fd_table[curr->next_fd]);
-	*/
+	
+/*
 	for (int i=2; i<curr->next_fd;i++)
 		process_close_file(i);
-		
+		*/
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
