@@ -460,10 +460,10 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-	lock_acquire(&open_lock);
+	lock_acquire(&file_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
-	lock_release(&open_lock);
+	lock_release(&file_lock);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", f_name);
 		goto done;

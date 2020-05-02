@@ -108,11 +108,11 @@ int fork(const char *thread_name, struct intr_frame *f){
 }
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
-	lock_acquire(&file_lock);
+	//lock_acquire(&file_lock);
 	int id = process_exec(cmd_line);
-	printf("3\n");
-	lock_release(&file_lock);
-	printf("4\n");
+	//printf("3\n");
+	//lock_release(&file_lock);
+	//printf("4\n");
 	struct thread * child = get_child_process(id);
 	//printf("5\n");
 	/*Wait until the child process is loaded*/
