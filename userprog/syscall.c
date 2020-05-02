@@ -108,10 +108,15 @@ int fork(const char *thread_name, struct intr_frame *f){
 }
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
+	printf("1\n");
 	lock_acquire(&file_lock);
+	printf("2\n");
 	int id = process_exec(cmd_line);
+	printf("3\n");
 	lock_release(&file_lock);
+	printf("4\n");
 	struct thread * child = get_child_process(id);
+	printf("5\n");
 	/*Wait until the child process is loaded*/
 	sema_down(&(child->load_sema));
 	/*If fail to load -> return -1 else, return the pid*/
