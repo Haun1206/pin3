@@ -132,6 +132,7 @@ int open (const char *file){
 		return -1;
 	}
 	int fd = process_add_file(res);
+	printf("%d\n",fd);
 	lock_release(&file_lock);
 	return fd;
 }
