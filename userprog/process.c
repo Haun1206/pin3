@@ -195,9 +195,10 @@ __do_fork (void *aux) {
 		do_iret (&if_);
 	}
 error:
-	pml4_destroy(current->pml4);
+	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
 	thread_exit ();
+	sema_up(parent->child_fork);
 }
 
 /* Switch the current execution context to the f_name.
