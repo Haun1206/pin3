@@ -426,7 +426,7 @@ static bool
 load (const char *file_name, struct intr_frame *if_) {
 	bool success = false;
 	if(file_name ==NULL){
-		printf ("load: %s: open failed\n", f_name);
+		printf ("load: %s: open failed\n", file_name);
 
 		goto done;
 	}
