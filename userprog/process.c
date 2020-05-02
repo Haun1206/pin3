@@ -266,9 +266,9 @@ process_wait (tid_t child_tid UNUSED) {
 	 * XXX:       to add infinite loop here before
 	 * XXX:       implementing the process_wait. */
 	int res_status;
-	printf("Here");
+	//printf("Here");
 	struct thread* child = get_child_process((int)child_tid);
-	printf("Here");
+	//printf("Here");
 	if(child ==NULL || child->child_status_exit==-1){
 		//list_remove(&child->child_elem);
 		return -1;
