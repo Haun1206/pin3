@@ -7,6 +7,7 @@
 #include <string.h>
 #include "userprog/gdt.h"
 #include "userprog/tss.h"
+#include "userprog/syscall.h"
 #include "filesys/directory.h"
 #include "filesys/file.h"
 #include "filesys/filesys.h"
@@ -35,7 +36,6 @@ struct file *process_get_file(int fd);
 void process_close_file(int fd);
 
 
-struct lock file_lock;
 /* General process initializer for initd and other process. */
 static void
 process_init (void) {
@@ -221,7 +221,9 @@ process_exec (void *f_name) {
     strlcpy(tempo, file_name, PGSIZE);
     tempo = strtok_r(tempo," ", &saveptr);
 	/* And then load the binary */
+	lock_acquire(&file_lock);
 	success = load (file_name, &_if);
+	lock_release(&file_lock);
 	/*Write the success status to the threads*/
 	struct thread * t  = thread_current();
 	t->success_load = success;
