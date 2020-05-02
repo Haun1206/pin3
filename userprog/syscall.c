@@ -277,10 +277,11 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
+			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
 			if(pid>0)
 				sema_down(&thread_current()->child_fork);
-			return pid;
+			
 			break;
 
 		case SYS_EXEC:
