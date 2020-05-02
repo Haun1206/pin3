@@ -14,7 +14,7 @@
 #include "threads/fixed_point.h"
 #include <list.h>
 #include "userprog/process.h"
-#include "userprog/syscall.h
+#include "userprog/syscall.h"
 /*
 #ifdef USERPROG
 #include "userprog/process.h"
