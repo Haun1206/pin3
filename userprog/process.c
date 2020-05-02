@@ -268,7 +268,7 @@ process_wait (tid_t child_tid UNUSED) {
 	int res_status;
 	struct thread* child = get_child_process((int)child_tid);
 	if(child ==NULL || child->child_status_exit==-1){
-		list_remove(&child->child_elem);
+		//list_remove(&child->child_elem);
 		return -1;
 	}
 		

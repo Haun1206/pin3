@@ -11,6 +11,7 @@
 #include "threads/synch.h"
 #include "threads/loader.h"
 #include "threads/palloc.h"
+#include "threads/mmu.h"
 #include "userprog/gdt.h"
 #include "threads/flags.h"
 
