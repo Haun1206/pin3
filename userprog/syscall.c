@@ -59,8 +59,9 @@ static void check_addr(void* addr){
 	}
 	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
     if (page_ptr == NULL){
-		return;
+		
         exit(-1);
+		return;
 	}
 } 
 void check_buffer(void *buffer, unsigned size){
