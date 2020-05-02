@@ -221,7 +221,7 @@ process_exec (void *f_name) {
     char *tempo;
     char * saveptr;
     tempo = palloc_get_page(0);
-    strlcpy(tempo, file_name, PGSIZE);
+    strlcpy(tempo, file_name, strlen(file_name));
     tempo = strtok_r(tempo," ", &saveptr);
 	/* And then load the binary */
 	lock_acquire(&file_lock);
