@@ -12,7 +12,7 @@
 #include "threads/vaddr.h"
 #include "intrinsic.h"
 #include "threads/fixed_point.h"
-#include "lib/kernel/list.h"
+#include <list.h>
 
 #ifdef USERPROG
 #include "userprog/process.h"
