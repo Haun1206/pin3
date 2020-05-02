@@ -198,7 +198,7 @@ error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
 	thread_exit ();
-	sema_up(parent->child_fork);
+	sema_up(&parent->child_fork);
 }
 
 /* Switch the current execution context to the f_name.
