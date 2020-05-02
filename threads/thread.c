@@ -2,6 +2,7 @@
 #include <debug.h>
 #include <stddef.h>
 #include <random.h>
+#include <list.h>
 #include <stdio.h>
 #include <string.h>
 #include "threads/flags.h"
