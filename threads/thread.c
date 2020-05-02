@@ -244,7 +244,7 @@ thread_create (const char *name, int priority,
 
 	t->cur_file = NULL;
 	
-	list_push_back(&thread_current()->child, &t->child_elem);
+	list_push_back(&running_thread()->child, &t->child_elem);
 
 
 
