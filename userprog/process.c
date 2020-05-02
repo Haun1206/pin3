@@ -131,6 +131,7 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	if (!pml4_set_page (current->pml4, va, newpage, writable)) {
 		/* 6. TODO: if fail to insert page, do error handling. */
 		palloc_free_page(newpage);
+		exit(-1);
 		return false;
 	}
 	return true;
@@ -181,10 +182,12 @@ __do_fork (void *aux) {
 		struct file *child_f = file_duplicate(f);
 		if(child_f==NULL)
 			goto error;
-		current->next_fd = i+1;
 		child_fd_table[i] = child_f;
 
 	}
+	current->next_fd = parent->next_fd;
+	if(parent->cur_file)
+		file_deny_write(parent->cur_file);
 
 	process_init ();
 
@@ -197,8 +200,9 @@ __do_fork (void *aux) {
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
-	thread_exit ();
 	sema_up(&parent->child_fork);
+	thread_exit ();
+
 }
 
 /* Switch the current execution context to the f_name.
