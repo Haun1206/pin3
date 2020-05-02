@@ -101,7 +101,9 @@ int fork(const char *thread_name, struct intr_frame *f){
 }
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
+	lock_acquire(&file_lock);
 	int id = process_exec(cmd_line);
+	lock_release(&file_lock);
 	struct thread * child = get_child_process(id);
 	/*Wait until the child process is loaded*/
 	sema_down(&(child->load_sema));
@@ -149,6 +151,7 @@ int filesize(int fd){
 	/*Find the file with the fd and return the length of the file*/
 	//printf("Maybe here?\n");
 	//printf("%d\n", fd);
+	lock_acquire(&file_lock);
 	struct file *f = process_get_file(fd);
 	//printf("filesize: fd %d\n", fd);
 	//printf("Maybe here?\n");	
@@ -157,6 +160,7 @@ int filesize(int fd){
 	//printf("Maybe here?\n");
 	struct thread *t  = thread_current();
 	int size = file_length(t->fd_table[fd]);
+	lock_release(&file_lock);
 	//printf("Maybe here?\n");
 	return size;
 
@@ -217,8 +221,10 @@ int write (int fd, const void *buffer, unsigned size){
 void seek (int fd, unsigned position){
 	/*move the offset as the amount of position/Find file by fd*/
 	struct file *f;
+	lock_acquire(&file_lock);
 	if((f=process_get_file(fd))!=NULL)
 		file_seek(f,position);
+	lock_release(&file_lock);
 }
 unsigned tell (int fd){
 	/*tell the offset*/
