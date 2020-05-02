@@ -642,7 +642,7 @@ void process_close_file(int fd){
 	/*Initialization*/
 	t->next_fd = fd;
 	t->fd_table[fd] = NULL;
-	palloc_free_page(t->fd_table[fd]);
+	//palloc_free_page(t->fd_table[fd]);
 }
 
 /* Checks whether PHDR describes a valid, loadable segment in
