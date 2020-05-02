@@ -281,7 +281,7 @@ process_exit (void) {
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--){
     	process_close_file(curr->fd_table[curr->next_fd]);
 		if(curr->next_fd>=4)
-			close_file(curr->fd_table[curr->next_fd]);
+			file_close(curr->fd_table[curr->next_fd]);
 	}
 		
 	//printf("%s\n", "Is this working?");
