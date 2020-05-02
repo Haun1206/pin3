@@ -4,12 +4,15 @@
 #include <syscall-nr.h>
 #include "filesys/filesys.h"
 #include "filesys/file.h"
+#include "filesys/inode.h"
 #include "threads/interrupt.h"
 #include "threads/thread.h"
+#include "threads/synch.h"
 #include "threads/loader.h"
 #include "threads/palloc.h"
 #include "userprog/gdt.h"
 #include "threads/flags.h"
+
 #include "intrinsic.h"
 
 static void check_addr(void* addr);
