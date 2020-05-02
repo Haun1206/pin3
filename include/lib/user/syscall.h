@@ -23,7 +23,7 @@ typedef int off_t;
 /* Projects 2 and later. */
 void halt (void) NO_RETURN;
 void exit (int status) NO_RETURN;
-int fork(const char *thread_name,struct intr_frame *f);
+int fork(const char *thread_name);
 int exec (const char *file);
 int wait (int pid);
 bool create (const char *file, unsigned initial_size);
