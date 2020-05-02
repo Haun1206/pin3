@@ -632,7 +632,7 @@ Also initialize the entry at that file descriptor*/
 void process_close_file(int fd){
 
 	struct thread* t = thread_current();
-	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
+	if(t->fd_table[fd]==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
 	//printf("HI\n");
