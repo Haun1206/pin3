@@ -278,7 +278,7 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
+	for (curr->next_fd--; curr->next_fd >= 4; curr->next_fd--)
     	process_close_file(curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
@@ -636,7 +636,7 @@ void process_close_file(int fd){
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
-	//file_close(rm_file);
+	file_close(rm_file);
 	//printf("HI\n");
 	/*Initialization*/
 
