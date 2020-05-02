@@ -276,14 +276,14 @@ process_wait (tid_t child_tid UNUSED) {
 	printf("Here\n");
 		
 	/*Wait until the process of child is done */
-	sema_down(&child -> exit_sema);
+	sema_down(&child -> wait_sema);
 	printf("Here\n");
 	list_remove(&child->child_elem);
 	res_status = child->status_exit;
 	printf("Here\n");
 
 
-	//sema_up(&child->load_sema);
+	sema_up(&child->exit_sema);
 	return res_status;
 
 }
@@ -314,7 +314,7 @@ process_exit (void) {
 
 
 	//printf("%s\n", "clean");
-	sema_up(&curr->exit_sema);
+	//sema_up(&curr->exit_sema);
 	//sema_down(&curr->load_sema);
 	
 	

@@ -128,6 +128,8 @@ struct thread {
 	/*Load Semaphore*/
 	struct semaphore load_sema;
 
+	/*wait semaphore */
+	struct semaphore wait_sema;
 	/*Indicating the next process descriptor */
 	int next_fd;
 

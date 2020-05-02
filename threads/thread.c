@@ -240,6 +240,7 @@ thread_create (const char *name, int priority,
 
 	sema_init(&(t->load_sema), 0);
 	sema_init(&(t->exit_sema), 0);
+	sema_init(&t->wait_sema,0);
 	sema_init(&(t->child_fork),0);
 
 	t->cur_file = NULL;
@@ -405,12 +406,14 @@ thread_exit (void) {
 	   We will be destroyed during the call to schedule_tail(). */
 	struct list_elem *temp;
 	struct thread * t = thread_current();
-	/*
+	
 	for (temp = list_begin(&t->child);temp!=list_end(&t->child);){
 		struct thread *th = list_entry(temp, struct thread, child_elem);
 		temp = list_remove(temp);
-		sema_up(&t->load_sema);
-	} */
+		sema_up(&t->exit_sema);
+	} 
+	sema_up(&t->wait_sema);
+	sema_down(&t->exit_sema);
 	intr_disable ();
     list_remove(&t->process_elem); /*clear the list of all process*/
 	do_schedule (THREAD_DYING);
