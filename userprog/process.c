@@ -186,8 +186,9 @@ __do_fork (void *aux) {
 
 	}
 	current->next_fd = parent->next_fd;
+	/*
 	if(parent->cur_file)
-		file_deny_write(parent->cur_file);
+		file_deny_write(parent->cur_file);*/
 
 	process_init ();
 
@@ -470,7 +471,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		=>protect with lock
 	*/
 	t->cur_file = file;
-	file_deny_write(file);
+	//file_deny_write(file);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)

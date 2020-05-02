@@ -149,6 +149,9 @@ int open (const char *file){
 		lock_release(&file_lock);
 		return -1;
 	}
+	if(strcmp(res,thread_current()->name)){
+		file_deny_write(res);
+	}
 	int fd = process_add_file(res);
 	//printf("open %d\n",fd);
 	lock_release(&file_lock);
