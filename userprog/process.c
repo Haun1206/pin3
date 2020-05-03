@@ -200,7 +200,7 @@ __do_fork (void *aux) {
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
-	sema_up(&parent->child_fork);
+	
 
 	printf("number 1\n");
 	if (succ==1){
@@ -209,6 +209,7 @@ __do_fork (void *aux) {
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
+	sema_up(&parent->child_fork);
 error:
 	if_.R.rax = -1;
 	current->child_status_exit=-1;
