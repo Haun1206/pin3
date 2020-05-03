@@ -315,9 +315,10 @@ process_exit (void) {
 		file_close(curr->cur_file);*/
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
-		sema_up(&parent->child_fork);
+		//sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
+	sema_up(&parent->child_fork);
 	//file_close(curr->cur_file);
 	process_cleanup ();
 
