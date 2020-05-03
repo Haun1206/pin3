@@ -98,8 +98,7 @@ void exit (int status){
 	t-> process_exit= true;
 	if(lock_held_by_current_thread(&file_lock)==1)
 		lock_release(&file_lock);
-	if(lock_held_by_current_thread(&open_lock)==1)
-		lock_release(&open_lock);
+
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
@@ -109,7 +108,6 @@ int fork(const char *thread_name, struct intr_frame *f){
 }
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
-	lock_acquire(&open_lock);
 //	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
 	
