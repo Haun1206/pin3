@@ -98,8 +98,8 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	strlcpy(t_name,name,strlen(name)+1);
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	if(t->child_status_exit ==TID_ERROR)
-		id = TID_ERROR;
+	if(t->child_status_exit ==-1)
+		id = -1;
 	sema_down(&t->child_fork);
 	free(t_name);
 	return id;
@@ -321,6 +321,7 @@ process_exit (void) {
 	curr->process_exit = true;
 	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
+	sema_down(&curr->exit_sema);
 	if(curr->child_status_exit==-1 && parent->forked ==1){
 		//sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
@@ -331,7 +332,7 @@ process_exit (void) {
 
 	//printf("%s\n", "clean");
 	sema_up(&curr->wait_sema);
-	sema_down(&curr->exit_sema);
+
 	
 	
 }
