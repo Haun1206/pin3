@@ -95,7 +95,7 @@ void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
-	if(lock_held_by_current_thread(&file_lock))
+	if(lock_held_by_current_thread(&file_lock)==1)
 		lock_release(&file_lock);
 	/*check the fork status*/
 	if(t->parent->forked ==1 && status ==-1)
@@ -136,7 +136,11 @@ bool create(const char*file, unsigned initial_size){
 		return false;
 	}
 	//check_str(file);
-	return filesys_create(file, initial_size);
+	if(lock_held_by_current_thread(&file_lock)==0)
+		lock_acquire(&file_lock);
+	bool res = filesys_create(file, initial_size);
+	lock_release(&file_lock);
+	return res;
 }
 bool remove(const char *file){
 	return filesys_remove(file);
@@ -244,8 +248,11 @@ unsigned tell (int fd){
 	/*tell the offset*/
 	struct file *f;
 	unsigned offset = 0;
+	if(lock_held_by_current_thread(&file_lock)==0)
+		lock_acquire(&file_lock);
 	if((f=process_get_file(fd))!=NULL)
 		offset = file_tell(f);
+	lock_release(&file_lock);
 	return offset;
 }
 void close(int fd){
@@ -311,7 +318,10 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_REMOVE:
 			//printf("%s\n", "maybe remove?");
 			check_addr((void *)f->R.rdi);
+			if(lock_held_by_current_thread(&file_lock)==0)
+				lock_acquire(&file_lock);
 			f->R.rax = remove((const char *) f->R.rdi);
+			lock_release(&file_lock);
 			//printf("%s\n", "maybe remove?");
 			break;
 

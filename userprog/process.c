@@ -192,7 +192,7 @@ __do_fork (void *aux) {
 
 	/* Finally, switch to the newly created process. */
 	sema_up(&parent->child_fork);
-	if (succ){
+	if (succ==1){
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
@@ -245,7 +245,7 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
-		printf("HERE?\n");
+		//printf("HERE?\n");
 		//thread_exit();
 		return -1;
 	}
@@ -680,7 +680,10 @@ void process_close_file(int fd){
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
+	if(lock_held_by_current_thread(&file_lock)==0)
+		lock_acquire(&file_lock);
 	file_close(rm_file);
+	lock_release(&file_lock);
 	//printf("HI\n");
 	/*Initialization*/
 
