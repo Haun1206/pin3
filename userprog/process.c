@@ -60,13 +60,14 @@ process_create_initd (const char *file_name) {
 	if (fn_copy == NULL)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, strlen(file_name)+1);
-   
+    /*
+     My addition
+     */
     char* save_ptr;
     char *f_name;
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
-//	sema_down(&thread_current()->load_sema);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -211,6 +212,7 @@ process_exec (void *f_name) {
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
 	if(file_name==NULL){
+		//thread_exit();
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -243,6 +245,7 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
+		//thread_exit();
 		return -1;
 	}
 
@@ -428,7 +431,6 @@ load (const char *file_name, struct intr_frame *if_) {
 	/*
 	if(file_name ==NULL){
 		printf ("load: %s: open failed\n", file_name);
-
 		goto done;
 	}*/
 	struct thread *t = thread_current ();

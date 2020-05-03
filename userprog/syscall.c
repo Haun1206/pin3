@@ -118,7 +118,6 @@ int exec(const char *cmd_line){
 	struct thread * child = get_child_process(id);
 	//printf("5\n");
 	/*Wait until the child process is loaded*/
-	/*SEMASEMAEMSSEMA*/
 	sema_down(&(child->load_sema));
 	/*If fail to load -> return -1 else, return the pid*/
 	if(child->success_load ==false) 
