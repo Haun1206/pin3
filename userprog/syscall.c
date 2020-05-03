@@ -314,6 +314,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe exec?");
 			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
+			printf("SYS_EXEC: %s",(char *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;
