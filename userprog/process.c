@@ -93,16 +93,16 @@ initd (void *f_name) {
 tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
-	printf("FORK: %s\n",name);
+	//printf("FORK: %s\n",name);
 	struct thread *t = thread_current();
 	if_->R.rax = thread_current();
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	printf("FORKED NEW ONE ID: %d",id);
+	//printf("FORKED NEW ONE ID: %d",id);
 	if(t->child_status_exit ==-1){
 		id = -1;
 		if_->R.rax=-1;
-		printf("IT HAS THIS ERROR\n");
+		//printf("IT HAS THIS ERROR\n");
 	}
 	sema_down(&t->child_fork);
 	return id;
