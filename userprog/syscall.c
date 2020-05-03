@@ -109,7 +109,9 @@ int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
 //	printf("%s\n",cmd_line);
-	int id = process_exec(cmd_line);
+	char * cmd_l = malloc(strlen(cmd_line)+1);
+	strlcpy(cmd_l,cmd_line,strlen(cmd_line)+1);
+	int id = process_exec(cmd_l);
 	
 	if(id==-1)
 		exit(-1);
