@@ -747,8 +747,8 @@ schedule (void) {
 
 #ifdef USERPROG
 	/* Activate the new address space. */
-	//if(next->pml4)
-	process_activate (next);
+	if(next->pml4)
+		process_activate (next);
 #endif
 
 	if (curr != next) {
