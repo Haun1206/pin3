@@ -110,20 +110,23 @@ int exec(const char *cmd_line){
 	//lock_acquire(&file_lock);
 //	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
+	/*
 	if(id==-1)
-		exit(-1);
+		exit(-1);*/
 	//printf("3\n");
 	//lock_release(&file_lock);
 	//printf("4\n");
-	struct thread * child = get_child_process(id);
+	//struct thread * child = get_child_process(id);
 	//printf("5\n");
 	/*Wait until the child process is loaded*/
 	//sema_down(&(child->load_sema));
 	/*If fail to load -> return -1 else, return the pid*/
+	/*
 	if(child->success_load ==false) 
 		return -1;
-	else 
-		return id;
+	else*/
+
+	return id;
 }
 
 int wait(int pid){
