@@ -97,7 +97,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	if(t->child_status_exit ==TID_ERROR)
-		id = 0;
+		id = TID_ERROR;
 	sema_down(&t->child_fork);
 	return id;
 }
@@ -114,7 +114,7 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
-	if(!is_user_pte(pte))
+	if(!is_user_vaddr(va))
 		return true;
 	/* 2. Resolve VA from the parent's page map level 4. */
 	parent_page = pml4_get_page (parent->pml4, va);
