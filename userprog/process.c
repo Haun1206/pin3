@@ -239,10 +239,11 @@ process_exec (void *f_name) {
     tempo = strtok_r(tempo," ", &saveptr);
 	// And then load the binary 
 	*/
-
+	struct thread * t  = thread_current();
+	//sema_down(&t->parent->load_sema);
 	success = load (file_name, &_if);
 	/*Write the success status to the threads*/
-	struct thread * t  = thread_current();
+	
 	t->success_load = success;
 
 
@@ -321,7 +322,7 @@ process_exit (void) {
 	curr->process_exit = true;
 	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
-	sema_down(&curr->exit_sema);
+	//sema_down(&curr->exit_sema);
 	if(curr->child_status_exit==-1 && parent->forked ==1){
 		//sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
@@ -331,7 +332,7 @@ process_exit (void) {
 
 
 	//printf("%s\n", "clean");
-	sema_up(&curr->wait_sema);
+	//sema_up(&curr->wait_sema);
 
 	
 	
