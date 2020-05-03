@@ -108,7 +108,7 @@ int fork(const char *thread_name, struct intr_frame *f){
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
-	printf("%s\n",cmd_line);
+//	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
 	if(id==-1)
 		exit(-1);
@@ -149,6 +149,7 @@ int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
+	printf("%s\n",file);
 	if(file==NULL)
 		return -1;
 	lock_acquire(&file_lock);
