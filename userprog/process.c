@@ -481,19 +481,21 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* Open executable file. */
 	file = filesys_open (f_name);
 	printf("%s\n",f_name);
+
+	file_deny_write(file);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", f_name);
 		free(arguments);
 		lock_release(&file_lock);
 		goto done;
 	}
+	t->cur_file = file;
 	
 	/*thread's running file will be initialized to the file that will executed
 		deny the writing	
 		=>protect with lock
 	*/
-	t->cur_file = file;
-	file_deny_write(file);
+
 	lock_release(&file_lock);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
