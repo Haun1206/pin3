@@ -213,7 +213,6 @@ process_exec (void *f_name) {
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
-		printf("WRONG\n");
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -246,6 +245,7 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
+		printf("HERE?\n");
 		//thread_exit();
 		return -1;
 	}
