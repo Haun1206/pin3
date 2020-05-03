@@ -154,16 +154,22 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
  *       this function. */
 static void
 __do_fork (void *aux) {
+	/*
 	struct intr_frame if_;
 	struct thread *current = thread_current ();
-	struct thread *parent = current->parent;
+	struct thread *parent = current->parent; */
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
 	struct intr_frame *parent_if = (struct intr_frame *) aux;
+	struct intr_frame if_;
+    /* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
+    //struct intr_frame *parent_if = (struct intr_frame *) aux;
+    struct thread *parent = (struct thread *) parent_if->R.rax;
+    struct thread *current = thread_current ();
 	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
-
+	if_R.rax =0;
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
 	if (current->pml4 == NULL)
@@ -197,9 +203,9 @@ __do_fork (void *aux) {
 	}
 	current->next_fd = parent->next_fd;
 
-	sema_up(&parent->child_fork);
+	
 	process_init ();
-
+sema_up(&parent->child_fork);
 	/* Finally, switch to the newly created process. */
 	
 
@@ -212,7 +218,7 @@ __do_fork (void *aux) {
 	}
 
 error:
-	if_.R.rax = -1;
+	current->tf.R.rax;
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
 	sema_up(&parent->child_fork);
