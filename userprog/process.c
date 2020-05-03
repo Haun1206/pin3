@@ -488,8 +488,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		deny the writing	
 		=>protect with lock
 	*/
-	t->cur_file = file;
-	//file_deny_write(file);
+	
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
@@ -570,6 +569,10 @@ load (const char *file_name, struct intr_frame *if_) {
     argument_stack(arguments,argc,if_);
 
 	success = true;
+	if(success){
+		t->cur_file = file;
+		file_deny_write(file);
+	}
 	free(arguments);
     //printf("%d\n",4);
 done:
