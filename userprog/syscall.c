@@ -305,7 +305,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			int pid = fork((const char *)f->R.rdi,f);
 
 
-			if(get_child_process(tid)->status_exit ==-1){
+			if(get_child_process(pid)->status_exit ==-1){
 				f->R.rax=-1;
 				return;
 			}
