@@ -304,7 +304,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_addr((void *)f->R.rdi);
 			printf("FORK: %s",(char *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
-
+			if(thread_current()->fd_table[pid]->status_exit==-1 &&pid>0)
+				pid = -1;
 			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
