@@ -302,7 +302,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FORK:
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
-			printf("FORK: %s",(char *)f->R.rdi);
+			//printf("FORK: %s",(char *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
 
 			
