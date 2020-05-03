@@ -309,12 +309,13 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
-	//file_close(curr->cur_file);
+	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
 		sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
+	//file_close(curr->cur_file);
 	process_cleanup ();
 
 
