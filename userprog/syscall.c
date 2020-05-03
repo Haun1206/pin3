@@ -304,12 +304,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_addr((void *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
 
-
-			if(get_child_process(pid)->status_exit ==-1){
-				f->R.rax=-1;
-				return;
-			}
-			
 			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
@@ -321,7 +315,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
 			f->R.rax = exec((const char *)f->R.rdi);
-			exit(-1);
 			//printf("%s\n", "maybe exec?");
 			break;
 		
