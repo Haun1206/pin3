@@ -289,14 +289,13 @@ process_wait (tid_t child_tid UNUSED) {
 	/*Wait until the process of child is done */
 	
 	//printf("Here\n");
-	if(child->process_exit==true){
-		list_remove(&child->child_elem);
-		res_status = child->status_exit;
-	}
-	else
-	{
-		sema_down(&child -> wait_sema);
-	}
+	list_remove(&child->child_elem);
+	res_status = child->status_exit;
+	
+	
+	
+	sema_down(&child -> wait_sema);
+	
 	
 	
 	//printf("Here\n");
