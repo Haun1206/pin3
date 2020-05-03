@@ -210,7 +210,7 @@ __do_fork (void *aux) {
 		do_iret (&if_);
 	}
 error:
-	//if_.R.rax = -1;
+	if_.R.rax = -1;
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
 	sema_up(&parent->child_fork);
