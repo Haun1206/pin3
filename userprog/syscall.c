@@ -385,4 +385,4 @@ void get_argument(struct intr_frame * f, int * arg, int count){
 		case 1:
 			arg[0] = f->R.rdi; 
 	}
-}*/
+}*/s
