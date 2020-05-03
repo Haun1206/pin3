@@ -235,15 +235,15 @@ process_exec (void *f_name) {
     tempo = strtok_r(tempo," ", &saveptr);
 	// And then load the binary 
 	*/
-
+	printf("HIHI\n");
 	success = load (file_name, &_if);
 	/*Write the success status to the threads*/
 	struct thread * t  = thread_current();
 	t->success_load = success;
-
+	printf("HIHI\n");
 
 //	sema_up(&t->parent->load_sema);
-
+	printf("HIHI\n");
 
     /* If load failed, quit. */
     free(file_name);
@@ -252,9 +252,11 @@ process_exec (void *f_name) {
 		//thread_exit();
 		return -1;
 	}
+	printf("HIHI\n");
 
 	/* Start switched process. */
 	do_iret (&_if);
+	printf("HIHI\n");
 	NOT_REACHED ();
 
 }
