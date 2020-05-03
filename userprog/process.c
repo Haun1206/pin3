@@ -97,7 +97,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	thread_current()->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	printf("FORKED NEW ONE ID: %d\n",id);
-	printf("ORIGINAL ONE HAS ID: %d\n".thread_current()->tid);
+	printf("ORIGINAL ONE HAS ID: %d\n",thread_current()->tid);
 	if(thread_current()->child_status_exit ==TID_ERROR){
 		id = TID_ERROR;
 		printf("IT HAS THIS ERROR\n");
