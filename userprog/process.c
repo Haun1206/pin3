@@ -199,7 +199,7 @@ __do_fork (void *aux) {
 
 	process_init ();
 	if(succ==true)
-		if_R.rax=0;
+		if_.R.rax=0;
 	/* Finally, switch to the newly created process. */
 	sema_up(&current->child_fork);
 	if (succ==true){
