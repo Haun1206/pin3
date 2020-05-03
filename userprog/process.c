@@ -658,8 +658,8 @@ struct thread * get_child_process(int pid){
 void remove_child_process(struct thread *cp){
 	if(cp==NULL) 
 		return;
-	if(cp->process_exit ==true)
-		list_remove(&(cp->child_elem));
+	//if(cp->process_exit ==true)
+	list_remove(&(cp->child_elem));
 	//palloc_free_page(cp);
 }
 
