@@ -116,7 +116,7 @@ int exec(const char *cmd_line){
 	//printf("3\n");
 	//lock_release(&file_lock);
 	//printf("4\n");
-	//struct thread * child = get_child_process(id);
+	struct thread * child = get_child_process(id);
 	//printf("5\n");
 	/*Wait until the child process is loaded*/
 	//sema_down(&(child->load_sema));
