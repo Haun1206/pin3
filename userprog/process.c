@@ -94,6 +94,7 @@ tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
 	printf("FORK: %s\n",name);
+	if_R.rax = thread_current();
 	thread_current()->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	printf("FORKED NEW ONE ID: %d\n",id);
@@ -169,7 +170,7 @@ __do_fork (void *aux) {
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
-	if_R.rax =0;
+	if_.R.rax =0;
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
 	if (current->pml4 == NULL)
