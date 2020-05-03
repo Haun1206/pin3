@@ -68,7 +68,7 @@ process_create_initd (const char *file_name) {
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
-	sema_down(&(thread_current()->load_sema));
+
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -241,8 +241,8 @@ process_exec (void *f_name) {
 	struct thread * t  = thread_current();
 	t->success_load = success;
 
-	/*If succcessful, the do the parent again*/
-	sema_up(&t->parent->load_sema);
+
+//	sema_up(&t->parent->load_sema);
 
 
     /* If load failed, quit. */
@@ -313,9 +313,8 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
-	/*
-	if(curr->cur_file != NULL)
-		file_close(curr->cur_file);*/
+	
+	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
 		//sema_up(&parent->child_fork);
