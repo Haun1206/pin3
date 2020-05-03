@@ -96,6 +96,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	char * tempo = malloc(strlen(name)+1);
 	strlcpy(tempo,name,strlen(name)+1);
 	char * saveptr;
+	printf("%s\n")
 	tempo = strtok_r(tempo, " ", &saveptr);
 	struct thread *t = thread_current();
 	t->forked =1;
