@@ -209,6 +209,7 @@ thread_print_stats (void) {
 tid_t
 thread_create (const char *name, int priority,
 		thread_func *function, void *aux) {
+	printf("%s\n",name);
 	struct thread *t;
 	tid_t tid;
 
