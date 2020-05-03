@@ -94,7 +94,7 @@ tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
 	printf("FORK: %s\n",name);
-	if_R.rax = thread_current();
+	if_.R.rax = thread_current();
 	thread_current()->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	printf("FORKED NEW ONE ID: %d\n",id);
