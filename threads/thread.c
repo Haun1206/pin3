@@ -412,8 +412,10 @@ thread_exit (void) {
 		temp = list_remove(temp);
 		sema_up(&t->exit_sema);
 	} 
+	/*
 	sema_up(&t->wait_sema);
 	sema_down(&t->exit_sema);
+	*/
 	intr_disable ();
     list_remove(&t->process_elem); /*clear the list of all process*/
 	do_schedule (THREAD_DYING);
