@@ -95,11 +95,9 @@ void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
+	t-> process_exit= true;
 	if(lock_held_by_current_thread(&file_lock)==1)
 		lock_release(&file_lock);
-	/*check the fork status*/
-	if(t->parent->forked ==1 && status ==-1)
-		t->parent->child_status_exit =-1;
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
