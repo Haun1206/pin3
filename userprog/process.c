@@ -68,6 +68,7 @@ process_create_initd (const char *file_name) {
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
+	sema_down(&thread_current()->load_sema);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -234,15 +235,14 @@ process_exec (void *f_name) {
     tempo = strtok_r(tempo," ", &saveptr);
 	// And then load the binary 
 	*/
-	lock_acquire(&file_lock);
+
 	success = load (file_name, &_if);
-	lock_release(&file_lock);
 	/*Write the success status to the threads*/
 	struct thread * t  = thread_current();
 	t->success_load = success;
 
 	/*If succcessful, the do the parent again*/
-	//sema_up(&(t->load_sema));
+	sema_up(&(t->parent->load_sema));
 
     /* If load failed, quit. */
     free(file_name);
@@ -255,6 +255,7 @@ process_exec (void *f_name) {
 	/* Start switched process. */
 	do_iret (&_if);
 	NOT_REACHED ();
+
 }
 
 
@@ -476,14 +477,14 @@ load (const char *file_name, struct intr_frame *if_) {
 	}
 	process_activate (thread_current ());
 
-	//lock_acquire(&file_lock);
+	lock_acquire(&file_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
 	printf("%s\n",f_name);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", f_name);
 		free(arguments);
-		//lock_release(&file_lock);
+		lock_release(&file_lock);
 		goto done;
 	}
 	
@@ -493,7 +494,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	*/
 	t->cur_file = file;
 	file_deny_write(file);
-	//lock_release(&file_lock);
+	lock_release(&file_lock);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
