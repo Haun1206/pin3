@@ -184,7 +184,7 @@ __do_fork (void *aux) {
 	
 	struct file ** parent_fd_table = palloc_get_page(PAL_ZERO);
 	parent_fd_table = parent->fd_table;
-	struct file ** child_fd_table = paaloc_get_page(PAL_ZERO);
+	struct file ** child_fd_table = palloc_get_page(PAL_ZERO);
 	child_fd_table = current->fd_table;
 	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
