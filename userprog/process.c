@@ -114,6 +114,7 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
+	//if(!is_user_vaddr(pte))
 	if(!is_user_pte(pte))
 		return true;
 	/* 2. Resolve VA from the parent's page map level 4. */
