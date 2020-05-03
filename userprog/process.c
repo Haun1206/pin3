@@ -98,8 +98,10 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	printf("FORKED NEW ONE ID: %d",id);
-	if(t->child_status_exit ==TID_ERROR)
+	if(t->child_status_exit ==TID_ERROR){
 		id = TID_ERROR;
+		printf("IT HAS THIS ERROR\n");
+	}
 	sema_down(&t->child_fork);
 	return id;
 }
