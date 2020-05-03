@@ -98,7 +98,8 @@ void exit (int status){
 	t-> process_exit= true;
 	if(lock_held_by_current_thread(&file_lock)==1)
 		lock_release(&file_lock);
-	lock_release(&open_lock);
+	if(lock_held_by_current_thread(&open_lock)==1)
+		lock_release(&open_lock);
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
