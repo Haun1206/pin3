@@ -168,8 +168,7 @@ int open (const char *file){
 	if(!strcmp(file,cpy))
 		file_deny_write(res);
 	*/
-	printf("%s\n", file);
-	printf("%s\n", thread_current()->name);
+
 	if(!strcmp(file,thread_current()->name))
 		file_deny_write(res);
 	int fd = process_add_file(res);
