@@ -212,7 +212,7 @@ process_exec (void *f_name) {
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
 	if(file_name==NULL){
-		thread_exit();
+		//thread_exit();
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -245,7 +245,7 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
-		thread_exit();
+		//thread_exit();
 		return -1;
 	}
 
