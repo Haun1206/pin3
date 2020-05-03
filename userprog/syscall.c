@@ -149,7 +149,7 @@ int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
-	printf("%s\n",file);
+	//printf("%s\n",file);
 	if(file==NULL)
 		return -1;
 	lock_acquire(&file_lock);
