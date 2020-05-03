@@ -98,23 +98,24 @@ void exit (int status){
 	t-> process_exit= true;
 	if(lock_held_by_current_thread(&file_lock)==1)
 		lock_release(&file_lock);
-	
+	lock_release(&open_lock);
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
 int fork(const char *thread_name, struct intr_frame *f){
+	lock_release(&open_lock);
 	return process_fork(thread_name, f);
 }
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
-	//lock_acquire(&file_lock);
+	lock_acquire(&open_lock);
 //	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
 	
 	if(id==-1)
 		exit(-1);
 	//printf("3\n");
-	//lock_release(&file_lock);
+	
 	//printf("4\n");
 	struct thread * child = get_child_process(id);
 	//printf("5\n");

@@ -19,5 +19,6 @@ void remove_child_process(struct thread *cp);
 int process_add_file(struct file *f);
 struct file *process_get_file(int fd);
 void process_close_file(int fd);
+struct lock open_lock;
 
 #endif /* userprog/process.h */
