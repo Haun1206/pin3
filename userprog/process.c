@@ -211,7 +211,7 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
-	printf("%s\n",file_name);
+	//printf("%s\n",file_name);
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
