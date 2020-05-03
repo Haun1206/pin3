@@ -96,13 +96,14 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	printf("FORK: %s\n",name);
 	thread_current()->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	printf("FORKED NEW ONE ID: %d",id);
-	
+	printf("FORKED NEW ONE ID: %d\n",id);
+	printf("ORIGINAL ONE HAS ID: %d\n".thread_current()->tid);
 	if(thread_current()->child_status_exit ==TID_ERROR){
 		id = TID_ERROR;
 		printf("IT HAS THIS ERROR\n");
 	}
 	if_->R.rax = id;
+	
 	printf("IT HASn't THIS ERROR\n");
 	sema_down(&thread_current()->child_fork);
 	printf("IT HASn't THIS ERROR\n");
