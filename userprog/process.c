@@ -60,9 +60,7 @@ process_create_initd (const char *file_name) {
 	if (fn_copy == NULL)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, strlen(file_name)+1);
-    /*
-     My addition
-     */
+    sema_down(&thread_current()->load_sema)
     char* save_ptr;
     char *f_name;
     f_name = strtok_r((char*)file_name," ",&save_ptr);
@@ -212,7 +210,6 @@ process_exec (void *f_name) {
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
 	if(file_name==NULL){
-		//thread_exit();
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -245,7 +242,6 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
-		//thread_exit();
 		return -1;
 	}
 
