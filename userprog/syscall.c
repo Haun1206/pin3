@@ -372,7 +372,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		default:
 			printf("wrong system call!\n");
-			thread_exit();
+			//thread_exit();
 			break;
 	}
 

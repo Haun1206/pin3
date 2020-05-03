@@ -95,9 +95,9 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	struct thread *t = thread_current();
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	sema_down(&t->child_fork);
 	if(t->child_status_exit ==TID_ERROR)
 		id = TID_ERROR;
+	sema_down(&t->child_fork);
 	return id;
 }
 
@@ -211,6 +211,7 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
+	printf("%s\n",file_name);
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
