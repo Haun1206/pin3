@@ -211,7 +211,10 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
-
+	if(file_name==NULL){
+		thread_exit();
+		return -1;
+	}
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
@@ -425,11 +428,12 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
 static bool
 load (const char *file_name, struct intr_frame *if_) {
 	bool success = false;
+	/*
 	if(file_name ==NULL){
 		printf ("load: %s: open failed\n", file_name);
 
 		goto done;
-	}
+	}*/
 	struct thread *t = thread_current ();
 	struct ELF ehdr;
 	struct file *file = NULL;
