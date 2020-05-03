@@ -93,21 +93,12 @@ initd (void *f_name) {
 tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
-	printf("FORK: %s\n",name);
-	if_->R.rax = thread_current();
-	thread_current()->forked =1;
+	struct thread *t = thread_current();
+	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	printf("FORKED NEW ONE ID: %d\n",id);
-	printf("ORIGINAL ONE HAS ID: %d\n",thread_current()->tid);
-	if(thread_current()->child_status_exit ==TID_ERROR){
+	if(t->child_status_exit ==TID_ERROR)
 		id = TID_ERROR;
-		printf("IT HAS THIS ERROR\n");
-	}
-	if_->R.rax = id;
-	
-	printf("IT HASn't THIS ERROR\n");
-	sema_down(&thread_current()->child_fork);
-	printf("IT HASn't THIS ERROR\n");
+	sema_down(&t->child_fork);
 	return id;
 }
 
@@ -123,7 +114,6 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
-	//if(!is_user_vaddr(pte))
 	if(!is_user_pte(pte))
 		return true;
 	/* 2. Resolve VA from the parent's page map level 4. */
@@ -155,22 +145,16 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
  *       this function. */
 static void
 __do_fork (void *aux) {
-	/*
 	struct intr_frame if_;
 	struct thread *current = thread_current ();
-	struct thread *parent = current->parent; */
+	struct thread *parent = current->parent;
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
 	struct intr_frame *parent_if = (struct intr_frame *) aux;
-	struct intr_frame if_;
-    /* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
-    //struct intr_frame *parent_if = (struct intr_frame *) aux;
-    struct thread *parent = (struct thread *) parent_if->R.rax;
-    struct thread *current = thread_current ();
 	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
-	if_.R.rax =0;
+
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
 	if (current->pml4 == NULL)
@@ -204,26 +188,18 @@ __do_fork (void *aux) {
 	}
 	current->next_fd = parent->next_fd;
 
-	
 	process_init ();
-sema_up(&parent->child_fork);
-	/* Finally, switch to the newly created process. */
-	
 
-	printf("number 1\n");
+	/* Finally, switch to the newly created process. */
+	sema_up(&parent->child_fork);
 	if (succ==1){
-		current->status_exit = if_.R.rax;
-		current->tf = if_;
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
-
 error:
-	current->tf.R.rax;
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
 	sema_up(&parent->child_fork);
-	printf("number2\n");
 	thread_exit ();
 	
 }

@@ -10,7 +10,6 @@
 #include "threads/thread.h"
 #include "threads/synch.h"
 #include "threads/loader.h"
-#include "threads/malloc.h"
 #include "threads/palloc.h"
 #include "threads/mmu.h"
 #include "userprog/gdt.h"
@@ -59,8 +58,8 @@ static void check_addr(void* addr){
         exit(-1);
 		return;
 	}
-	//void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
-    if (pml4e_walk(thread_current()->pml4,addr, false) == NULL){
+	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
+    if (page_ptr == NULL){
 		
         exit(-1);
 		return;
@@ -109,8 +108,9 @@ int fork(const char *thread_name, struct intr_frame *f){
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
-	printf("CMD_LINE: %s\n",cmd_line);
+//	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
+	
 	if(id==-1)
 		exit(-1);
 	//printf("3\n");
@@ -302,7 +302,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FORK:
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
-			printf("FORK: %s",(char *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
 
 			
@@ -315,7 +314,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe exec?");
 			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
-			printf("SYS_EXEC: %s\n",(char *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;
