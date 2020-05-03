@@ -248,7 +248,7 @@ process_exec (void *f_name) {
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
-		//printf("HERE?\n");
+		printf("HERE?\n");
 		//thread_exit();
 		return -1;
 	}
