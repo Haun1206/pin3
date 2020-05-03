@@ -111,7 +111,6 @@ int exec(const char *cmd_line){
 	//lock_acquire(&file_lock);
 //	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
-	printf("%d\n",id);
 	if(id==-1)
 		exit(-1);
 	//printf("3\n");

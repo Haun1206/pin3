@@ -253,7 +253,7 @@ process_exec (void *f_name) {
 		//thread_exit();
 		return -1;
 	}
-
+	printf("%d\n",success);
 
 	/* Start switched process. */
 	do_iret (&_if);
