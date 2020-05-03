@@ -229,7 +229,8 @@ process_exec (void *f_name) {
 	_if.eflags = FLAG_IF | FLAG_MBS;
 
 	/* We first kill the current context */
-	process_cleanup ();
+	if(strcmp(file_name,thread_current()->name)==0)
+		process_cleanup ();
 	/*
     char *tempo;
     char * saveptr;
