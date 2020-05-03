@@ -60,12 +60,13 @@ process_create_initd (const char *file_name) {
 	if (fn_copy == NULL)
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, strlen(file_name)+1);
-    sema_down(&thread_current()->load_sema);
+   
     char* save_ptr;
     char *f_name;
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
+	sema_down(&thread_current()->load_sema);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
