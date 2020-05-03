@@ -191,12 +191,10 @@ __do_fork (void *aux) {
 
 	/* Finally, switch to the newly created process. */
 	sema_up(&parent->child_fork);
-	printf("ss\n");
 	if (succ==1){
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
-	printf("ss\n");
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
@@ -212,7 +210,6 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
-
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
@@ -276,11 +273,10 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 	struct thread* child = get_child_process((int)child_tid);
 	//printf("Here\n");
-	
 	if(child ==NULL || child->child_status_exit==-1){
 		//list_remove(&child->child_elem);
 		return -1;
-	
+	}
 	//printf("Here\n");
 		
 	/*Wait until the process of child is done */
@@ -317,10 +313,9 @@ process_exit (void) {
 		file_close(curr->cur_file);*/
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
-		//sema_up(&parent->child_fork);
+		sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
-	sema_up(&parent->child_fork);
 	//file_close(curr->cur_file);
 	process_cleanup ();
 
