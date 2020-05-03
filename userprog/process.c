@@ -319,8 +319,8 @@ process_exit (void) {
 
 
 	//printf("%s\n", "clean");
-	//sema_up(&curr->exit_sema);
-	//sema_down(&curr->load_sema);
+	sema_up(&curr->wait_sema);
+	sema_down(&curr->exit_sema);
 	
 	
 }
@@ -562,7 +562,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     //printf("%d\n", 3);
-	sema_up(&t->load_sema);
+	//sema_up(&t->load_sema);
     argument_stack(arguments,argc,if_);
 
 	success = true;
