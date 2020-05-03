@@ -94,14 +94,11 @@ tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
 	struct thread *t = thread_current();
-	char * t_name = malloc(strlen(name)+1);
-	strlcpy(t_name,name,strlen(name)+1);
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	if(t->child_status_exit ==-1)
-		id = -1;
-	sema_down(&thread_current()->child_fork);
-	free(t_name);
+	if(t->child_status_exit ==TID_ERROR)
+		id = TID_ERROR;
+	sema_down(&t->child_fork);
 	return id;
 }
 
@@ -135,7 +132,7 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	if (!pml4_set_page (current->pml4, va, newpage, writable)) {
 		/* 6. TODO: if fail to insert page, do error handling. */
 		palloc_free_page(newpage);
-		//exit(-1);
+		exit(-1);
 		return false;
 	}
 	return true;
@@ -190,11 +187,11 @@ __do_fork (void *aux) {
 
 	}
 	current->next_fd = parent->next_fd;
-	sema_up(&parent->child_fork);
+
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
-
+	sema_up(&parent->child_fork);
 	if (succ==1){
 		if_.R.rax = 0;
 		do_iret (&if_);
@@ -229,7 +226,6 @@ process_exec (void *f_name) {
 	_if.eflags = FLAG_IF | FLAG_MBS;
 
 	/* We first kill the current context */
-	//if(strcmp(file_name,thread_current()->name)==0)
 	process_cleanup ();
 	/*
     char *tempo;
@@ -239,11 +235,10 @@ process_exec (void *f_name) {
     tempo = strtok_r(tempo," ", &saveptr);
 	// And then load the binary 
 	*/
-	struct thread * t  = thread_current();
-	//sema_down(&t->parent->load_sema);
+
 	success = load (file_name, &_if);
 	/*Write the success status to the threads*/
-	
+	struct thread * t  = thread_current();
 	t->success_load = success;
 
 
@@ -322,9 +317,8 @@ process_exit (void) {
 	curr->process_exit = true;
 	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
-	sema_down(&curr->exit_sema);
 	if(curr->child_status_exit==-1 && parent->forked ==1){
-		sema_up(&parent->child_fork);
+		//sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
 	//file_close(curr->cur_file);
@@ -332,8 +326,8 @@ process_exit (void) {
 
 
 	//printf("%s\n", "clean");
-	//sema_up(&curr->wait_sema);
-
+	sema_up(&curr->wait_sema);
+	sema_down(&curr->exit_sema);
 	
 	
 }
@@ -473,8 +467,7 @@ load (const char *file_name, struct intr_frame *if_) {
     }
     int argc = idx;
     
-    char * f_name = malloc(strlen(arguments[0])+1);
-	strlcpy(f_name,arguments[0],strlen(arguments[0])+1);
+    char * f_name = arguments[0];
     //printf("%d\n", 2);
     
 	/* Allocate and activate page directory. */
@@ -585,7 +578,6 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	success = true;
 	free(arguments);
-	free(f_name);
     //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
@@ -635,8 +627,7 @@ static void argument_stack(char * parse[], int count, struct intr_frame *if_){
     *(int*)*rsp = 0;
     int size = (uint64_t)(USER_STACK) - (uint64_t)(*rsp);
     //hex_dump((uintptr_t)(*rsp), *rsp, size, true);
-	//new add
-    free(arguments_address);
+    
     
 }
 /*
