@@ -93,11 +93,15 @@ initd (void *f_name) {
 tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
+	printf("FORK: %s\n",name);
 	struct thread *t = thread_current();
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	if(t->child_status_exit ==TID_ERROR)
+	printf("FORKED NEW ONE ID: %d",id);
+	if(t->child_status_exit ==TID_ERROR){
 		id = TID_ERROR;
+		printf("IT HAS THIS ERROR\n");
+	}
 	sema_down(&t->child_fork);
 	return id;
 }
@@ -114,6 +118,7 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
+	//if(!is_user_vaddr(pte))
 	if(!is_user_pte(pte))
 		return true;
 	/* 2. Resolve VA from the parent's page map level 4. */
@@ -287,17 +292,11 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 		
 	/*Wait until the process of child is done */
-	
-	//printf("Here\n");
-	list_remove(&child->child_elem);
-	res_status = child->status_exit;
-	
-	
-	
 	sema_down(&child -> wait_sema);
-	
-	
-	
+	//printf("Here\n");
+	if(child->process_exit==true)
+		list_remove(&child->child_elem);
+	res_status = child->status_exit;
 	//printf("Here\n");
 
 
@@ -658,8 +657,8 @@ struct thread * get_child_process(int pid){
 void remove_child_process(struct thread *cp){
 	if(cp==NULL) 
 		return;
-	//if(cp->process_exit ==true)
-	list_remove(&(cp->child_elem));
+	if(cp->process_exit ==true)
+		list_remove(&(cp->child_elem));
 	//palloc_free_page(cp);
 }
 
