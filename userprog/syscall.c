@@ -100,7 +100,7 @@ void exit (int status){
 		lock_release(&file_lock);
 	
 	printf("%s: exit(%d)\n", t->name, status);
-	sema_up(&t->child_fork);
+	sema_up(&child_fork);
 	thread_exit();
 }
 int fork(const char *thread_name, struct intr_frame *f){
@@ -308,7 +308,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			int pid = fork((const char *)f->R.rdi,f);
 
 			f->R.rax = pid;
-			sema_down(&thread_current()->child_fork);
 			//printf("%s\n", "maybe fork?");
 			
 			break;
