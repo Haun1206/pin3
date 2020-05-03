@@ -101,7 +101,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	printf("FORKED NEW ONE ID: %d",id);
 	if(t->child_status_exit ==-1){
 		id = -1;
-		f->R.rax=-1;
+		if_->R.rax=-1;
 		printf("IT HAS THIS ERROR\n");
 	}
 	sema_down(&t->child_fork);
