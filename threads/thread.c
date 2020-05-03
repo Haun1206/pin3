@@ -725,7 +725,7 @@ do_schedule(int status) {
 		struct thread *victim;
 		//printf("%p\n",destruction_req);
 		victim = list_entry (list_pop_front (&destruction_req), struct thread, elem);
-		//palloc_free_page(victim);
+		palloc_free_page(victim);
 	}
 	thread_current ()->status = status;
 	schedule ();
@@ -747,8 +747,8 @@ schedule (void) {
 
 #ifdef USERPROG
 	/* Activate the new address space. */
-	if(next->pml4)
-		process_activate (next);
+
+	process_activate (next);
 #endif
 
 	if (curr != next) {
