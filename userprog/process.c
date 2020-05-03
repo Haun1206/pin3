@@ -93,7 +93,10 @@ initd (void *f_name) {
 tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
-	printf("%s\n",name);
+	char * tempo = malloc(strlen(name)+1);
+	strlcpy(tempo,name,strlen(name)+1);
+	char * saveptr;
+	tempo = strtok_r(tempo, " ", &saveptr);
 	struct thread *t = thread_current();
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
