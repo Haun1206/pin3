@@ -164,7 +164,7 @@ int open (const char *file){
 	char * cpy = malloc(strlen(t->name)+1);
 	cpy = strlcpy(cpy,t->name,strlen(t->name)+1);
 	cpy= strtok_r(cpy," ",&save_ptr);
-	if(!strcmp(cpy,thread_current()->name))
+	if(!strcmp(file,cpy))
 		file_deny_write(res);
 	free(cpy);
 	int fd = process_add_file(res);
