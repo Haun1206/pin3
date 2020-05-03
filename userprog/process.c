@@ -198,8 +198,9 @@ __do_fork (void *aux) {
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
-	thread_exit ();
 	sema_up(&parent->child_fork);
+	thread_exit ();
+	
 }
 
 /* Switch the current execution context to the f_name.
