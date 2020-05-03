@@ -159,8 +159,14 @@ int open (const char *file){
 		lock_release(&file_lock);
 		return -1;
 	}
-	if(!strcmp(file,thread_current()->name))
+	struct thread * t = thread_current();
+	char * save_ptr;
+	char * cpy = malloc(strlen(t->name)+1);
+	cpy = strlcpy(cpy,t->name,strlen(t->name)+1);
+	cpy= strtok_r(cpy," ",&save_ptr);
+	if(!strcmp(cpy,thread_current()->name))
 		file_deny_write(res);
+	free(cpy);
 	int fd = process_add_file(res);
 	//printf("open %d\n",fd);
 	lock_release(&file_lock);
