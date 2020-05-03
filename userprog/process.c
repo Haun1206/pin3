@@ -186,18 +186,17 @@ __do_fork (void *aux) {
 
 	}
 	current->next_fd = parent->next_fd;
-	
-	if(parent->cur_file!=NULL)
-		file_deny_write(parent->cur_file);
 
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
 	sema_up(&parent->child_fork);
+	printf("ss\n");
 	if (succ==1){
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
+	printf("ss\n");
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
@@ -311,8 +310,9 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
+	/*
 	if(curr->cur_file != NULL)
-		file_close(curr->cur_file);
+		file_close(curr->cur_file);*/
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
 		sema_up(&parent->child_fork);
@@ -489,7 +489,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		=>protect with lock
 	*/
 	t->cur_file = file;
-	file_deny_write(t->cur_file);
+	file_deny_write(file);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
