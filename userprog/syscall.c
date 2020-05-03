@@ -302,6 +302,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FORK:
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
+			printf("FORK: %s",(char *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
 
 			
@@ -314,7 +315,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe exec?");
 			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
-			printf("SYS_EXEC: %s",(char *)f->R.rdi);
+			printf("SYS_EXEC: %s\n",(char *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;
