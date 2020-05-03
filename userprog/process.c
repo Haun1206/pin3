@@ -59,7 +59,7 @@ process_create_initd (const char *file_name) {
 	fn_copy = palloc_get_page (0);
 	if (fn_copy == NULL)
 		return TID_ERROR;
-	strlcpy (fn_copy, file_name, strlen(file_name)+1);
+	strlcpy (fn_copy, file_name, strlen(file_name)+4);
     /*
      My addition
      */
@@ -181,8 +181,11 @@ __do_fork (void *aux) {
 	 * TODO:       in include/filesys/file.h. Note that parent should not return
 	 * TODO:       from the fork() until this function successfully duplicates ->sema
 	 * TODO:       the resources of parent.*/
-	struct file ** parent_fd_table = parent->fd_table;
-	struct file ** child_fd_table = current->fd_table;
+	
+	struct file ** parent_fd_table = palloc_get_page(PAL_ZERO);
+	parent_fd_table = parent->fd_table;
+	struct file ** child_fd_table = paaloc_get_page(PAL_ZERO);
+	child_fd_table = current->fd_table;
 	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
@@ -215,8 +218,8 @@ error:
 int
 process_exec (void *f_name) {
 
-	char *file_name = malloc(strlen(f_name)+1);
-	strlcpy(file_name,(char *)f_name,strlen(f_name)+1);
+	char *file_name = malloc(strlen(f_name)+4);
+	strlcpy(file_name,(char *)f_name,strlen(f_name)+4);
 	bool success;
 	//printf("%s\n",file_name);
 	if(file_name==NULL){
