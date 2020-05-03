@@ -286,7 +286,7 @@ void close(int fd){
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
-	check_addr(f->rsp);
+	//check_addr(f->rsp);
 	switch(f->R.rax){
 		case SYS_HALT:
 			//printf("%s\n", "maybe halt?");
@@ -303,6 +303,14 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
+
+
+			if(get_child_process(tid)->status_exit ==-1){
+				f->R.rax=-1;
+				return;
+			}
+			
+			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
 			
@@ -313,6 +321,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
 			f->R.rax = exec((const char *)f->R.rdi);
+			exit(-1);
 			//printf("%s\n", "maybe exec?");
 			break;
 		

@@ -114,7 +114,7 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
-	if(!is_user_vaddr(va))
+	if(!is_user_pte(pte))
 		return true;
 	/* 2. Resolve VA from the parent's page map level 4. */
 	parent_page = pml4_get_page (parent->pml4, va);
@@ -289,7 +289,8 @@ process_wait (tid_t child_tid UNUSED) {
 	/*Wait until the process of child is done */
 	sema_down(&child -> wait_sema);
 	//printf("Here\n");
-	list_remove(&child->child_elem);
+	if(child->process_exit==true)
+		list_remove(&child->child_elem);
 	res_status = child->status_exit;
 	//printf("Here\n");
 
