@@ -194,7 +194,7 @@ __do_fork (void *aux) {
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
-	sema_up(&current->child_fork);
+	sema_up(&parent->child_fork);
 	if (succ==1){
 		if_.R.rax = 0;
 		do_iret (&if_);
@@ -202,7 +202,7 @@ __do_fork (void *aux) {
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
-	sema_up(&current->child_fork);
+	sema_up(&parent->child_fork);
 	thread_exit ();
 	
 }
@@ -324,7 +324,7 @@ process_exit (void) {
 	/*Check out the child exit staus and parent's forked*/
 	//sema_down(&curr->exit_sema);
 	if(curr->child_status_exit==-1 && parent->forked ==1){
-		//sema_up(&parent->child_fork);
+		sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
 	//file_close(curr->cur_file);
