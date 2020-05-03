@@ -212,10 +212,12 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
+	/*
+	tmp
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
-	}
+	}*/
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
@@ -275,10 +277,11 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 	struct thread* child = get_child_process((int)child_tid);
 	//printf("Here\n");
+	/*
 	if(child ==NULL || child->child_status_exit==-1){
 		//list_remove(&child->child_elem);
 		return -1;
-	}
+	}*/
 	//printf("Here\n");
 		
 	/*Wait until the process of child is done */
