@@ -94,11 +94,14 @@ tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
 	struct thread *t = thread_current();
+	char * t_name = malloc(strlen(name)+1);
+	strlcpy(t_name,name,strlen(name)+1);
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	if(t->child_status_exit ==TID_ERROR)
 		id = TID_ERROR;
 	sema_down(&t->child_fork);
+	free(t_name);
 	return id;
 }
 
@@ -467,7 +470,8 @@ load (const char *file_name, struct intr_frame *if_) {
     }
     int argc = idx;
     
-    char * f_name = arguments[0];
+    char * f_name = malloc(strlen(arguments[0])+1);
+	strlcpy(f_name,arguments[0],strlen(arguments[0])+1);
     //printf("%d\n", 2);
     
 	/* Allocate and activate page directory. */
@@ -578,6 +582,7 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	success = true;
 	free(arguments);
+	free(f_name);
     //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
