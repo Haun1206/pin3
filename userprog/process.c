@@ -95,7 +95,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
 	struct thread *t = thread_current();
 	t->forked =1;
-	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, t);
+	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	if(t->child_status_exit ==TID_ERROR)
 		id = TID_ERROR;
 	sema_down(&t->child_fork);
@@ -147,9 +147,9 @@ static void
 __do_fork (void *aux) {
 	struct intr_frame if_;
 	struct thread *current = thread_current ();
-	struct thread *parent = (struct thread *)aux;
+	struct thread *parent = current->parent;
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
-	struct intr_frame *parent_if = &parent->tf;
+	struct intr_frame *parent_if = (struct intr_frame *) aux;
 	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
