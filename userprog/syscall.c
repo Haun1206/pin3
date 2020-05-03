@@ -10,6 +10,7 @@
 #include "threads/thread.h"
 #include "threads/synch.h"
 #include "threads/loader.h"
+#include "threads/malloc.h"
 #include "threads/palloc.h"
 #include "threads/mmu.h"
 #include "userprog/gdt.h"
@@ -59,7 +60,7 @@ static void check_addr(void* addr){
 		return;
 	}
 	//void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
-    if (pm14e_walk(thread_current()->pml4,addr, false) == NULL){
+    if (pml4e_walk(thread_current()->pml4,addr, false) == NULL){
 		
         exit(-1);
 		return;
