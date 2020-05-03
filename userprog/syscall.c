@@ -169,7 +169,7 @@ int open (const char *file){
 		file_deny_write(res);
 	*/
 	
-	if(!strcmp(file,thread_current()->name))
+	if(strcmp(file,thread_current()->name)==0)
 		file_deny_write(res);
 	int fd = process_add_file(res);
 	//printf("open %d\n",fd);

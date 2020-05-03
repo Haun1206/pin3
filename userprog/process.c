@@ -68,7 +68,7 @@ process_create_initd (const char *file_name) {
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
-	sema_down(&thread_current()->load_sema);
+	sema_up(&thread_current()->parent->load_sema);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -242,7 +242,7 @@ process_exec (void *f_name) {
 	t->success_load = success;
 
 	/*If succcessful, the do the parent again*/
-	sema_up(&(t->parent->load_sema));
+	sema_down(&(t->load_sema));
 
     /* If load failed, quit. */
     free(file_name);
