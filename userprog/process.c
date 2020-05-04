@@ -131,8 +131,9 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	if (!pml4_set_page (current->pml4, va, newpage, writable)) {
 		/* 6. TODO: if fail to insert page, do error handling. */
 		palloc_free_page(newpage);
-		exit(-1);
+		//exit(-1);
 		return false;
+		
 	}
 	return true;
 }
@@ -182,7 +183,6 @@ __do_fork (void *aux) {
 
 	struct file ** child_fd_table = current->fd_table;
 	//printf("PARENT: %d\n",parent->next_fd);
-	printf("HERE1\t");
 	for(int i=2; i<parent->next_fd;i++){
 		//printf("HERE1\t");
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
@@ -203,12 +203,11 @@ __do_fork (void *aux) {
 	current->next_fd = parent->next_fd;
 	//current->next_fd = i+1;
 
-	printf("HERE2\t");
 
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
-	printf("HERE3\n");
+
 	sema_up(&parent->child_fork);
 	if (succ){
 		if_.R.rax = 0;
@@ -217,7 +216,6 @@ __do_fork (void *aux) {
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
-	printf("HERE4\n");
 	thread_exit ();
 	sema_up(&parent->child_fork);
 }
