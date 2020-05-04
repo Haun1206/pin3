@@ -103,9 +103,7 @@ void exit (int status){
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
-int fork(const char *thread_name, struct intr_frame *f){
-	return process_fork(thread_name, f);
-}
+
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
@@ -303,7 +301,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			printf("FORK: %s",(char *)f->R.rdi);
-			int pid = fork((const char *)f->R.rdi,f);
+			int pid = process_fork(thread_name, f);
 			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");

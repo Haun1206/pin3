@@ -98,7 +98,6 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	printf("FORKED NEW ONE ID: %d",id);
-	t->tf.R.rax= id;
 	sema_down(&t->child_fork);
 	return id;
 }
