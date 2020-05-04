@@ -192,7 +192,7 @@ __do_fork (void *aux) {
 
 	}
 	current->next_fd = parent->next_fd;
-
+	current->success_load = true;
 	process_init ();
 	if(succ==true)
 		if_.R.rax=0;
