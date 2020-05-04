@@ -212,6 +212,7 @@ __do_fork (void *aux) {
 		do_iret (&if_);
 	}
 error:
+	current->tf.R.rax = -1;
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
 	thread_exit ();
@@ -226,10 +227,11 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
+	/*
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
-	}
+	}*/
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
