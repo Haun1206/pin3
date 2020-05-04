@@ -151,7 +151,7 @@ __do_fork (void *aux) {
 	struct thread *parent = current->parent;
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
 	struct intr_frame *parent_if = (struct intr_frame *) aux;
-	bool succ = true;
+	bool succ = false;
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
@@ -192,6 +192,7 @@ __do_fork (void *aux) {
 	}
 	current->next_fd = parent->next_fd;
 	current->success_load = true;
+	succ=true;
 	process_init ();
 	if(succ==true)
 		if_.R.rax=0;
