@@ -201,6 +201,7 @@ __do_fork (void *aux) {
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
+	return;
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
