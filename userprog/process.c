@@ -182,6 +182,7 @@ __do_fork (void *aux) {
 
 	struct file ** child_fd_table = current->fd_table;
 	//printf("PARENT: %d\n",parent->next_fd);
+	printf("HERE1\t");
 	for(int i=2; i<parent->next_fd;i++){
 		//printf("HERE1\t");
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
@@ -200,21 +201,23 @@ __do_fork (void *aux) {
 
 	}	
 	current->next_fd = parent->next_fd;
+	//current->next_fd = i+1;
 
-	
+	printf("HERE2\t");
 
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
+	printf("HERE3\n");
 	sema_up(&parent->child_fork);
 	if (succ){
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
 error:
-	current->tf.R.rax = -1;
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
+	printf("HERE4\n");
 	thread_exit ();
 	sema_up(&parent->child_fork);
 }
@@ -227,11 +230,10 @@ process_exec (void *f_name) {
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
-	/*
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
-	}*/
+	}
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
