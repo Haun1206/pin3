@@ -10,7 +10,6 @@
 #include "threads/thread.h"
 #include "threads/synch.h"
 #include "threads/loader.h"
-#include "threads/malloc.h"
 #include "threads/palloc.h"
 #include "threads/mmu.h"
 #include "userprog/gdt.h"
@@ -26,6 +25,7 @@ void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
 void halt (void);
 void exit (int status);
+int fork(const char *thread_name,struct intr_frame *f);
 int exec (const char *cmd_line);
 int wait (int pid);
 bool create(const char *file, unsigned initial_size);
@@ -58,8 +58,8 @@ static void check_addr(void* addr){
         exit(-1);
 		return;
 	}
-	//void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
-    if (pml4e_walk(thread_current()->pml4,addr, false) == NULL){
+	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
+    if (page_ptr == NULL){
 		
         exit(-1);
 		return;
@@ -102,14 +102,15 @@ void exit (int status){
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
-
+int fork(const char *thread_name, struct intr_frame *f){
+	return process_fork(thread_name, f);
+}
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
-	printf("CMD_LINE: %s\n",cmd_line);
-	char * temp = malloc(strlen(cmd_line)+4);
-	strlcpy(temp,cmd_line,strlen(cmd_line)+4);
+//	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
+	
 	if(id==-1)
 		exit(-1);
 	//printf("3\n");
@@ -301,8 +302,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_FORK:
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
-			printf("FORK: %s",(char *)f->R.rdi);
-			int pid = process_fork((char *)f->R.rdi, f);
+			int pid = fork((const char *)f->R.rdi,f);
+
 			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
@@ -311,10 +312,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		case SYS_EXEC:
 			//printf("%s\n", "maybe exec?");
-			if(!is_user_vaddr((void *)f->R.rdi))
-				exit(-1);
+			check_addr((void *)f->R.rdi);
 			//printf("maybe exec?\n");
-			printf("SYS_EXEC: %s\n",(char *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
 			//printf("%s\n", "maybe exec?");
 			break;

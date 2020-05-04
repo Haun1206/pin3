@@ -59,7 +59,7 @@ process_create_initd (const char *file_name) {
 	fn_copy = palloc_get_page (0);
 	if (fn_copy == NULL)
 		return TID_ERROR;
-	strlcpy (fn_copy, file_name, strlen(file_name)+4);
+	strlcpy (fn_copy, file_name, strlen(file_name)+1);
     /*
      My addition
      */
@@ -93,11 +93,11 @@ initd (void *f_name) {
 tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
-	printf("FORK: %s\n",name);
 	struct thread *t = thread_current();
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
-	printf("FORKED NEW ONE ID: %d",id);
+	if(t->child_status_exit ==TID_ERROR)
+		id = TID_ERROR;
 	sema_down(&t->child_fork);
 	return id;
 }
@@ -114,7 +114,6 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
-	//if(!is_user_vaddr(pte))
 	if(!is_user_pte(pte))
 		return true;
 	/* 2. Resolve VA from the parent's page map level 4. */
@@ -151,11 +150,11 @@ __do_fork (void *aux) {
 	struct thread *parent = current->parent;
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
 	struct intr_frame *parent_if = (struct intr_frame *) aux;
-	bool succ = false;
+	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
-	if_.R.rax=0;
+
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
 	if (current->pml4 == NULL)
@@ -176,11 +175,8 @@ __do_fork (void *aux) {
 	 * TODO:       in include/filesys/file.h. Note that parent should not return
 	 * TODO:       from the fork() until this function successfully duplicates ->sema
 	 * TODO:       the resources of parent.*/
-	
-	struct file ** parent_fd_table = palloc_get_page(PAL_ZERO);
-	parent_fd_table = parent->fd_table;
-	struct file ** child_fd_table = palloc_get_page(PAL_ZERO);
-	child_fd_table = current->fd_table;
+	struct file ** parent_fd_table = parent->fd_table;
+	struct file ** child_fd_table = current->fd_table;
 	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
@@ -191,22 +187,19 @@ __do_fork (void *aux) {
 
 	}
 	current->next_fd = parent->next_fd;
-	current->success_load = true;
-	succ=true;
+
 	process_init ();
-	if(succ==true)
-		if_.R.rax=0;
+
 	/* Finally, switch to the newly created process. */
-	sema_up(&current->child_fork);
-	if (succ==true){
+	sema_up(&parent->child_fork);
+	if (succ==1){
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
-	return;
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
-	sema_up(&current->child_fork);
+	sema_up(&parent->child_fork);
 	thread_exit ();
 	
 }
@@ -216,8 +209,8 @@ error:
 int
 process_exec (void *f_name) {
 
-	char *file_name = malloc(strlen(f_name)+4);
-	strlcpy(file_name,(char *)f_name,strlen(f_name)+4);
+	char *file_name = malloc(strlen(f_name)+1);
+	strlcpy(file_name,(char *)f_name,strlen(f_name)+1);
 	bool success;
 	//printf("%s\n",file_name);
 	if(file_name==NULL){
@@ -287,18 +280,17 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 	struct thread* child = get_child_process((int)child_tid);
 	//printf("Here\n");
-	if(child ==NULL ){
+	if(child ==NULL || child->child_status_exit==-1){
 		//list_remove(&child->child_elem);
 		return -1;
 	}
 	//printf("Here\n");
 		
 	/*Wait until the process of child is done */
-	
 	sema_down(&child -> wait_sema);
 	//printf("Here\n");
-	
-	list_remove(&child->child_elem);
+	if(child->process_exit==true)
+		list_remove(&child->child_elem);
 	res_status = child->status_exit;
 	//printf("Here\n");
 
@@ -317,7 +309,7 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	for (int i= curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
+	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
     	process_close_file(curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
@@ -326,9 +318,10 @@ process_exit (void) {
 	curr->process_exit = true;
 	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
-
-	//list_remove(&curr->child_elem);
-	
+	if(curr->child_status_exit==-1 && parent->forked ==1){
+		//sema_up(&parent->child_fork);
+		list_remove(&curr->child_elem);
+	}
 	//file_close(curr->cur_file);
 	process_cleanup ();
 
