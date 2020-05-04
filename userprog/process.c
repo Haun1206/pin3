@@ -179,18 +179,24 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
 
 	struct file ** parent_fd_table = parent->fd_table;
+
 	struct file ** child_fd_table = current->fd_table;
+
 	for(int i=2; i<parent->next_fd;i++){
+		printf("HERE\n");
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
+		printf("HERE\n");
 		struct file *child_f = file_duplicate(f);
+		printf("HERE\n");
 		if(child_f==NULL){
-			printf("HERE?\n");
+			printf("HERE\n");
 			goto error;
 		}
 		child_fd_table[i] = child_f;
+		printf("HERE\n");
 
-	}
+	}	
 	current->next_fd = parent->next_fd;
 
 	
