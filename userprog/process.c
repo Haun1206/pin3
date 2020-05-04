@@ -183,16 +183,16 @@ __do_fork (void *aux) {
 	struct file ** child_fd_table = current->fd_table;
 	//printf("PARENT: %d\n",parent->next_fd);
 	for(int i=2; i<parent->next_fd;i++){
-		printf("HERE1\n");
+		printf("HERE1\t");
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
-		printf("HERE2\n");
+		printf("HERE2\t");
 		if(f==NULL)
 			continue;
 		struct file *child_f = file_duplicate(f);
-		printf("HERE3\n");
+		printf("HERE3\t");
 		if(child_f==NULL){
-			printf("HERE4\n");
+			printf("HERE4\t");
 			goto error;
 		}
 		child_fd_table[i] = child_f;
