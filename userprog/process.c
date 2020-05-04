@@ -293,10 +293,11 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 		
 	/*Wait until the process of child is done */
+	
 	sema_down(&child -> wait_sema);
 	//printf("Here\n");
-	if(child->process_exit==true)
-		list_remove(&child->child_elem);
+	
+	list_remove(&child->child_elem);
 	res_status = child->status_exit;
 	//printf("Here\n");
 
@@ -324,10 +325,9 @@ process_exit (void) {
 	curr->process_exit = true;
 	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
-	if( parent->forked ==1){
-		//sema_up(&parent->child_fork);
-		list_remove(&curr->child_elem);
-	}
+
+	//list_remove(&curr->child_elem);
+	
 	//file_close(curr->cur_file);
 	process_cleanup ();
 
