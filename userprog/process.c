@@ -286,7 +286,7 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 	struct thread* child = get_child_process((int)child_tid);
 	//printf("Here\n");
-	if(child ==NULL || child->child_status_exit==-1){
+	if(child ==NULL ){
 		//list_remove(&child->child_elem);
 		return -1;
 	}
@@ -316,7 +316,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
-    	file_close(curr->fd_table[curr->next_fd]);
+    	process_close_file(curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
@@ -324,7 +324,7 @@ process_exit (void) {
 	curr->process_exit = true;
 	file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
-	if(curr->child_status_exit==-1 && parent->forked ==1){
+	if( parent->forked ==1){
 		//sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
