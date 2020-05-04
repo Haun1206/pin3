@@ -98,6 +98,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
 	printf("FORKED NEW ONE ID: %d",id);
+	t->tf.R.rax= id;
 	sema_down(&t->child_fork);
 	return id;
 }
@@ -316,8 +317,8 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	for (int i= curr->next_fd-1; i >= 2; i--)
-    	process_close_file(curr->fd_table[i]);
+	for (int i= curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
+    	process_close_file(curr->fd_table[curr->next_fd]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
