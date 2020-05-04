@@ -188,7 +188,7 @@ __do_fork (void *aux) {
 		struct file *f = parent_fd_table[i];
 		printf("HERE2\n");
 		if(f==NULL)
-			printf("HI\n");
+			continue;
 		struct file *child_f = file_duplicate(f);
 		printf("HERE3\n");
 		if(child_f==NULL){
