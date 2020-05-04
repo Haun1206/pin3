@@ -110,8 +110,10 @@ int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
 	int id = process_exec(cmd_line);
-	if(id==-1)
-		exit(-1);
+	if(id==-1){
+		//exit(-1);
+		return -1;
+	}
 	//printf("3\n");
 	//lock_release(&file_lock);
 	//printf("4\n");
@@ -132,7 +134,7 @@ int wait(int pid){
 }
 bool create(const char*file, unsigned initial_size){
 	if(file==NULL){ 
-		exit(-1);
+		//exit(-1);
 		return false;
 	}
 	//check_str(file);
