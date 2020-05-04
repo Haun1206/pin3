@@ -258,7 +258,6 @@ process_exec (void *f_name) {
 	t->success_load = success;
 
 	/*If succcessful, the do the parent again*/
-	//sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
     free(file_name);
@@ -336,8 +335,8 @@ process_exit (void) {
 
 
 	//printf("%s\n", "clean");
-	//sema_up(&curr->exit_sema);
-	//sema_down(&curr->load_sema);
+	//sema_up(&curr->load_sema);
+	//sema_down(&curr->child_fork);
 	
 	
 }
@@ -579,7 +578,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     //printf("%d\n", 3);
-	sema_up(&t->load_sema);
+	//addsema_up(&t->load_sema);
     argument_stack(arguments,argc,if_);
 
 	success = true;
