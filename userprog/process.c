@@ -67,7 +67,7 @@ process_create_initd (const char *file_name) {
     char *f_name;
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
+	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
 
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
@@ -316,8 +316,8 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
-    	process_close_file(curr->fd_table[curr->next_fd]);
+	for (int i= curr->next_fd-1; i >= 2; i--)
+    	process_close_file(curr->fd_table[i]);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
