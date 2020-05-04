@@ -149,7 +149,6 @@ __do_fork (void *aux) {
 	struct intr_frame if_;
 	struct thread *current = thread_current ();
 	struct thread *parent = current->parent;
-	memcpy(&current->child_fork , &parent -> child_fork,sizeof(struct semaphore*));
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
 	struct intr_frame *parent_if = (struct intr_frame *) aux;
 	bool succ = true;
