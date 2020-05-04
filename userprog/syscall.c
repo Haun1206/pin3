@@ -143,6 +143,7 @@ bool create(const char*file, unsigned initial_size){
 bool remove(const char *file){
 	return filesys_remove(file);
 }
+
 int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
