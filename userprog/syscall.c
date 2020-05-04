@@ -107,6 +107,8 @@ int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
 	printf("CMD_LINE: %s\n",cmd_line);
+	char * temp = malloc(strlen(cmd_line)+4);
+	strlcpy(temp,cmd_line,strlen(cmd_line)+4);
 	int id = process_exec(cmd_line);
 	if(id==-1)
 		exit(-1);
@@ -309,7 +311,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		case SYS_EXEC:
 			//printf("%s\n", "maybe exec?");
-			check_addr((void *)f->R.rdi);
+			if(!is_user_vaddr((void *)f->R.rdi))
+				exit(-1);
 			//printf("maybe exec?\n");
 			printf("SYS_EXEC: %s\n",(char *)f->R.rdi);
 			f->R.rax = exec((const char *)f->R.rdi);
