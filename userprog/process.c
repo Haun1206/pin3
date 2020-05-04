@@ -151,19 +151,16 @@ __do_fork (void *aux) {
 	struct intr_frame *parent_if = (struct intr_frame *) aux;
 	bool succ = true;
 
-	printf("HERE\n");
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
 
-	printf("HERE\n");
 
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
 	if (current->pml4 == NULL)
 		goto error;
 
-	printf("HERE\n");
 
 	process_activate (current);
 #ifdef VM
@@ -180,24 +177,26 @@ __do_fork (void *aux) {
 	 * TODO:       in include/filesys/file.h. Note that parent should not return
 	 * TODO:       from the fork() until this function successfully duplicates ->sema
 	 * TODO:       the resources of parent.*/
-	printf("HERE\n");
+
 	struct file ** parent_fd_table = parent->fd_table;
 	struct file ** child_fd_table = current->fd_table;
 	for(int i=2; i<parent->next_fd;i++){
 		/*SHOULD IT BE 2? LITTE CONFUSED*/
 		struct file *f = parent_fd_table[i];
 		struct file *child_f = file_duplicate(f);
-		if(child_f==NULL)
+		if(child_f==NULL){
+			printf("HERE?\n");
 			goto error;
+		}
 		child_fd_table[i] = child_f;
 
 	}
 	current->next_fd = parent->next_fd;
-	printf("HERE\n");
+
 	
 
 	process_init ();
-	printf("HERE\n");
+
 	/* Finally, switch to the newly created process. */
 	sema_up(&parent->child_fork);
 	if (succ){
