@@ -26,7 +26,6 @@ void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
 void halt (void);
 void exit (int status);
-int fork(const char *thread_name,struct intr_frame *f);
 int exec (const char *cmd_line);
 int wait (int pid);
 bool create(const char *file, unsigned initial_size);
@@ -301,7 +300,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			printf("FORK: %s",(char *)f->R.rdi);
-			int pid = process_fork(thread_name, f);
+			int pid = process_fork((char *)f->R.rdi, f);
 			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
