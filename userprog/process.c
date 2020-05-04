@@ -68,7 +68,6 @@ process_create_initd (const char *file_name) {
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
 	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
-
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -96,9 +95,9 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	struct thread *t = thread_current();
 	t->forked =1;
 	tid_t id = thread_create(name, PRI_DEFAULT, __do_fork, if_);
+	sema_down(&t->child_fork);
 	if(t->child_status_exit ==TID_ERROR)
 		id = TID_ERROR;
-	sema_down(&t->child_fork);
 	return id;
 }
 
@@ -187,21 +186,21 @@ __do_fork (void *aux) {
 
 	}
 	current->next_fd = parent->next_fd;
+	
 
 	process_init ();
 
 	/* Finally, switch to the newly created process. */
 	sema_up(&parent->child_fork);
-	if (succ==1){
+	if (succ){
 		if_.R.rax = 0;
 		do_iret (&if_);
 	}
 error:
 	current->child_status_exit=-1;
 	parent->child_status_exit = -1;
-	sema_up(&parent->child_fork);
 	thread_exit ();
-	
+	sema_up(&parent->child_fork);
 }
 
 /* Switch the current execution context to the f_name.
@@ -210,9 +209,8 @@ int
 process_exec (void *f_name) {
 
 	char *file_name = malloc(strlen(f_name)+1);
-	strlcpy(file_name,(char *)f_name,strlen(f_name)+1);
+	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
-	//printf("%s\n",file_name);
 	if(file_name==NULL){
 		//thread_exit();
 		return -1;
@@ -241,24 +239,19 @@ process_exec (void *f_name) {
 	struct thread * t  = thread_current();
 	t->success_load = success;
 
-
-//	sema_up(&t->parent->load_sema);
-
+	/*If succcessful, the do the parent again*/
+	//sema_up(&(t->load_sema));
 
     /* If load failed, quit. */
     free(file_name);
 	if (!success){
-		//printf("HERE?\n");
 		//thread_exit();
 		return -1;
 	}
 
-
 	/* Start switched process. */
 	do_iret (&_if);
-
 	NOT_REACHED ();
-
 }
 
 
@@ -289,8 +282,7 @@ process_wait (tid_t child_tid UNUSED) {
 	/*Wait until the process of child is done */
 	sema_down(&child -> wait_sema);
 	//printf("Here\n");
-	if(child->process_exit==true)
-		list_remove(&child->child_elem);
+	list_remove(&child->child_elem);
 	res_status = child->status_exit;
 	//printf("Here\n");
 
@@ -316,19 +308,18 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
-	file_close(curr->cur_file);
+	//file_close(curr->cur_file);
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
-		//sema_up(&parent->child_fork);
+		sema_up(&parent->child_fork);
 		list_remove(&curr->child_elem);
 	}
-	//file_close(curr->cur_file);
 	process_cleanup ();
 
 
 	//printf("%s\n", "clean");
-	sema_up(&curr->wait_sema);
-	sema_down(&curr->exit_sema);
+	//sema_up(&curr->exit_sema);
+	//sema_down(&curr->load_sema);
 	
 	
 }
@@ -482,22 +473,18 @@ load (const char *file_name, struct intr_frame *if_) {
 	lock_acquire(&file_lock);
 	/* Open executable file. */
 	file = filesys_open (f_name);
-	//printf("%s\n",f_name);
+	lock_release(&file_lock);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", f_name);
 		free(arguments);
-		lock_release(&file_lock);
-		t->cur_file = NULL;
 		goto done;
 	}
-	
 	/*thread's running file will be initialized to the file that will executed
 		deny the writing	
 		=>protect with lock
 	*/
 	t->cur_file = file;
 	file_deny_write(file);
-	lock_release(&file_lock);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
@@ -574,7 +561,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
     //printf("%d\n", 3);
-	//sema_up(&t->load_sema);
+	sema_up(&t->load_sema);
     argument_stack(arguments,argc,if_);
 
 	success = true;
@@ -583,7 +570,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	//file_close (file);
+	file_close (file);
 	//free(arguments);
 	
 	return success;
@@ -692,10 +679,7 @@ void process_close_file(int fd){
 	
 	//printf("HI\n");
 	//printf("%d\n", fd);
-	if(lock_held_by_current_thread(&file_lock)==0)
-		lock_acquire(&file_lock);
 	file_close(rm_file);
-	lock_release(&file_lock);
 	//printf("HI\n");
 	/*Initialization*/
 

@@ -95,10 +95,11 @@ void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
 	t->status_exit = status;
-	t-> process_exit= true;
-	if(lock_held_by_current_thread(&file_lock)==1)
+	if(lock_held_by_current_thread(&file_lock))
 		lock_release(&file_lock);
-	
+	/*check the fork status*/
+	if(t->parent->forked ==1 && status ==-1)
+		t->parent->child_status_exit =-1;
 	printf("%s: exit(%d)\n", t->name, status);
 	thread_exit();
 }
@@ -108,9 +109,7 @@ int fork(const char *thread_name, struct intr_frame *f){
 int exec(const char *cmd_line){
 	/*Make child process and get the process descriptor*/
 	//lock_acquire(&file_lock);
-//	printf("%s\n",cmd_line);
 	int id = process_exec(cmd_line);
-	
 	if(id==-1)
 		exit(-1);
 	//printf("3\n");
@@ -119,14 +118,12 @@ int exec(const char *cmd_line){
 	struct thread * child = get_child_process(id);
 	//printf("5\n");
 	/*Wait until the child process is loaded*/
-	//sema_down(&(child->load_sema));
+	sema_down(&(child->load_sema));
 	/*If fail to load -> return -1 else, return the pid*/
-	
 	if(child->success_load ==false) 
 		return -1;
-	
-
-	return id;
+	else 
+		return id;
 }
 
 int wait(int pid){
@@ -139,11 +136,7 @@ bool create(const char*file, unsigned initial_size){
 		return false;
 	}
 	//check_str(file);
-	if(lock_held_by_current_thread(&file_lock)==0)
-		lock_acquire(&file_lock);
-	bool res = filesys_create(file, initial_size);
-	lock_release(&file_lock);
-	return res;
+	return filesys_create(file, initial_size);
 }
 bool remove(const char *file){
 	return filesys_remove(file);
@@ -152,7 +145,6 @@ int open (const char *file){
 	/*  Open the file and give the file descriptor
 		Ret; the file descriptor
 	*/
-	//printf("%s\n",file);
 	if(file==NULL)
 		return -1;
 	lock_acquire(&file_lock);
@@ -162,17 +154,7 @@ int open (const char *file){
 		lock_release(&file_lock);
 		return -1;
 	}
-	/*
-	struct thread * t = thread_current();
-	char * save_ptr;
-	char * cpy = malloc(strlen(t->name)+1);
-	cpy = strlcpy(cpy,t->name,strlen(t->name)+1);
-	cpy= strtok_r(cpy," ",&save_ptr);
-	if(!strcmp(file,cpy))
-		file_deny_write(res);
-	*/
-	
-	if(strcmp(file,thread_current()->name)==0)
+	if(!strcmp(file,thread_current()->name))
 		file_deny_write(res);
 	int fd = process_add_file(res);
 	//printf("open %d\n",fd);
@@ -262,11 +244,8 @@ unsigned tell (int fd){
 	/*tell the offset*/
 	struct file *f;
 	unsigned offset = 0;
-	if(lock_held_by_current_thread(&file_lock)==0)
-		lock_acquire(&file_lock);
 	if((f=process_get_file(fd))!=NULL)
 		offset = file_tell(f);
-	lock_release(&file_lock);
 	return offset;
 }
 void close(int fd){
@@ -286,7 +265,7 @@ void close(int fd){
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
-	//check_addr(f->rsp);
+	check_addr(f->rsp);
 	switch(f->R.rax){
 		case SYS_HALT:
 			//printf("%s\n", "maybe halt?");
@@ -303,8 +282,6 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe fork?");
 			check_addr((void *)f->R.rdi);
 			int pid = fork((const char *)f->R.rdi,f);
-
-			
 			f->R.rax = pid;
 			//printf("%s\n", "maybe fork?");
 			
@@ -334,10 +311,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_REMOVE:
 			//printf("%s\n", "maybe remove?");
 			check_addr((void *)f->R.rdi);
-			if(lock_held_by_current_thread(&file_lock)==0)
-				lock_acquire(&file_lock);
 			f->R.rax = remove((const char *) f->R.rdi);
-			lock_release(&file_lock);
 			//printf("%s\n", "maybe remove?");
 			break;
 
@@ -389,7 +363,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 
 		default:
 			printf("wrong system call!\n");
-			//thread_exit();
+			thread_exit();
 			break;
 	}
 
