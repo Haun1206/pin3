@@ -67,7 +67,7 @@ process_create_initd (const char *file_name) {
     char *f_name;
     f_name = strtok_r((char*)file_name," ",&save_ptr);
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (f_name, PRI_DEFAULT, initd, fn_copy);
+	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
 
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
