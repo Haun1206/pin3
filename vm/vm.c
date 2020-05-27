@@ -3,6 +3,8 @@
 #include "threads/malloc.h"
 #include "vm/vm.h"
 #include "vm/inspect.h"
+#include <hash.h>
+#include "threads/mmu.h"
 
 /* Initializes the virtual memory subsystem by invoking each subsystem's
  * intialize codes. */
@@ -36,6 +38,8 @@ page_get_type (struct page *page) {
 static struct frame *vm_get_victim (void);
 static bool vm_do_claim_page (struct page *page);
 static struct frame *vm_evict_frame (void);
+static uint64_t vm_hash_func(const struct hash_elem *e, void * aux UNUSED);
+static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b);
 
 /* Create the pending page object with initializer. If you want to create a
  * page, do not create it directly and make it through this function or
@@ -48,13 +52,25 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 	ASSERT (VM_TYPE(type) != VM_UNINIT)
 
 	struct supplemental_page_table *spt = &thread_current ()->spt;
-
+    struct page * npage = malloc(sizeof(page));
 	/* Check wheter the upage is already occupied or not. */
 	if (spt_find_page (spt, upage) == NULL) {
 		/* TODO: Create the page, fetch the initialier according to the VM type,
 		 * TODO: and then create "uninit" page struct by calling uninit_new. You
 		 * TODO: should modify the field after calling the uninit_new. */
-
+        struct page * p = malloc(sizeof(struct page));
+        switch(VM_TYPE(type)){
+            case VM_ANON:
+                uninit_new(npage,upage,init,type,aux,&anon_initializer);
+                break;
+            case VM_FILE:
+                break;
+            case VM_PAGE_CACHE:
+                break;
+            case default:
+                break;
+        }
+        
 		/* TODO: Insert the page into the spt. */
 	}
 err:
@@ -66,8 +82,15 @@ struct page *
 spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	struct page *page = NULL;
 	/* TODO: Fill this function. */
-
-	return page;
+    page = malloc(sizeof(struct page));
+    page -> va = va;
+    struct hash_elem * elem= hash_find(spt->hash_table, &page->hash_elem);
+    free(page);
+    if (elem==NULL)
+        return NULL;
+    else
+        return hash_entry(e,struct page, h_elem);
+	return
 }
 
 /* Insert PAGE into spt with validation. */
@@ -76,7 +99,8 @@ spt_insert_page (struct supplemental_page_table *spt UNUSED,
 		struct page *page UNUSED) {
 	int succ = false;
 	/* TODO: Fill this function. */
-
+    if(hash_insert(spt->hash_table, &page->h_elem) ==NULL)
+        succ = true;
 	return succ;
 }
 
@@ -113,9 +137,11 @@ static struct frame *
 vm_get_frame (void) {
 	struct frame *frame = NULL;
 	/* TODO: Fill this function. */
-
+    frame = malloc(sizeof(struct frame));
 	ASSERT (frame != NULL);
-	ASSERT (frame->page == NULL);
+    frame->kva = palloc_get_page(PAL_USER);
+    if(frame->kva ==NULL)
+        PANIC("todo");
 	return frame;
 }
 
@@ -154,7 +180,7 @@ bool
 vm_claim_page (void *va UNUSED) {
 	struct page *page = NULL;
 	/* TODO: Fill this function */
-
+    page = spt_find_page(thread_current()->spt,va);
 	return vm_do_claim_page (page);
 }
 
@@ -162,19 +188,31 @@ vm_claim_page (void *va UNUSED) {
 static bool
 vm_do_claim_page (struct page *page) {
 	struct frame *frame = vm_get_frame ();
-
+    
 	/* Set links */
 	frame->page = page;
 	page->frame = frame;
 
 	/* TODO: Insert page table entry to map page's VA to frame's PA. */
-
+    pml4_set_page(thread_current()->pml4, page->va, frame->kva, true);
 	return swap_in (page, frame->kva);
 }
 
+static uint64_t vm_hash_func(const struct hash_elem *e, void * aux UNUSED){
+    struct page * temp = hash_entry(e, struct page, h_elem);
+    uint64_t res = hash_bytes(&temp->va, sizeof(temp->va));
+    //Should I omit &?
+}
+static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b){
+    const struct page * fst = hash_entry(a,struct page, h_elem);
+    const struct page * snd = hash_entry(b,struct page, h_elem);
+    return fst->va < snd->va;
+}
 /* Initialize new supplemental page table */
 void
 supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
+    spt->hash_table = malloc(sizeof(struct hash));
+    hash_init(spt->hash_table, vm_hash_func, vm_less_func, NULL);
 }
 
 /* Copy supplemental page table from src to dst */
