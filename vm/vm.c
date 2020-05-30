@@ -5,6 +5,8 @@
 #include "vm/inspect.h"
 #include <hash.h>
 #include "threads/mmu.h"
+#include "vm/uninit.h"
+#include "threads/vaddr.h"
 
 /* Initializes the virtual memory subsystem by invoking each subsystem's
  * intialize codes. */
@@ -72,6 +74,7 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
         }
         
 		/* TODO: Insert the page into the spt. */
+        spt_insert_page(spt,p);
 	}
 err:
 	return false;
