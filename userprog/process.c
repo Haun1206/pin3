@@ -881,12 +881,13 @@ lazy_load_segment (struct page *page, void *aux) {
             printf("SOMETHING IS WRONG\n");
             return false;
         }
+        /* Load this page. */
+
+        memset (kpage + aux_t->read_bytes, 0, aux_t->zero_bytes);
     }
 
 
-    /* Load this page. */
-
-    memset (kpage + aux_t->read_bytes, 0, aux_t->zero_bytes);
+  
     return true;
     
 }
