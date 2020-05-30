@@ -203,7 +203,7 @@ vm_do_claim_page (struct page *page) {
 
 static uint64_t vm_hash_func(const struct hash_elem *e, void * aux UNUSED){
     struct page * temp = hash_entry(e, struct page, h_elem);
-    uint64_t res = hash_bytes(&temp->va, sizeof(temp->va));
+    uint64_t res = hash_bytes(temp->va, sizeof(temp->va));
     //Should I omit &?
 }
 static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b){
