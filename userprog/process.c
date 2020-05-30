@@ -35,7 +35,7 @@ struct aux_load{
     uint32_t zero_bytes;
     bool writable;
     
-}
+};
 #endif
 
 static void process_cleanup (void);
