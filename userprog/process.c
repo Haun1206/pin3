@@ -28,7 +28,7 @@
 #ifdef VM
 
 struct aux_load{
-    struct file *f;
+    struct file *file;
     off_t ofs;
     //uint8_t *upage;
     uint32_t read_bytes;
