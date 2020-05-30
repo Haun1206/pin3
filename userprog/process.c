@@ -36,6 +36,7 @@ struct aux_load{
     bool writable;
     
 }
+#endif
 
 static void process_cleanup (void);
 static bool load (const char *file_name, struct intr_frame *if_);
