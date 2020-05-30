@@ -70,7 +70,7 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
                 break;
             case VM_PAGE_CACHE:
                 break;
-            case default:
+            default:
                 break;
         }
         
@@ -88,13 +88,12 @@ spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	/* TODO: Fill this function. */
     page = malloc(sizeof(struct page));
     page -> va = va;
-    struct hash_elem * elem= hash_find(spt->hash_table, &page->hash_elem);
+    struct hash_elem * elem= hash_find(spt->hash_table, &page->h_elem);
     free(page);
     if (elem==NULL)
         return NULL;
     else
-        return hash_entry(e,struct page, h_elem);
-	return
+        return hash_entry(elem,struct page, h_elem);
 }
 
 /* Insert PAGE into spt with validation. */
