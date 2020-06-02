@@ -89,7 +89,9 @@ process_create_initd (const char *file_name) {
 static void
 initd (void *f_name) {
 #ifdef VM
+    printf("HI");
 	supplemental_page_table_init (&thread_current ()->spt);
+    printf("HI");
 #endif
 
 	process_init ();
