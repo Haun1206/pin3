@@ -215,8 +215,8 @@ static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b){
 /* Initialize new supplemental page table */
 void
 supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
-    spt->hash_table = malloc(sizeof(struct hash));
-    hash_init(spt->hash_table, vm_hash_func, vm_less_func, NULL);
+    //spt->hash_table = malloc(sizeof(struct hash));
+    ASSERT(hash_init(spt->hash_table, vm_hash_func, vm_less_func, NULL));
 }
 
 /* Copy supplemental page table from src to dst */
