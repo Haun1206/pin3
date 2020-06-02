@@ -239,13 +239,13 @@ error:
  * Returns -1 on fail. */
 int
 process_exec (void *f_name) {
-    printf("HI\n");
+    //printf("HI\n");
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
-        printf("HI\n");
+        printf("HI12\n");
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -278,7 +278,7 @@ process_exec (void *f_name) {
     free(file_name);
 	if (!success){
 		//thread_exit();
-        printf("HI\n");
+        printf("HI23\n");
 		return -1;
 	}
 
