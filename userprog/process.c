@@ -89,13 +89,13 @@ process_create_initd (const char *file_name) {
 static void
 initd (void *f_name) {
 #ifdef VM
-    printf("HI");
+    //printf("HI");
 	supplemental_page_table_init (&thread_current ()->spt);
-    printf("HI");
+    //printf("HI");
 #endif
 
 	process_init ();
-
+    printf("%s\n", f_name);
 	if (process_exec (f_name) < 0)
 		PANIC("Fail to launch initd\n");
 	NOT_REACHED ();
