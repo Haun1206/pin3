@@ -245,7 +245,7 @@ process_exec (void *f_name) {
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
-        printf("HI12\n");
+        //printf("HI12\n");
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -278,7 +278,7 @@ process_exec (void *f_name) {
     free(file_name);
 	if (!success){
 		//thread_exit();
-        printf("HI23\n");
+        //printf("HI23\n");
 		return -1;
 	}
 
@@ -971,6 +971,7 @@ setup_stack (struct intr_frame *if_) {
         if_->rsp = USER_STACK;
         success = true;
     }
+	printf(%d\n,success);
 
 	return success;
 }
