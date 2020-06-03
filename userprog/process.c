@@ -971,7 +971,7 @@ setup_stack (struct intr_frame *if_) {
         if_->rsp = USER_STACK;
         success = true;
     }
-	printf(%d\n,success);
+	printf("%d\n",success);
 
 	return success;
 }
