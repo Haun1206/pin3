@@ -245,7 +245,7 @@ process_exec (void *f_name) {
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
-        printf("HI12\n");
+        //printf("HI12\n");
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -499,7 +499,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	t->pml4 = pml4_create ();
 	if (t->pml4 == NULL){
 		free(arguments);
-		printf("HERE1\n");
+		//printf("HERE1\n");
 		goto done;
 	}
 	process_activate (thread_current ());
@@ -577,12 +577,12 @@ load (const char *file_name, struct intr_frame *if_) {
 					}
 					if (!load_segment (file, file_page, (void *) mem_page,
 								read_bytes, zero_bytes, writable)){
-						printf("HERE3\n");
+						//printf("HERE3\n");
 						goto done;
 					}
 				}
 				else{
-					printf("HERE2\n");
+					//printf("HERE2\n");
 					goto done;
 				}
 				break;
@@ -591,7 +591,7 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* Set up stack. */
 	if (!setup_stack (if_)){
-		printf("HERE4\n");
+		//printf("HERE4\n");
 		goto done;
 	}
 
@@ -944,8 +944,10 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         
         
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
-					writable, lazy_load_segment, aux))
+					writable, lazy_load_segment, aux)){
+			printf("THEN IS IT HERE?\n");
 			return false;
+		}
 
 		/* Advance. */
 		read_bytes -= page_read_bytes;
