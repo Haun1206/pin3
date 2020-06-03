@@ -967,11 +967,10 @@ setup_stack (struct intr_frame *if_) {
 	 * TODO: You should mark the page is stack. */
 	/* TODO: Your code goes here */
     if(vm_alloc_page_with_initializer(VM_ANON, stack_bottom, true, NULL, NULL)&&vm_claim_page(stack_bottom)){
+		printf("HI\n");
         if_->rsp = USER_STACK;
         success = true;
     }
-	if (success==true)
-		printf("EYS\n");
 	return success;
 }
 #endif /* VM */
