@@ -95,7 +95,7 @@ initd (void *f_name) {
 #endif
 
 	process_init ();
-    printf("%s\n", f_name);
+    //printf("%s\n", f_name);
 	if (process_exec (f_name) < 0)
 		PANIC("Fail to launch initd\n");
 	NOT_REACHED ();
@@ -245,7 +245,7 @@ process_exec (void *f_name) {
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
-        //printf("HI12\n");
+        printf("HI12\n");
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -278,7 +278,7 @@ process_exec (void *f_name) {
     free(file_name);
 	if (!success){
 		//thread_exit();
-        //printf("HI23\n");
+        printf("HI23\n");
 		return -1;
 	}
 
@@ -945,7 +945,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
 					writable, lazy_load_segment, aux)){
-			printf("THEN IS IT HERE?\n");
+			//printf("THEN IS IT HERE?\n");
 			return false;
 		}
 
