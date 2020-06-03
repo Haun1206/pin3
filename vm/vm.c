@@ -80,7 +80,6 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 			return true;
 		}
 		else{
-			printf("HERE?\n00");
 			palloc_free_page(p);
 			goto err;
 		}
@@ -112,13 +111,11 @@ bool
 spt_insert_page (struct supplemental_page_table *spt UNUSED,
 		struct page *page UNUSED) {
 	int succ = false;
-	if (page==NULL){
-		printf("THERE!\n");
-		return false;
-	}
+	printf("HI\n");
 	/* TODO: Fill this function. */
     if(hash_insert(spt->hash_table, &page->h_elem) ==NULL)
         succ = true;
+	printf("HI\n");
 	return succ;
 }
 
@@ -216,7 +213,7 @@ vm_do_claim_page (struct page *page) {
 	return swap_in (page, frame->kva);
 }
 
-static uint64_t vm_hash_func(const struct hash_elem *e, void * aux UNUSED){
+static uint64_t vm_hash_func(const struct hash_elem *e, void * aux ){
     struct page * temp = hash_entry(e, struct page, h_elem);
     uint64_t res = hash_bytes(&temp->va, sizeof(temp->va));
     return res;
@@ -229,7 +226,7 @@ static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b){
 }
 /* Initialize new supplemental page table */
 void
-supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
+supplemental_page_table_init (struct supplemental_page_table *spt ) {
     spt->hash_table = malloc(sizeof(struct hash));
     hash_init(spt->hash_table, vm_hash_func, vm_less_func, NULL);
 }
