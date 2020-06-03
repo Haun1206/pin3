@@ -970,7 +970,8 @@ setup_stack (struct intr_frame *if_) {
         if_->rsp = USER_STACK;
         success = true;
     }
-
+	if (success==true)
+		printf("EYS\n");
 	return success;
 }
 #endif /* VM */
