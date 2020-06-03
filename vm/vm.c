@@ -61,7 +61,7 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 		/* TODO: Create the page, fetch the initialier according to the VM type,
 		 * TODO: and then create "uninit" page struct by calling uninit_new. You
 		 * TODO: should modify the field after calling the uninit_new. */
-        struct page * p = malloc(sizeof(struct page));
+        struct page * p = palloc_get_page(PAL_USER);
         switch(VM_TYPE(type)){
             case VM_ANON:
                 uninit_new(npage,upage,init,type,aux,&anon_initializer);
@@ -80,7 +80,8 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 			return true;
 		}
 		else{
-			free(p);
+			printf("HERE?\n00");
+			palloc_free_page(p);
 			goto err;
 		}
 		//printf("1\n");
