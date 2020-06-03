@@ -80,12 +80,13 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 			return true;
 		}
 		else{
+			free(p);
 			goto err;
 		}
 		//printf("1\n");
 	}
 err:
-	free(p);
+
 	//printf("?\n");
 	return false;
 }
