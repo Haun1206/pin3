@@ -499,6 +499,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	t->pml4 = pml4_create ();
 	if (t->pml4 == NULL){
 		free(arguments);
+		printf("HERE1\n");
 		goto done;
 	}
 	process_activate (thread_current ());
@@ -575,18 +576,24 @@ load (const char *file_name, struct intr_frame *if_) {
 						zero_bytes = ROUND_UP (page_offset + phdr.p_memsz, PGSIZE);
 					}
 					if (!load_segment (file, file_page, (void *) mem_page,
-								read_bytes, zero_bytes, writable))
+								read_bytes, zero_bytes, writable)){
+						printf("HERE3\n");
 						goto done;
+					}
 				}
-				else
+				else{
+					printf("HERE2\n");
 					goto done;
+				}
 				break;
 		}
 	}
 
 	/* Set up stack. */
-	if (!setup_stack (if_))
+	if (!setup_stack (if_)){
+		printf("HERE4\n");
 		goto done;
+	}
 
 	/* Start address. */
 	if_->rip = ehdr.e_entry;
