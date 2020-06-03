@@ -278,7 +278,7 @@ process_exec (void *f_name) {
     free(file_name);
 	if (!success){
 		//thread_exit();
-        printf("HI23\n");
+        //printf("HI23\n");
 		return -1;
 	}
 

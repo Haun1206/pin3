@@ -64,7 +64,9 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
         struct page * p = malloc(sizeof(struct page));
         switch(VM_TYPE(type)){
             case VM_ANON:
+				printf("HERE1\n");
                 uninit_new(npage,upage,init,type,aux,&anon_initializer);
+				printf("2\n");
                 break;
             case VM_FILE:
                 break;
