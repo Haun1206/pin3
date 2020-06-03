@@ -590,9 +590,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	}
 
 	/* Set up stack. */
-	printf("HERE5\n");
 	if (!setup_stack (if_)){
-		printf("HERE4\n");
 		goto done;
 	}
 
@@ -972,7 +970,7 @@ setup_stack (struct intr_frame *if_) {
         if_->rsp = USER_STACK;
         success = true;
     }
-	printf("%d\n",success);
+	printf("%IT IS SUCCESS d\n",success);
 
 	return success;
 }
