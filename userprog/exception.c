@@ -142,8 +142,10 @@ page_fault (struct intr_frame *f) {
 	user = (f->error_code & PF_U) != 0;
 	if(user==0||!is_user_vaddr(fault_addr))
 		exit(-1);
-	if(not_present==1)
+	if(not_present==1){
+		printf("HI\n");
 		exit(-1);
+	}
 	if(fault_addr==NULL)
 		exit(-1);
 	if(fault_addr==0)
