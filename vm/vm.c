@@ -98,7 +98,7 @@ err:
 struct page *
 spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	struct page p;
-    p.va = va;
+    p.va = pg_round_down(va);
     struct hash_elem * elem= hash_find(&spt->hash_table, &p.h_elem);
 
     if (elem==NULL)
