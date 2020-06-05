@@ -111,11 +111,9 @@ bool
 spt_insert_page (struct supplemental_page_table *spt UNUSED,
 		struct page *page UNUSED) {
 	int succ = false;
-	printf("HI\n");
 	/* TODO: Fill this function. */
     if(hash_insert(spt->hash_table, &page->h_elem) ==NULL)
         succ = true;
-	printf("HI\n");
 	return succ;
 }
 
