@@ -73,7 +73,7 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
             default:
                 break;
         }
-		p->writable = writable;
+	
         
 		/* TODO: Insert the page into the spt. */
 		//printf("1\n");
