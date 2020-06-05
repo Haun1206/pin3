@@ -8,6 +8,10 @@
 #include "vm/uninit.h"
 #include "threads/vaddr.h"
 #include "threads/thread.h"
+#include "vm/anon.h"
+#include "userprog/process.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Initializes the virtual memory subsystem by invoking each subsystem's
  * intialize codes. */
