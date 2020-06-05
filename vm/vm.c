@@ -96,7 +96,7 @@ spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	struct page p;
     p.va = va;
     struct hash_elem * elem= hash_find(&spt->hash_table, &p.h_elem);
-    free(page);
+
     if (elem==NULL)
         return NULL;
     else
