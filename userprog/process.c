@@ -866,7 +866,6 @@ lazy_load_segment (struct page *page, void *aux) {
 	/* TODO: VA is available when calling this function. */
     
     struct aux_load * aux_t = (struct aux_load *)aux;
-    file_seek(aux_t->file,aux_t->ofs);
     
     //In aux it has file, ofs, read_bytes, zero_bytes, writable
     //Should modify this part
@@ -875,7 +874,7 @@ lazy_load_segment (struct page *page, void *aux) {
         return false;
     else{
         uint8_t * kva = page->frame->kva;
-        if (file_read (aux_t->file, kva, aux_t->read_bytes) != (int) aux_t->read_bytes) {
+        if (file_read_at(aux_t->file, kva, aux_t->read_bytes, aux_t->ofs) != (int) aux_t->read_bytes) {
             printf("SOMETHING IS WRONG\n");
             return false;
         }
@@ -910,7 +909,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
 	ASSERT (pg_ofs (upage) == 0);
 	ASSERT (ofs % PGSIZE == 0);
-
+	printf("IAM HERE\n");
 	while (read_bytes > 0 || zero_bytes > 0) {
 		/* Do calculate how to fill this page.
 		 * We will read PAGE_READ_BYTES bytes from FILE
@@ -954,12 +953,13 @@ setup_stack (struct intr_frame *if_) {
 	 * TODO: If success, set the rsp accordingly.
 	 * TODO: You should mark the page is stack. */
 	/* TODO: Your code goes here */
-    if(vm_alloc_page(VM_MARKER_0 | VM_ANON, stack_bottom, true))
+    if(vm_alloc_page(VM_MARKER_0 | VM_ANON, stack_bottom, true)){
 		if(vm_claim_page(stack_bottom)){
 		
         	if_->rsp = stack_bottom+PGSIZE;
         	success = true;
    		}
+	}
 	return success;
 }
 #endif /* VM */
