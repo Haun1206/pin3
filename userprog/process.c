@@ -596,7 +596,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	//file_close (file);
+	file_close (file);
 	//free(arguments);
 	
 	return success;
@@ -954,12 +954,13 @@ setup_stack (struct intr_frame *if_) {
 	 * TODO: If success, set the rsp accordingly.
 	 * TODO: You should mark the page is stack. */
 	/* TODO: Your code goes here */
-    if(vm_alloc_page(VM_MARKER_0 | VM_ANON, stack_bottom, true))
+    if(vm_alloc_page(VM_MARKER_0 | VM_ANON, stack_bottom, true)){
 		if(vm_claim_page(stack_bottom)){
 		
-        	if_->rsp = stack_bottom+PGSIZE;
+        	if_->rsp = USER_STACK;
         	success = true;
    		}
+	}
 	return success;
 }
 #endif /* VM */
