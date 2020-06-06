@@ -19,6 +19,7 @@
 #include "threads/thread.h"
 #include "threads/mmu.h"
 #include "threads/synch.h"
+#include "thrads/malloc.h"
 #include "threads/vaddr.h"
 #include "intrinsic.h"
 #ifdef VM
@@ -930,7 +931,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
 					writable, lazy_load_segment, aux)){
-			//printf("THEN IS IT HERE?\n");
+			printf("THEN IS IT HERE?\n");
 			return false;
 		}
 
