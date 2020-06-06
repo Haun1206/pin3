@@ -910,7 +910,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	ASSERT ((read_bytes + zero_bytes) % PGSIZE == 0);
 	ASSERT (pg_ofs (upage) == 0);
 	ASSERT (ofs % PGSIZE == 0);
-	printf("IAM HERE\n");
+	//printf("IAM HERE\n");
 	while (read_bytes > 0 || zero_bytes > 0) {
 		/* Do calculate how to fill this page.
 		 * We will read PAGE_READ_BYTES bytes from FILE
@@ -920,6 +920,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
         struct aux_load * aux = malloc(sizeof(struct aux_load));
+		printf("OKAY?\n");
         aux->file = file;
         aux->ofs = ofs;
         //aux->upage = upage;
