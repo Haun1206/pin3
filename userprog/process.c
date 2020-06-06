@@ -866,7 +866,6 @@ lazy_load_segment (struct page *page, void *aux) {
 	/* TODO: VA is available when calling this function. */
     
     struct aux_load * aux_t = (struct aux_load *)aux;
-    file_seek(aux_t->file,aux_t->ofs);
     
     //In aux it has file, ofs, read_bytes, zero_bytes, writable
     //Should modify this part
@@ -875,7 +874,7 @@ lazy_load_segment (struct page *page, void *aux) {
         return false;
     else{
         uint8_t * kva = page->frame->kva;
-        if (file_read(aux_t->file, kva, aux_t->read_bytes) != (int) aux_t->read_bytes) {
+        if (file_read_at(aux_t->file, kva, aux_t->read_bytes, aux_t->ofs) != (int) aux_t->read_bytes) {
             printf("SOMETHING IS WRONG\n");
             return false;
         }
