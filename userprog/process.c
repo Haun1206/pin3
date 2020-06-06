@@ -526,13 +526,13 @@ load (const char *file_name, struct intr_frame *if_) {
 		struct Phdr phdr;
 
 		if (file_ofs < 0 || file_ofs > file_length (file)){
-			printf("HERE5\n");
+			//printf("HERE5\n");
 			goto done;
 		}
 		file_seek (file, file_ofs);
 
 		if (file_read (file, &phdr, sizeof phdr) != sizeof phdr){
-			printf("HERE4\n");
+			//printf("HERE4\n");
 			goto done;
 		}
 		file_ofs += sizeof phdr;
@@ -569,12 +569,12 @@ load (const char *file_name, struct intr_frame *if_) {
 					}
 					if (!load_segment (file, file_page, (void *) mem_page,
 								read_bytes, zero_bytes, writable)){
-						printf("HERE3\n");
+						//printf("HERE3\n");
 						goto done;
 					}
 				}
 				else{
-					printf("HERE2\n");
+					//printf("HERE2\n");
 					goto done;
 				}
 				break;
@@ -583,7 +583,7 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* Set up stack. */
 	if (!setup_stack (if_)){
-		printf("sdfsdf1\n");
+		//printf("sdfsdf1\n");
 		goto done;
 	}
 
@@ -604,7 +604,7 @@ done:
     //printf("%d\n",4);
 	file_close (file);
 	//free(arguments);
-	
+	printf("RESULT: %d\n",success);
 	return success;
 }
 
