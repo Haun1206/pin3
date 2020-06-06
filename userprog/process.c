@@ -257,17 +257,17 @@ process_exec (void *f_name) {
 
 	success = load (file_name, &_if);
 	/*Write the success status to the threads*/
-	printf("sccess: %d\n", success);
+	//printf("sccess: %d\n", success);
 	struct thread * t  = thread_current();
-	printf("HI\n");
+	//printf("HI\n");
 	t->success_load = success;
-	printf("HI\n");
+	//printf("HI\n");
 
 	/*If succcessful, the do the parent again*/
 
     /* If load failed, quit. */
     free(file_name);
-	printf("HI\n");
+	//printf("HI\n");
 	if (!success){
 		//thread_exit();
         //printf("HI23\n");
@@ -606,7 +606,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	file_close (file);
+	//file_close (file);
 	//free(arguments);
 	//printf("RESULT: %d\n",success);
 	return success;
