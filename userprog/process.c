@@ -333,7 +333,10 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
-	//file_close(curr->cur_file);
+	if(curr->running_file){
+		file_allow_write(curr->running_file);
+		file_close(curr->running_file);
+	}
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
 	//	sema_up(&parent->child_fork);
@@ -606,7 +609,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	//file_close (file);
+	file_close (file);
 	//free(arguments);
 	//printf("RESULT: %d\n",success);
 	return success;
