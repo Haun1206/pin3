@@ -596,7 +596,7 @@ load (const char *file_name, struct intr_frame *if_) {
 done:
 	/* We arrive here whether the load is successful or not. */
     //printf("%d\n",4);
-	file_close (file);
+	//file_close (file);
 	//free(arguments);
 	
 	return success;
