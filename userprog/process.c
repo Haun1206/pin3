@@ -583,7 +583,7 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* Set up stack. */
 	if (!setup_stack (if_)){
-		printf("1");
+		printf("sdfsdf1\n");
 		goto done;
 	}
 
