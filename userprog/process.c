@@ -25,19 +25,6 @@
 #include "vm/vm.h"
 #endif
 
-#ifdef VM
-
-struct aux_load{
-    struct file *file;
-    off_t ofs;
-    //uint8_t *upage;
-    uint32_t read_bytes;
-    uint32_t zero_bytes;
-    bool writable;
-    
-};
-#endif
-
 static void process_cleanup (void);
 static bool load (const char *file_name, struct intr_frame *if_);
 static void initd (void *f_name);
@@ -887,14 +874,14 @@ lazy_load_segment (struct page *page, void *aux) {
     if(page->frame==NULL)
         return false;
     else{
-        uint8_t * kpage = page->frame->kva;
-        if (file_read (aux_t->file, kpage, aux_t->read_bytes) != (int) aux_t->read_bytes) {
+        uint8_t * kva = page->frame->kva;
+        if (file_read (aux_t->file, kva, aux_t->read_bytes) != (int) aux_t->read_bytes) {
             printf("SOMETHING IS WRONG\n");
             return false;
         }
         /* Load this page. */
 
-        memset (kpage + aux_t->read_bytes, 0, aux_t->zero_bytes);
+        memset (kva + aux_t->read_bytes, 0, aux_t->zero_bytes);
     }
 
 
