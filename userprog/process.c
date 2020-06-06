@@ -525,12 +525,16 @@ load (const char *file_name, struct intr_frame *if_) {
 	for (i = 0; i < ehdr.e_phnum; i++) {
 		struct Phdr phdr;
 
-		if (file_ofs < 0 || file_ofs > file_length (file))
+		if (file_ofs < 0 || file_ofs > file_length (file)){
+			printf("HERE5\n");
 			goto done;
+		}
 		file_seek (file, file_ofs);
 
-		if (file_read (file, &phdr, sizeof phdr) != sizeof phdr)
+		if (file_read (file, &phdr, sizeof phdr) != sizeof phdr){
+			printf("HERE4\n");
 			goto done;
+		}
 		file_ofs += sizeof phdr;
 		switch (phdr.p_type) {
 			case PT_NULL:
@@ -565,12 +569,12 @@ load (const char *file_name, struct intr_frame *if_) {
 					}
 					if (!load_segment (file, file_page, (void *) mem_page,
 								read_bytes, zero_bytes, writable)){
-						//printf("HERE3\n");
+						printf("HERE3\n");
 						goto done;
 					}
 				}
 				else{
-					//printf("HERE2\n");
+					printf("HERE2\n");
 					goto done;
 				}
 				break;
@@ -579,6 +583,7 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* Set up stack. */
 	if (!setup_stack (if_)){
+		printf("1");
 		goto done;
 	}
 
@@ -596,7 +601,7 @@ load (const char *file_name, struct intr_frame *if_) {
     //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
-    printf("%d\n",4);
+    //printf("%d\n",4);
 	file_close (file);
 	//free(arguments);
 	
