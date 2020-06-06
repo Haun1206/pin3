@@ -596,7 +596,7 @@ load (const char *file_name, struct intr_frame *if_) {
     //printf("%d\n",4);
 done:
 	/* We arrive here whether the load is successful or not. */
-    //printf("%d\n",4);
+    printf("%d\n",4);
 	file_close (file);
 	//free(arguments);
 	
@@ -920,14 +920,14 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
         struct aux_load * aux = malloc(sizeof(struct aux_load));
-		printf("1?\n");
+		//printf("1?\n");
         aux->file = file;
         aux->ofs = ofs;
         //aux->upage = upage;
         aux->read_bytes = read_bytes;
         aux-> zero_bytes = zero_bytes;
         aux->writable = writable;
-		printf("2?\n");
+		//printf("2?\n");
         
         
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
@@ -935,14 +935,14 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 			printf("THEN IS IT HERE?\n");
 			return false;
 		}
-		printf("3?\n");
+		//printf("3?\n");
 
 		/* Advance. */
 		read_bytes -= page_read_bytes;
 		zero_bytes -= page_zero_bytes;
 		upage += PGSIZE;
 		ofs +=PGSIZE;
-		printf("4?\n");
+		//printf("4?\n");
 	}
 	return true;
 }
