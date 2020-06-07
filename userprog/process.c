@@ -883,8 +883,9 @@ lazy_load_segment (struct page *page, void *aux) {
     if(page->frame==NULL)
         return false;
     else{
+		struct file *reopen = file_reopen(aux_t->file);
         uint8_t * kva = page->frame->kva;
-        if (file_read_at(aux_t->file, kva, aux_t->read_bytes, aux_t->ofs) != (int) aux_t->read_bytes) {
+        if (file_read_at(reopen, kva, aux_t->read_bytes, aux_t->ofs) != (int) aux_t->read_bytes) {
             printf("SOMETHING IS WRONG\n");
             return false;
         }
