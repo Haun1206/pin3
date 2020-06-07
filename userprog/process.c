@@ -931,7 +931,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         struct aux_load * aux = malloc(sizeof(struct aux_load));
 		//printf("1?\n");
         aux->file = file;
-        aux->ofs = ofs+PGSIzE;
+        aux->ofs = ofs+PGSIZE;
         //aux->upage = upage;
         aux->read_bytes = read_bytes;
         aux-> zero_bytes = zero_bytes;
