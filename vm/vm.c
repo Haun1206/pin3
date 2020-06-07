@@ -187,7 +187,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	if(user)
 		thread_current()->rsp = f->rsp;*/
 	page = spt_find_page(spt,addr);
-	if(page)
+	if(page!=NULL)
 		return vm_do_claim_page (page);
 	else
 		return false;
