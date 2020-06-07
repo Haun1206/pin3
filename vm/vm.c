@@ -47,6 +47,7 @@ static bool vm_do_claim_page (struct page *page);
 static struct frame *vm_evict_frame (void);
 static uint64_t vm_hash_func(const struct hash_elem *e, void * aux UNUSED);
 static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b);
+static void spt_destroy_func(struct hash_elem*e,void *aux);
 
 /* Create the pending page object with initializer. If you want to create a
  * page, do not create it directly and make it through this function or
@@ -76,8 +77,8 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
             default:
                 break;
         }
-	
-        
+
+        p->writable = writable;
 		/* TODO: Insert the page into the spt. */
 		//printf("1\n");
         if(spt_insert_page(spt,p)){
@@ -247,8 +248,44 @@ supplemental_page_table_init (struct supplemental_page_table *spt ) {
 
 /* Copy supplemental page table from src to dst */
 bool
-supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
-		struct supplemental_page_table *src UNUSED) {
+supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct supplemental_page_table *src UNUSED) {
+	//from src to dst
+	struct hash_iterator i;
+	hash_first(&i,src->hash_table);
+	struct aux_load *aux_t;
+	bool res =false;
+	while(hash_next(&i)){
+		struct page *p = hash_entry(hash_cur(&i),struct page, elem);
+		switch (p->operations->type){
+			case VM_UNINIT:
+				//we need to copy the members
+				aux_t = malloc(sizeof(struct aux_load));
+				memcpy(aux_t,p->uninit.aux, sizeof(struct aux_load));
+				res = vm_alloc_page_with_initializer(p->uninit.type,p->va, p->writable, p->uninit.init, aux_t);
+			case VM_FILE:
+				break;
+			default:
+				res= vm_alloc_page(p->operations->type, p->va, p->writable);
+				if(res==1){
+					struct page * d =spt_find_page(&thread_current()->spt, p->va);
+					if(vm_claim_page(p->va)==0)
+						printf("SOMETHING IS WRONG\n");
+					memcpy(d->frame->kva, p->frame->kva, PGSIZE);
+				}
+				break;
+
+
+
+		}
+		
+	}
+	return res;
+}
+
+static void spt_destroy_func(struct hash_elem*e,void *aux){
+	struct page *p = hash_entry(e,struct page, h_elem);
+	destroy(p);
+	free(p);
 }
 
 /* Free the resource hold by the supplemental page table */
@@ -256,4 +293,5 @@ void
 supplemental_page_table_kill (struct supplemental_page_table *spt UNUSED) {
 	/* TODO: Destroy all the supplemental_page_table hold by thread and
 	 * TODO: writeback all the modified contents to the storage. */
+	hash_clear(&spt->hash_table,spt_destroy_func);
 }
