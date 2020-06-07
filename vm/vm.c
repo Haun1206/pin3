@@ -251,11 +251,11 @@ bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct supplemental_page_table *src UNUSED) {
 	//from src to dst
 	struct hash_iterator i;
-	hash_first(&i,src->hash_table);
+	hash_first(&i,&src->hash_table);
 	struct aux_load *aux_t;
 	bool res =false;
 	while(hash_next(&i)){
-		struct page *p = hash_entry(hash_cur(&i),struct page, elem);
+		struct page *p = hash_entry(hash_cur(&i),struct page, h_elem);
 		switch (p->operations->type){
 			case VM_UNINIT:
 				//we need to copy the members
