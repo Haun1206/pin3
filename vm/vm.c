@@ -100,7 +100,7 @@ err:
 struct page *
 spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	struct page p;
-    p.va =va;
+    p.va = pg_round_down(va);
     struct hash_elem * elem= hash_find(&spt->hash_table, &p.h_elem);
 
     if (elem==NULL)
@@ -179,18 +179,20 @@ bool
 vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		bool user UNUSED, bool write UNUSED, bool not_present UNUSED) {
 	struct supplemental_page_table *spt UNUSED = &thread_current ()->spt;
-	struct page *page = NULL;
+	struct page *page = malloc(sizeof(struct page));
 	/* TODO: Validate the fault */
 	/* TODO: Your code goes here */
 	//printf("HERE\n");
 	/*
 	if(user)
 		thread_current()->rsp = f->rsp;*/
-	page = spt_find_page(spt,pg_round_down(addr));
+	page = spt_find_page(spt,addr);
 	if(page!=NULL)
 		return vm_do_claim_page (page);
-	else
+	else{
+		free(page);
 		return false;
+	}
 }
 
 /* Free the page.
