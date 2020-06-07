@@ -235,7 +235,7 @@ process_exec (void *f_name) {
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
-        printf("HI12\n");
+        //printf("HI12\n");
 		return -1;
 	}
 	/* We cannot use the intr_frame in the thread structure.
@@ -272,7 +272,7 @@ process_exec (void *f_name) {
 	//printf("HI\n");
 	if (!success){
 		//thread_exit();
-        printf("HI23\n");
+        //printf("HI23\n");
 		return -1;
 	}
 
@@ -302,7 +302,7 @@ process_wait (tid_t child_tid UNUSED) {
 	//printf("Here\n");
 	if(child ==NULL || child->child_status_exit==-1){
 		//list_remove(&child->child_elem);
-		printf("JIO\n");
+		//printf("JIO\n");
 		return -1;
 	}
 	//printf("Here\n");

@@ -55,13 +55,13 @@ void close(int fd);
 static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
     if(is_kernel_vaddr(addr)|| (uint64_t)addr ==0x0 || addr ==NULL){
-		//printf("1\n");
+		printf("1\n");
         exit(-1);
 		return;
 	}
 	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
     if (page_ptr == NULL){
-		//printf("2\n");
+		printf("2\n");
         exit(-1);
 		return;
 	}
