@@ -59,12 +59,13 @@ static void check_addr(void* addr){
         exit(-1);
 		return;
 	}
+	/*
 	void *page_ptr = (void *) pml4_get_page(thread_current()->pml4, addr);
     if (page_ptr == NULL){
 		printf("2\n");
-        exit(-1);
+        //exit(-1);
 		return;
-	}
+	}*/
 } 
 void check_buffer(void *buffer, unsigned size){
 	char *ptr = (char *)buffer;
