@@ -183,7 +183,14 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	/* TODO: Validate the fault */
 	/* TODO: Your code goes here */
 	//printf("HERE\n");
-	return vm_do_claim_page (page);
+	/*
+	if(user)
+		thread_current()->rsp = f->rsp;*/
+	page = spt_find_page(spt,addr);
+	if(page)
+		return vm_do_claim_page (page);
+	else
+		return false;
 }
 
 /* Free the page.

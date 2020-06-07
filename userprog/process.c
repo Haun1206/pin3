@@ -333,6 +333,7 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
+	/*MIGHT NEED TO PUT*/
 	if(curr->cur_file){
 		file_allow_write(curr->cur_file);
 		file_close(curr->cur_file);
