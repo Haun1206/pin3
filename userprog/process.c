@@ -969,7 +969,7 @@ setup_stack (struct intr_frame *if_) {
     if(vm_alloc_page(VM_MARKER_0 | VM_ANON, stack_bottom, true)){
 		if(vm_claim_page(stack_bottom)){
 		
-        	if_->rsp = USER_STACK;
+        	if_->rsp = stack_bottom+PGSIZE;
         	success = true;
    		}
 	}

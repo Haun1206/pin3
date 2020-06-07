@@ -100,7 +100,7 @@ err:
 struct page *
 spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	struct page p;
-    p.va = pg_round_down(va);
+    p.va =va;
     struct hash_elem * elem= hash_find(&spt->hash_table, &p.h_elem);
 
     if (elem==NULL)
@@ -186,7 +186,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	/*
 	if(user)
 		thread_current()->rsp = f->rsp;*/
-	page = spt_find_page(spt,addr);
+	page = spt_find_page(spt,pg_round_down(addr));
 	if(page!=NULL)
 		return vm_do_claim_page (page);
 	else
