@@ -214,6 +214,7 @@ int read(int fd, void *buffer, unsigned size){
 	}
 	lock_release(&file_lock);
 	//printf("HERE-1");
+	printf("%d\n",count);
 	return count;
 }
 int write (int fd, const void *buffer, unsigned size){

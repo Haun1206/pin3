@@ -220,6 +220,8 @@ vm_claim_page (void *va UNUSED) {
 /* Claim the PAGE and set up the mmu. */
 static bool
 vm_do_claim_page (struct page *page) {
+	if(page==NULL)
+		return false;
 	struct frame *frame = vm_get_frame ();
     
 	/* Set links */
