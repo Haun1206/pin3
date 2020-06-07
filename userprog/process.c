@@ -169,7 +169,7 @@ __do_fork (void *aux) {
 #ifdef VM
 	supplemental_page_table_init (&current->spt);
 	if (!supplemental_page_table_copy (&current->spt, &parent->spt)){
-		printf("IS THIS THE WRONG ONE?\n");
+		//printf("IS THIS THE WRONG ONE?\n");
 		goto error;
 	}
 #else

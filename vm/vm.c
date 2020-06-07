@@ -71,6 +71,8 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
                 uninit_new(p,upage,init,type,aux,&anon_initializer);
                 break;
             case VM_FILE:
+				//uninit_new(p, upage, init, tpe, aux, &file_map_initializer);
+
                 break;
             case VM_PAGE_CACHE:
                 break;
@@ -250,6 +252,7 @@ supplemental_page_table_init (struct supplemental_page_table *spt ) {
 bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct supplemental_page_table *src UNUSED) {
 	//from src to dst
+	
 	struct hash_iterator i;
 	hash_first(&i,&src->hash_table);
 	struct aux_load *aux_t;
@@ -262,6 +265,7 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct
 				aux_t = malloc(sizeof(struct aux_load));
 				memcpy(aux_t,p->uninit.aux, sizeof(struct aux_load));
 				res = vm_alloc_page_with_initializer(p->uninit.type,p->va, p->writable, p->uninit.init, aux_t);
+				break;
 			case VM_FILE:
 				break;
 			default:
