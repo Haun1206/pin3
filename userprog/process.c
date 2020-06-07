@@ -573,7 +573,7 @@ load (const char *file_name, struct intr_frame *if_) {
 					}
 					if (!load_segment (file, file_page, (void *) mem_page,
 								read_bytes, zero_bytes, writable)){
-						//printf("HERE3\n");
+						printf("HERE3\n");
 						goto done;
 					}
 				}
