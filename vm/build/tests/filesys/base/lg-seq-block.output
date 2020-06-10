@@ -31,13 +31,13 @@ Executing 'lg-seq-block':
 (lg-seq-block) end
 lg-seq-block: exit(0)
 Execution of 'lg-seq-block' complete.
-Timer: 94 ticks
-Thread: 44 idle ticks, 30 kernel ticks, 20 user ticks
+Timer: 100 ticks
+Thread: 49 idle ticks, 28 kernel ticks, 23 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 628 reads, 691 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1216 characters output
+Console: 1217 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

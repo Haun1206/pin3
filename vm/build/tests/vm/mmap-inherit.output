@@ -27,8 +27,8 @@ Executing 'mmap-inherit':
 (mmap-inherit) mmap "sample.txt"
 wrong system call!
 Execution of 'mmap-inherit' complete.
-Timer: 82 ticks
-Thread: 38 idle ticks, 40 kernel ticks, 4 user ticks
+Timer: 80 ticks
+Thread: 41 idle ticks, 34 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 217 reads, 466 writes
 hd1:0: 209 reads, 0 writes

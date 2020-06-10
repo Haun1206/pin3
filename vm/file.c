@@ -1,6 +1,9 @@
 /* file.c: Implementation of memory mapped file object (mmaped object). */
 
 #include "vm/vm.h"
+#include "threads/thread.h"
+#include "threads/mmu.h"
+#include "threads/vaddr.h"
 
 static bool file_map_swap_in (struct page *page, void *kva);
 static bool file_map_swap_out (struct page *page);
@@ -13,10 +16,11 @@ static const struct page_operations file_ops = {
 	.destroy = file_map_destroy,
 	.type = VM_FILE,
 };
-
+int counter;
 /* The initializer of file vm */
 void
 vm_file_init (void) {
+	counter =0;
 }
 
 /* Initialize the file mapped page */
@@ -46,10 +50,33 @@ file_map_destroy (struct page *page) {
 	struct file_page *file_page UNUSED = &page->file;
 }
 
+int check_addr(void * addr, size_t length){
+	void * i = addr;
+	struct supplemental_page_table * spt = &thread_current()->spt;
+	//CHECK ALL THE ADDRESSES 
+	while(i<=pg_round_down(addr+length)){
+		if(!is_user_vaddr(i))
+			return 0;
+		if(spt_find_page(spt,i)!=NULL)
+			return 0;
+		i+= PGSIZE;
+	}
+	return 1;
+}
 /* Do the mmap */
 void *
-do_mmap (void *addr, size_t length, int writable,
-		struct file *file, off_t offset) {
+do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offset) {
+	
+	if(check_addr(addr,length)==0)
+		return;
+	
+
+	uint32_t read_bytes = (uint32_t)length;
+	counter ++;
+	
+	
+	
+	
 }
 
 /* Do the munmap */

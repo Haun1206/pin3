@@ -54,8 +54,7 @@ static void spt_destroy_func(struct hash_elem*e,void *aux);
  * page, do not create it directly and make it through this function or
  * `vm_alloc_page`. */
 bool
-vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
-		vm_initializer *init, void *aux) {
+vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable, vm_initializer *init, void *aux) {
 
 	ASSERT (VM_TYPE(type) != VM_UNINIT)
 
@@ -69,10 +68,11 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
         switch(VM_TYPE(type)){
             case VM_ANON:
                 uninit_new(p,upage,init,type,aux,&anon_initializer);
+				p -> mapping = -1;
                 break;
             case VM_FILE:
-				//uninit_new(p, upage, init, tpe, aux, &file_map_initializer);
-
+				uninit_new(p, upage, init, type, aux, &file_map_initializer);
+				p->mapping = ((struct aux_map * )aux)->mapping;
                 break;
             case VM_PAGE_CACHE:
                 break;
@@ -171,10 +171,11 @@ vm_get_frame (void) {
 static void
 vm_stack_growth (void *addr UNUSED) {
 	void * bottom=pg_round_down(addr);
-	if(!vm_alloc_page(VM_MARKER_0|VM_ANON,bottom, true))
-		PANIC ("stack growth fail");
-	vm_claim_page(bottom);
-	bottom +=PGSIZE;
+	while(vm_alloc_page(VM_MARKER_0|VM_ANON,bottom, true)){
+		
+		vm_claim_page(bottom);
+		bottom +=PGSIZE;
+	}
 
 }
 
@@ -202,6 +203,8 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	
 	page = spt_find_page(spt,addr);
 	if(page!=NULL){
+		if(!not_present&&is_user_vaddr(addr))
+			exit(-1);
 		if(!page->writable && write){
 			//printf("HERE\n");
 			exit(-1);
@@ -211,9 +214,11 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		return vm_do_claim_page (page);
 	}
 	else{
+		//printf("HEREdfsfdsf\n");
 		//If bigger thant the current rsp &1MB restriction
-		if((uint64_t)addr > u_rsp - PGSIZE &&(pg_no(USER_STACK) - pg_no(addr)) <= 250 &&is_user_vaddr(addr)){
-			//printf("HERE\n");
+
+		if(((uint64_t)addr > u_rsp - PGSIZE )&&(pg_no(USER_STACK) - pg_no(addr)) <= 250){
+		//	printf("HERE2\n");
 			vm_stack_growth(addr);
 			return true;
 		}
@@ -291,8 +296,6 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct
 				aux_t = malloc(sizeof(struct aux_load));
 				memcpy(aux_t,p->uninit.aux, sizeof(struct aux_load));
 				res = vm_alloc_page_with_initializer(p->uninit.type,p->va, p->writable, p->uninit.init, aux_t);
-				break;
-			case VM_FILE:
 				break;
 			default:
 				res= vm_alloc_page(p->operations->type, p->va, p->writable);

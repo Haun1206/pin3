@@ -26,8 +26,8 @@ Executing 'mmap-zero':
 (mmap-zero) mmap "empty"
 wrong system call!
 Execution of 'mmap-zero' complete.
-Timer: 70 ticks
-Thread: 39 idle ticks, 29 kernel ticks, 2 user ticks
+Timer: 73 ticks
+Thread: 38 idle ticks, 29 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 177 reads, 242 writes
 hd1:0: 101 reads, 0 writes

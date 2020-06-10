@@ -5,7 +5,8 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk..Kernel command line: -q -f put cow-simple run cow-simple
+Booting from Hard Disk...
+Kernel command line: -q -f put cow-simple run cow-simple
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -31,8 +32,8 @@ child: exit(1)
 (cow-simple) end
 cow-simple: exit(0)
 Execution of 'cow-simple' complete.
-Timer: 421 ticks
-Thread: 225 idle ticks, 147 kernel ticks, 49 user ticks
+Timer: 413 ticks
+Thread: 245 idle ticks, 123 kernel ticks, 46 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 4089 reads, 8060 writes
 hd1:0: 4016 reads, 0 writes

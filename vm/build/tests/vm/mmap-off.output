@@ -26,8 +26,8 @@ Executing 'mmap-off':
 (mmap-off) try to mmap with offset 0x1000
 wrong system call!
 Execution of 'mmap-off' complete.
-Timer: 549 ticks
-Thread: 303 idle ticks, 239 kernel ticks, 7 user ticks
+Timer: 494 ticks
+Thread: 284 idle ticks, 205 kernel ticks, 5 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 192 reads, 15898 writes
 hd1:0: 7930 reads, 0 writes

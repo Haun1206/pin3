@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put swap-fork put child-swap 
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x27e0000 (Usable: 39,808 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 4,114 sector (2 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -38,12 +38,14 @@ child-swap: exit(-1)
 child-swap: exit(-1)
 child-swap: exit(-1)
 child-swap: exit(-1)
-child-swap: exit(-1)
+(child-swap) data is inconsistent: FAILED
+child-swap: exit(1)
 child-swap: exit(-1)
 child-swap: exit(-1)
 (child-swap) data is inconsistent: FAILED
 child-swap: exit(1)
-child-swap: exit(0)
+(child-swap) data is inconsistent: FAILED
+child-swap: exit(1)
 (swap-fork) More than one child process' stack is corrupted: FAILED
 swap-fork: exit(1)
 Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
@@ -55,15 +57,15 @@ r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000
 r15 0000000000000000 rflags 00200202
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5d0 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
+Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 1804 ticks
-Thread: 173 idle ticks, 162 kernel ticks, 1469 user ticks
+Timer: 1824 ticks
+Thread: 188 idle ticks, 153 kernel ticks, 1483 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 1355 reads, 8266 writes
 hd1:0: 4114 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2414 characters output
+Console: 2497 characters output
 Key

@@ -44,8 +44,12 @@ struct page {
 	struct frame *frame;   /* Back reference for frame */
 
 	/* Your implementation */
+	//First
     struct hash_elem h_elem;
+	/*pt*/
 	bool writable;
+	//mmap
+	int mapping;
 	/* Per-type data are binded into the union.
 	 * Each function automatically detects the current union */
 	union {

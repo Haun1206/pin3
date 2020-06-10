@@ -946,9 +946,8 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		//printf("2?\n");
         
         
-		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
-					writable, lazy_load_segment, aux)){
-			printf("THEN IS IT HERE?\n");
+		if (!vm_alloc_page_with_initializer (VM_ANON, upage, writable, lazy_load_segment, aux)){
+			//printf("THEN IS IT HERE?\n");
 			return false;
 		}
 		//printf("3?\n");

@@ -26,8 +26,8 @@ Executing 'mmap-close':
 (mmap-close) mmap "sample.txt"
 wrong system call!
 Execution of 'mmap-close' complete.
-Timer: 70 ticks
-Thread: 39 idle ticks, 30 kernel ticks, 2 user ticks
+Timer: 71 ticks
+Thread: 36 idle ticks, 31 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 190 reads, 250 writes
 hd1:0: 106 reads, 0 writes
