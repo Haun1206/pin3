@@ -10,6 +10,7 @@
 #include "threads/thread.h"
 #include "vm/anon.h"
 #include "userprog/process.h"
+#include "userprog/syscall.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -170,6 +171,12 @@ vm_get_frame (void) {
 /* Growing the stack. */
 static void
 vm_stack_growth (void *addr UNUSED) {
+	void * bottom=pg_round_down(addr);
+	if(!vm_alloc_page(VM_MARKER_0|VM_ANON,bottom, true))
+		PANIC ("stack growth fail");
+	vm_claim_page(bottom);
+	bottom +=PGSIZE;
+
 }
 
 /* Handle the fault on write_protected page */
@@ -182,19 +189,37 @@ bool
 vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		bool user UNUSED, bool write UNUSED, bool not_present UNUSED) {
 	struct supplemental_page_table *spt UNUSED = &thread_current ()->spt;
-	struct page *page = malloc(sizeof(struct page));
+	struct page *page = NULL;
 	/* TODO: Validate the fault */
 	/* TODO: Your code goes here */
-	//printf("HERE\n");
-	/*
+	if(addr==NULL)
+		exit(-1);
+	uint64_t u_rsp=NULL;
 	if(user)
-		thread_current()->rsp = f->rsp;*/
+		u_rsp = f->rsp;
+	else
+		u_rsp = thread_current()->rsp;
+	thread_current()->rsp = u_rsp;
+	
 	page = spt_find_page(spt,addr);
-	if(page!=NULL)
+	if(page!=NULL){
+		if(!page->writable && write){
+			//printf("HERE\n");
+			exit(-1);
+		}
+		//printf("HERE\n");
+
 		return vm_do_claim_page (page);
+	}
 	else{
-		free(page);
-		return false;
+		//If bigger thant the current rsp &1MB restriction
+		if((uint64_t)addr > u_rsp - PGSIZE &&(pg_no(USER_STACK) - pg_no(addr)) <= 250 &&is_user_vaddr(addr)){
+			//printf("HERE\n");
+			vm_stack_growth(addr);
+			return true;
+		}
+		//free(page);
+		exit(-1);
 	}
 }
 

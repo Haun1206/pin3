@@ -54,7 +54,7 @@ void close(int fd);
 
 static void check_addr(void* addr){
 	/*if minimum needed check addr>(void)0x0*/
-    if(is_kernel_vaddr(addr)|| (uint64_t)addr ==0x0 || addr ==NULL){
+    if(is_kernel_vaddr(addr)|| (uint64_t)addr ==0x0 || addr ==NULL||pml4e_walk(thread_current()->pml4,addr,false)==NULL){
 		//printf("1\n");
         exit(-1);
 		return;
@@ -67,6 +67,7 @@ static void check_addr(void* addr){
 		return;
 	}*/
 } 
+
 void check_buffer(void *buffer, unsigned size){
 	char *ptr = (char *)buffer;
 	for(int i=0;i<size;i++){
@@ -236,6 +237,7 @@ int write (int fd, const void *buffer, unsigned size){
 			count = file_write(f, buffer, size);
 	}
 	lock_release(&file_lock);
+	//printf("%d\n",count);
 	return count;
 }
 void seek (int fd, unsigned position){
@@ -271,6 +273,7 @@ void close(int fd){
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
+	//thread_current()->rsp = f->rsp;
 	check_addr(f->rsp);
 	switch(f->R.rax){
 		case SYS_HALT:

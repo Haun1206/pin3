@@ -1,0 +1,66 @@
+c[?7l[2J[0mSeaBIOS (version rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org)
+
+
+iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
+Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
+
+
+Booting from Hard Disk..Kernel command line: -q -f put page-merge-mm put child-qsort-mm run page-merge-mm
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 218 sector (109 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
+Formatting file system...done.
+Boot complete.
+Putting 'page-merge-mm' into the file system...
+Putting 'child-qsort-mm' into the file system...
+Executing 'page-merge-mm':
+(page-merge-mm) begin
+(page-merge-mm) init
+(page-merge-mm) sort chunk 0
+(page-merge-mm) sort chunk 1
+(child-qsort-mm) open "buf0": FAILED
+child-qsort-mm: exit(1)
+(page-merge-mm) sort chunk 2
+wrong system call!
+(page-merge-mm) sort chunk 3
+wrong system call!
+(page-merge-mm) sort chunk 4
+wrong system call!
+(page-merge-mm) sort chunk 5
+wrong system call!
+(page-merge-mm) sort chunk 6
+wrong system call!
+(page-merge-mm) sort chunk 7
+wrong system call!
+(page-merge-mm) wait for child 0
+(page-merge-mm) wait for child 0: FAILED
+page-merge-mm: exit(1)
+wrong system call!
+Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
+ cr2=0000000000403a13 error=               0
+rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
+rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042420c8
+rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
+r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
+r15 0000000000000000 rflags 00200202
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d0 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 679 ticks
+Thread: 34 idle ticks, 54 kernel ticks, 591 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 1404 reads, 4666 writes
+hd1:0: 218 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 2409 characters output
+Key

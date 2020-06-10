@@ -23,7 +23,8 @@ test_main (void)
   /* Execute child-rox and wait for it. */
   msg ("exec \"%s\"", child_cmd);
   if (!(child = fork ("child-rox"))){
-    exec (child_cmd);
+       exec (child_cmd);
+ 
   }
 
   if (child < 0)

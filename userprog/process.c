@@ -594,6 +594,9 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	}
 
+	/* Save the rsp (for vm)*/
+
+	thread_current()->rsp = if_->rsp;
 	/* Start address. */
 	if_->rip = ehdr.e_entry;
 
@@ -689,7 +692,7 @@ int process_add_file(struct file *f){
 	struct thread* t = thread_current();
 	int next = t->next_fd;
 	if( t->fd_table==NULL){
-		file_close(f);
+		//file_close(f);
 		return -1;
 	}
 	

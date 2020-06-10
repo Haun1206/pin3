@@ -11,19 +11,21 @@ Booting from Hard Disk..Kernel command line: -q -f put halt run halt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0xffe0000 (Usable: 260,992 kB)
-Calibrating timer...  157,081,600 loops/s.
-hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+Calibrating timer...  117,760,000 loops/s.
+hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 100 sector (50 kB) disk, model "QEMU HARDDISK", serial "QM00003"
 Formatting file system...done.
 Boot complete.
 Putting 'halt' into the file system...
 Executing 'halt':
-1
-2
-3
-YES:
-YES:
-YES:
-YES:
-YES:
+(halt) begin
+Timer: 67 ticks
+Thread: 36 idle ticks, 30 kernel ticks, 2 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 79 reads, 228 writes
+hd1:0: 100 reads, 0 writes
+Console: 746 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...
