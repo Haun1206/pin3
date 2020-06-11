@@ -19,6 +19,8 @@
 
 static void check_addr(void* addr);
 /*void get_argument(struct intr_frame * f, int * arg, int count);*/
+static void check_user(void* addr, struct intr_frame *  f);
+static void check_user_write(void* addr, struct intr_frame *  f);
 void check_str(void * str);
 void check_buf(void *buffer, unsigned size);
 void syscall_entry (void);
@@ -68,6 +70,17 @@ static void check_addr(void* addr){
 	}*/
 } 
 
+static void check_user(void* addr,struct intr_frame *f ){
+	struct page *p = spt_find_page(&thread_current()->spt, addr);
+	if( addr < pg_round_down(f->rsp) && p==NULL )
+		exit(-1);
+    
+} 
+static void check_user_write(void* addr,struct intr_frame *f ){
+	struct page *p = spt_find_page(&thread_current()->spt, addr);
+	if(!p->writable)
+		exit(-1);
+}
 void check_buffer(void *buffer, unsigned size){
 	char *ptr = (char *)buffer;
 	for(int i=0;i<size;i++){
@@ -340,6 +353,11 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_READ:
 			//printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
+#ifdef VM
+			check_user((void *)f->R.rsi, f);
+			check_user_write((void *)f->R.rsi, f); //why does this happen for reading haun? 
+#endif
+
 			f->R.rax = read(f->R.rdi, (void *) f->R.rsi, (unsigned)f->R.rdx);
 			//printf("%s\n", "maybe read?");
 			break;
@@ -347,6 +365,10 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_WRITE:
 			//printf("%s\n", "maybe write?\n");
 			check_addr(f->R.rsi);
+#ifdef VM
+			check_user((void *)f->R.rsi, f);
+			check_user_write((void *)f->R.rsi, f);
+#endif
 			//printf("%s\n", "maybe write?\n");
 			f->R.rax = write(f->R.rdi, (const void *)f->R.rsi, (unsigned) f->R.rdx);
 			//printf("%s\n", "maybe write?\n");

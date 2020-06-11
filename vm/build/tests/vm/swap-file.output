@@ -26,8 +26,8 @@ Executing 'swap-file':
 (swap-file) mmap "large.txt"
 wrong system call!
 Execution of 'swap-file' complete.
-Timer: 493 ticks
-Thread: 271 idle ticks, 217 kernel ticks, 5 user ticks
+Timer: 572 ticks
+Thread: 338 idle ticks, 230 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 194 reads, 15894 writes
 hd1:0: 7928 reads, 0 writes

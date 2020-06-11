@@ -976,6 +976,7 @@ setup_stack (struct intr_frame *if_) {
 		if(vm_claim_page(stack_bottom)){
 		
         	if_->rsp = stack_bottom+PGSIZE;
+			//IS IT USER_STACK?
         	success = true;
    		}
 	}

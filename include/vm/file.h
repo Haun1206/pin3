@@ -25,5 +25,6 @@ void vm_file_init (void);
 bool file_map_initializer (struct page *page, enum vm_type type, void *kva);
 void *do_mmap(void *addr, size_t length, int writable,
 		struct file *file, off_t offset);
+bool lazy_map(struct page *p, void *aux);
 void do_munmap (void *va);
 #endif

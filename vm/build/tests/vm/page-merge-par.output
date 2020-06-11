@@ -24,48 +24,42 @@ Executing 'page-merge-par':
 (page-merge-par) begin
 (page-merge-par) init
 (page-merge-par) sort chunk 0
+child-sort: exit(123)
 (page-merge-par) sort chunk 1
-load: child-sort: open failed
-child-sort: exit(-1)
 (page-merge-par) sort chunk 2
-(child-sort) open "buf1": FAILED
-child-sort: exit(1)
+child-sort: exit(123)
 (page-merge-par) sort chunk 3
-load: child-sort: open failed
-child-sort: exit(-1)
+child-sort: exit(123)
 (page-merge-par) sort chunk 4
-load: child-sort: open failed
-child-sort: exit(-1)
+child-sort: exit(123)
 (page-merge-par) sort chunk 5
-(child-sort) open "buf4": FAILED
-child-sort: exit(1)
+child-sort: exit(123)
 (page-merge-par) sort chunk 6
-(child-sort) open "buf5": FAILED
-child-sort: exit(1)
+child-sort: exit(123)
 (page-merge-par) sort chunk 7
-(child-sort) open "buf6": FAILED
-child-sort: exit(1)
+child-sort: exit(123)
 (page-merge-par) wait for child 0
-(page-merge-par) wait for child 0: FAILED
-page-merge-par: exit(1)
-Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000402eec error=               0
-rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
-rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042420c8
-rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
-r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
-r15 0000000000000000 rflags 00200202
-es: 0010 ds: 0010 cs: 0008 ss: 0010
-Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 738 ticks
-Thread: 99 idle ticks, 51 kernel ticks, 588 user ticks
+(page-merge-par) wait for child 1
+(page-merge-par) wait for child 2
+(page-merge-par) wait for child 3
+(page-merge-par) wait for child 4
+(page-merge-par) wait for child 5
+(page-merge-par) wait for child 6
+(page-merge-par) wait for child 7
+child-sort: exit(123)
+(page-merge-par) merge
+(page-merge-par) verify
+(page-merge-par) success, buf_idx=1,048,576
+(page-merge-par) end
+page-merge-par: exit(0)
+Execution of 'page-merge-par' complete.
+Timer: 948 ticks
+Thread: 42 idle ticks, 57 kernel ticks, 849 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 983 reads, 4654 writes
+hd0:1: 5239 reads, 6702 writes
 hd1:0: 212 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2588 characters output
-Key
+Console: 1855 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

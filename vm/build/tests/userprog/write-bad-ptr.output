@@ -26,7 +26,7 @@ Executing 'write-bad-ptr':
 write-bad-ptr: exit(-1)
 Execution of 'write-bad-ptr' complete.
 Timer: 71 ticks
-Thread: 38 idle ticks, 31 kernel ticks, 3 user ticks
+Thread: 40 idle ticks, 29 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 182 reads, 242 writes
 hd1:0: 102 reads, 0 writes

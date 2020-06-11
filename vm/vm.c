@@ -65,6 +65,7 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable, v
 		 * TODO: and then create "uninit" page struct by calling uninit_new. You
 		 * TODO: should modify the field after calling the uninit_new. */
         struct page * p = malloc(sizeof(struct page));
+
         switch(VM_TYPE(type)){
             case VM_ANON:
                 uninit_new(p,upage,init,type,aux,&anon_initializer);
@@ -79,8 +80,9 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable, v
             default:
                 break;
         }
+		p->writable = writable;
 
-        p->writable = writable;
+
 		/* TODO: Insert the page into the spt. */
 		//printf("1\n");
         if(spt_insert_page(spt,p)){
@@ -216,7 +218,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	else{
 		//printf("HEREdfsfdsf\n");
 		//If bigger thant the current rsp &1MB restriction
-
+		
 		if(((uint64_t)addr > u_rsp - PGSIZE )&&(pg_no(USER_STACK) - pg_no(addr)) <= 250){
 		//	printf("HERE2\n");
 			vm_stack_growth(addr);

@@ -131,7 +131,7 @@ page_fault (struct intr_frame *f) {
 
 	fault_addr = (void *) rcr2();
 
-	/* Turn interrupts back on (they were only off so that we could
+	/* Turn interrupts back on (they were only off so tht we could
 	   be assured of reading CR2 before it changed). */
 	intr_enable ();
 

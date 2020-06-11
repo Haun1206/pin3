@@ -27,7 +27,7 @@ Executing 'mmap-shuffle':
 wrong system call!
 Execution of 'mmap-shuffle' complete.
 Timer: 80 ticks
-Thread: 41 idle ticks, 30 kernel ticks, 9 user ticks
+Thread: 41 idle ticks, 34 kernel ticks, 5 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 203 reads, 520 writes
 hd1:0: 112 reads, 0 writes
