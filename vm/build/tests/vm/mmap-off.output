@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-off put large.txt ru
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  151,347,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 7,930 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -25,16 +25,35 @@ Executing 'mmap-off':
 (mmap-off) open "large.txt"
 (mmap-off) try to mmap with offset 0x1000
 (mmap-off) validate mmap.
-(mmap-off) validate fail.: FAILED
-mmap-off: exit(1)
-Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
-Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bmmap-off: exit(-1)
-Kernel PANIC recursion at ../../threads/palloc.c:321 in palloc_free_multiple().
-Timer: 616 ticks
-Thread: 325 idle ticks, 247 kernel ticks, 44 user ticks
+(mmap-off) validated.
+(mmap-off) write to mmap
+(mmap-off) validate contents.
+(mmap-off) open "large.txt"
+(mmap-off) read "large.txt" Page 0
+(mmap-off) validate page 0.
+Interrupt 0x0d (#GP General Protection Exception) at rip=800422182d
+ cr2=0000000000604f40 error=               0
+rax ccccccccccccccb4 rbx 0000008004244f18 rcx cccccccccccccccc rdx 0000000000000001
+rsp 0000008004242d70 rbp 0000008004242d90 rsi 0000008004242e30 rdi cccccccccccccccc
+rip 000000800422182d r8 0000000000000001  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000202 r12 0000008004242f10 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000216
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221256 0x800422159a 0x800421d6c8 0x80042096ac 0x8004209aca 0x4003b1 0x400fa8 0x400ff1 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000000604f40 error=               0
+rax 458b4801f8458348 rbx 0000008004244f18 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004242bb0 rbp 0000008004242bc0 rsi 000000000000aa0f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004242ac8  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000202 r12 0000008004242f10 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 774 ticks
+Thread: 448 idle ticks, 242 kernel ticks, 84 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4104 reads, 15898 writes
+hd0:1: 8035 reads, 15914 writes
 hd1:0: 7930 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1505 characters output
+Console: 2616 characters output
 Key

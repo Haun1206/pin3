@@ -212,6 +212,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	if (write && !not_present)
 		exit(-1);
 
+
 	uint64_t u_rsp=NULL;
 	if(user)
 		u_rsp = f->rsp;

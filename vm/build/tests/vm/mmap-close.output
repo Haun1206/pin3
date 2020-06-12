@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-close put sample.txt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  104,755,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 106 sector (53 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,15 +24,29 @@ Executing 'mmap-close':
 (mmap-close) begin
 (mmap-close) open "sample.txt"
 (mmap-close) mmap "sample.txt"
-(mmap-close) read of mmap'd file reported bad data: FAILED
-mmap-close: exit(1)
-Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
-Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
-Timer: 165 ticks
-Thread: 38 idle ticks, 125 kernel ticks, 2 user ticks
+Interrupt 0x0d (#GP General Protection Exception) at rip=800422182d
+ cr2=0000000010000000 error=               0
+rax ccccccccccccccb4 rbx 00000000000003f0 rcx cccccccccccccccc rdx 0000000000000001
+rsp 0000008004242dd0 rbp 0000008004242df0 rsi 0000008004242e90 rdi cccccccccccccccc
+rip 000000800422182d r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000206 r12 000000800421e24b r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000216
+es: 001b ds: 001b cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221256 0x800421d944 0x800421e531 0x800421d86b 0x40036f 0x4003e3 0x400cf4 0x400d22 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000010000000 error=               0
+rax 458b4801f8458348 rbx 00000000000003f0 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004242c10 rbp 0000008004242c20 rsi 000000000000a60f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004242b28  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000206 r12 000000800421e24b r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 72 ticks
+Thread: 42 idle ticks, 25 kernel ticks, 5 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 190 reads, 250 writes
+hd0:1: 192 reads, 250 writes
 hd1:0: 106 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1467 characters output
+Console: 2413 characters output
 Key

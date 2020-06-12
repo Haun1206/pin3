@@ -1,6 +1,6 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x80042211e0 0x800421d944 0x800421e4bb 0x800421d86b 0x400464 0x4004d8 0x4002af 0x400dce 0x400e17
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221256 0x800421d944 0x800421e531 0x800421d86b 0x400464 0x4004d8 0x4002af 0x400dce 0x400e17
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
 0x000000800421d5d1: kill (userprog/exception.c:104)
@@ -8,9 +8,9 @@ Translation of call stack:
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x000000800421b4c6: find_elem (lib/kernel/hash.c:294)
 0x000000800421aeb0: hash_find (lib/kernel/hash.c:125)
-0x00000080042211e0: spt_find_page (vm/vm.c:115)
+0x0000008004221256: spt_find_page (vm/vm.c:115)
 0x000000800421d944: check_user (userprog/syscall.c:78)
-0x000000800421e4bb: syscall_handler (userprog/syscall.c:396)
+0x000000800421e531: syscall_handler (userprog/syscall.c:402)
 0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 0x0000000000400464: (unknown)
 0x00000000004004d8: (unknown)

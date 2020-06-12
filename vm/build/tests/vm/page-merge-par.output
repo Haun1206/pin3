@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put page-merge-par put child-
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 212 sector (106 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,8 +24,8 @@ Executing 'page-merge-par':
 (page-merge-par) begin
 (page-merge-par) init
 (page-merge-par) sort chunk 0
-(page-merge-par) sort chunk 1
 child-sort: exit(123)
+(page-merge-par) sort chunk 1
 (page-merge-par) sort chunk 2
 child-sort: exit(123)
 (page-merge-par) sort chunk 3
@@ -53,8 +53,8 @@ child-sort: exit(123)
 (page-merge-par) end
 page-merge-par: exit(0)
 Execution of 'page-merge-par' complete.
-Timer: 922 ticks
-Thread: 50 idle ticks, 49 kernel ticks, 823 user ticks
+Timer: 940 ticks
+Thread: 42 idle ticks, 53 kernel ticks, 846 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 5239 reads, 6702 writes
 hd1:0: 212 reads, 0 writes

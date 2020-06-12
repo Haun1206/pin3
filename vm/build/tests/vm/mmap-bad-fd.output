@@ -5,7 +5,8 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk..Kernel command line: -q -f put mmap-bad-fd run mmap-bad-fd
+Booting from Hard Disk...
+Kernel command line: -q -f put mmap-bad-fd run mmap-bad-fd
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -25,8 +26,8 @@ Executing 'mmap-bad-fd':
 (mmap-bad-fd) end
 mmap-bad-fd: exit(0)
 Execution of 'mmap-bad-fd' complete.
-Timer: 70 ticks
-Thread: 37 idle ticks, 30 kernel ticks, 3 user ticks
+Timer: 68 ticks
+Thread: 37 idle ticks, 29 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 151 reads, 228 writes
 hd1:0: 100 reads, 0 writes

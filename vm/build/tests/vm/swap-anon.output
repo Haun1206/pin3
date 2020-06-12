@@ -24,8 +24,8 @@ Executing 'swap-anon':
 (swap-anon) write sparsely over page 0
 swap-anon: exit(-1)
 Execution of 'swap-anon' complete.
-Timer: 92 ticks
-Thread: 37 idle ticks, 27 kernel ticks, 28 user ticks
+Timer: 91 ticks
+Thread: 37 idle ticks, 28 kernel ticks, 26 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 151 reads, 230 writes
 hd1:0: 101 reads, 0 writes

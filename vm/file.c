@@ -74,6 +74,7 @@ int check_addr(void * addr, size_t length){
     while(i<=pg_round_down(addr+length)){
         if(!is_user_vaddr(i))
             return 0;
+        //overlap
         if(spt_find_page(spt,i)!=NULL)
             return 0;
         i+= PGSIZE;
@@ -87,7 +88,9 @@ do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offse
     if(file_length(file)==0){
         return NULL;
     }
-    if(length==0){
+    if(addr ==0x0)
+        return NULL;
+    if(length<=0){
         return NULL;
     }
     if(pg_ofs(addr)!=0)

@@ -163,7 +163,10 @@ bool create(const char*file, unsigned initial_size){
 	return res;
 }
 bool remove(const char *file){
-	return filesys_remove(file);
+	lock_acquire(&file_lock);
+	bool res = filesys_remove(file);
+	lock_release(&file_lock);
+	return res;
 }
 
 int open (const char *file){
@@ -272,8 +275,10 @@ unsigned tell (int fd){
 	/*tell the offset*/
 	struct file *f;
 	unsigned offset = 0;
+	lock_acquire(&file_lock);
 	if((f=process_get_file(fd))!=NULL)
 		offset = file_tell(f);
+	lock_release(&file_lock);
 	return offset;
 }
 void close(int fd){
@@ -289,18 +294,19 @@ void close(int fd){
 	
 }
 void mmap(struct intr_frame *if_){
-	struct file * f; ;
+	struct file * f; 
 	//printf("I WILL KILL YOU\n");
 	if((f = process_get_file((int)if_->R.r10)) ==NULL){
 		//printf("FUCKING FUCKING FUCKING SHIT\n");
 		if_->R.rax = NULL;
 	}
 	else{
+		struct file * tempo = file_reopen(f);
 		//printf("YEAH\n");
 		if(!lock_held_by_current_thread(&file_lock))
 			lock_acquire(&file_lock);
 		//printf("JJ\n");
-		if_->R.rax = do_mmap(if_->R.rdi, if_->R.rsi, if_->R.rdx, f, if_->R.r8);
+		if_->R.rax = do_mmap(if_->R.rdi, if_->R.rsi, if_->R.rdx, tempo, if_->R.r8);
 		lock_release(&file_lock);
 		//printf("IHERE\n");
 	}
