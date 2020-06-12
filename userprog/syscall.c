@@ -285,16 +285,20 @@ void close(int fd){
 	process_close_file(fd);
 }
 void mmap(struct intr_frame *if_){
-	struct file *f;
-	f = process_get_file((int)if_->R.r10);
-	if(f ==NULL)
+	struct file * f; ;
+	//printf("I WILL KILL YOU\n");
+	if((f = process_get_file((int)if_->R.r10)) ==NULL){
+		printf("FUCKING FUCKING FUCKING SHIT\n");
 		if_->R.rax = NULL;
-
+	}
 	else{
-		if(lock_held_by_current_thread(&file_lock))
+		//printf("YEAH\n");
+		if(!lock_held_by_current_thread(&file_lock))
 			lock_acquire(&file_lock);
+		//printf("JJ\n");
 		if_->R.rax = do_mmap(if_->R.rdi, if_->R.rsi, if_->R.rdx, f, if_->R.r8);
 		lock_release(&file_lock);
+		//printf("IHERE\n");
 	}
 
 }
@@ -411,6 +415,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			break;
 		case SYS_MMAP:
 			if(check_validity(f)==false) {
+				//printf("?\n");
 				f->R.rax = NULL;
 				break;
 			}
@@ -428,8 +433,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
 }
 bool check_validity(struct intr_frame * f){
 	//Rdi: address
-	if(!is_user_vaddr(f->R.rdi))
+	if(!is_user_vaddr(f->R.rdi)){
 		return false;
+	}
 	//rsi:length
 	if(f->R.rsi==0)
 		return false;
@@ -440,6 +446,7 @@ bool check_validity(struct intr_frame * f){
 	if(pg_ofs(f->R.r8)!=0)
 		return false;
 	
+	return true;
 }
 /*
 void get_argument(struct intr_frame * f, int * arg, int count){

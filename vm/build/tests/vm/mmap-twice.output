@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-twice put sample.txt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 107 sector (53 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,16 +24,19 @@ Executing 'mmap-twice':
 (mmap-twice) begin
 (mmap-twice) open "sample.txt" #0
 (mmap-twice) mmap "sample.txt" #0 at 0x10000000
-(mmap-twice) mmap "sample.txt" #0 at 0x10000000: FAILED
-mmap-twice: exit(1)
-Execution of 'mmap-twice' complete.
-Timer: 70 ticks
-Thread: 35 idle ticks, 31 kernel ticks, 4 user ticks
+(mmap-twice) open "sample.txt" #1
+(mmap-twice) mmap "sample.txt" #1 at 0x20000000
+(mmap-twice) compare mmap'd file 0 against data
+(mmap-twice) compare mmap'd file 1 against data
+(mmap-twice) end
+mmap-twice: exit(0)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421db93 0x800421e21a 0x800421d854Kernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 183 ticks
+Thread: 38 idle ticks, 141 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 195 reads, 252 writes
+hd0:1: 202 reads, 252 writes
 hd1:0: 107 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1137 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
+Console: 1623 characters output
+Key

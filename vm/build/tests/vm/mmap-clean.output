@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-clean put sample.txt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  107,929,600 loops/s.
+Calibrating timer...  117,760,000 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 109 sector (54 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,16 +24,15 @@ Executing 'mmap-clean':
 (mmap-clean) begin
 (mmap-clean) open "sample.txt"
 (mmap-clean) mmap "sample.txt"
-(mmap-clean) mmap "sample.txt": FAILED
-mmap-clean: exit(1)
-Execution of 'mmap-clean' complete.
-Timer: 77 ticks
-Thread: 34 idle ticks, 39 kernel ticks, 4 user ticks
+(mmap-clean) write "sample.txt"
+mmap-clean: exit(-1)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421db93 0x800421d9c0 0x800421e4a8 0x800421d854Kernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 180 ticks
+Thread: 34 idle ticks, 140 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 194 reads, 256 writes
+hd0:1: 206 reads, 256 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1100 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
+Console: 1454 characters output
+Key

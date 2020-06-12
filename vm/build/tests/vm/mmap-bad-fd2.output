@@ -22,16 +22,17 @@ Putting 'mmap-bad-fd2' into the file system...
 Executing 'mmap-bad-fd2':
 (mmap-bad-fd2) begin
 (mmap-bad-fd2) try to mmap stdin
+FUCKING FUCKING FUCKING SHIT
 (mmap-bad-fd2) end
 mmap-bad-fd2: exit(0)
 Execution of 'mmap-bad-fd2' complete.
-Timer: 69 ticks
-Thread: 40 idle ticks, 27 kernel ticks, 2 user ticks
+Timer: 71 ticks
+Thread: 37 idle ticks, 30 kernel ticks, 5 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 151 reads, 228 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1005 characters output
+Console: 1034 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

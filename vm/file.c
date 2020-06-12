@@ -84,12 +84,17 @@ int check_addr(void * addr, size_t length){
 void *
 do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offset) {
     
-    if(file_length(length)==0)
+    if(file_length(file)==0){
         return NULL;
+    }
+    if(length==0){
+        return NULL;
+    }
     if(pg_ofs(addr)!=0)
         return NULL;
     if(check_addr(addr,length)==0)
         return NULL;
+    //printf("HIdfsdfds\n");
     void * orig_address = addr;
     //Need to initialize the read_bytes and the zero_bytes
     //
@@ -103,7 +108,7 @@ do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offse
     //ZERO_BYTES bytes at UPAGE + READ_BYTES must be zeroed.
     //printf("%x\n",zero_bytes);
     counter ++;
-    
+    //printf("UNTIL HER\n");
     while (read_bytes > 0 || zero_bytes > 0) {
 
         size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
@@ -132,6 +137,7 @@ do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offse
         offset +=PGSIZE;
         //printf("4?\n");
     }
+    //printf("UNTIL HER\n");
 
     return orig_address;
     
@@ -217,6 +223,7 @@ void do_punmap (struct hash_elem *e, void *aux){
 }
 void
 do_munmap (void *addr) {
+    //printf("MUNMAP\n");
 	struct supplemental_page_table *spt = &thread_current()->spt;
 	struct page *page = spt_find_page(spt, addr);
 	struct file *file = page->file.file;

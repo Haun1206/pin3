@@ -324,6 +324,7 @@ process_wait (tid_t child_tid UNUSED) {
 void
 process_exit (void) {
 	struct thread *curr = thread_current ();
+	//printf("EXIT CHECK\n");
 	struct thread *parent = curr->parent;
 	/* TODO: Your code goes here.
 	 * TODO: Implement process termination message (see
@@ -512,6 +513,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		deny the writing	
 		=>protect with lock
 	*/
+	//printf("CHECK LOAD\n");
 	t->cur_file = file;
 	file_deny_write(file);
 	/* Read and verify executable header. */
@@ -689,6 +691,7 @@ void remove_child_process(struct thread *cp){
 int process_add_file(struct file *f){
 	/*Add the file to the file descriptor table
 	Make the file descriptor's maximum value incremented */
+	//file_deny_write(f);
 	struct thread* t = thread_current();
 	int next = t->next_fd;
 	if( t->fd_table==NULL){
@@ -716,6 +719,7 @@ void process_close_file(int fd){
 	//rm_file = process_get_file(fd);
 	struct file *rm_file = process_get_file(fd);
 	struct thread* t = thread_current();
+	//file_deny_write(rm_file);
 	if(rm_file==NULL|| fd<2 || t->next_fd <= fd )
 		return;
 	
