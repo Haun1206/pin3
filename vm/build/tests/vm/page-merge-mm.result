@@ -1,12 +1,26 @@
 FAIL
-Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d5ba: kill (userprog/exception.c:104)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x00000080042215f3: vm_try_handle_fault (vm/vm.c:246)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
-0x000000800421c274: process_wait (userprog/process.c:314)
-0x000000800420677f: run_task (threads/init.c:252)
-0x00000080042068cc: run_actions (threads/init.c:297)
-0x0000008004206186: main (threads/init.c:125)
+0x000000800422214b: lazy_map (vm/file.c:183)
+0x0000008004221bd5: uninit_initialize (vm/uninit.c:55 (discriminator 4))
+0x0000008004221740: vm_do_claim_page (vm/vm.c:281)
+0x0000008004221597: vm_try_handle_fault (vm/vm.c:232)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)

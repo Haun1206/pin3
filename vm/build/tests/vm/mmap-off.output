@@ -28,12 +28,13 @@ Executing 'mmap-off':
 (mmap-off) validate fail.: FAILED
 mmap-off: exit(1)
 Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
-Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421db93 0x800421e21a 0x800421d854Kernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
-Timer: 755 ticks
-Thread: 326 idle ticks, 385 kernel ticks, 44 user ticks
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bmmap-off: exit(-1)
+Kernel PANIC recursion at ../../threads/palloc.c:321 in palloc_free_multiple().
+Timer: 616 ticks
+Thread: 325 idle ticks, 247 kernel ticks, 44 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 4104 reads, 15898 writes
 hd1:0: 7930 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1469 characters output
+Console: 1505 characters output
 Key

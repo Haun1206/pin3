@@ -37,13 +37,13 @@ child-syn-read: exit(2)
 (syn-read) exec child 5 of 10: "child-syn-read 4": FAILED
 syn-read: exit(1)
 Execution of 'syn-read' complete.
-Timer: 244 ticks
-Thread: 103 idle ticks, 37 kernel ticks, 104 user ticks
+Timer: 222 ticks
+Thread: 92 idle ticks, 36 kernel ticks, 94 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 2863 reads, 496 writes
 hd1:0: 221 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1476 characters output
+Console: 1474 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

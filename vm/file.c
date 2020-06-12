@@ -233,4 +233,5 @@ do_munmap (void *addr) {
 	hash_apply (&spt->hash_table, do_punmap);
     lock_release(&spt_lock);
 	file_close(file);
+
 }

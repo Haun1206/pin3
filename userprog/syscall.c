@@ -157,7 +157,10 @@ bool create(const char*file, unsigned initial_size){
 		return false;
 	}
 	//check_str(file);
-	return filesys_create(file, initial_size);
+	lock_acquire(&file_lock);
+	bool res = filesys_create(file, initial_size);
+	lock_release(&file_lock);
+	return res;
 }
 bool remove(const char *file){
 	return filesys_remove(file);
@@ -283,12 +286,13 @@ void close(int fd){
 		t->fd_table[fd] =NULL;
 	} */
 	process_close_file(fd);
+	
 }
 void mmap(struct intr_frame *if_){
 	struct file * f; ;
 	//printf("I WILL KILL YOU\n");
 	if((f = process_get_file((int)if_->R.r10)) ==NULL){
-		printf("FUCKING FUCKING FUCKING SHIT\n");
+		//printf("FUCKING FUCKING FUCKING SHIT\n");
 		if_->R.rax = NULL;
 	}
 	else{
@@ -422,6 +426,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			mmap(f);
 			break;
 		case SYS_MUNMAP:
+//			printf("hi\n");
 			do_munmap(f->R.rdi);
 			break;
 		default:

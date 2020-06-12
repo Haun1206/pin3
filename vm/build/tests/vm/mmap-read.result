@@ -1,15 +1,15 @@
 FAIL
 Kernel panic in run: PANIC at ../../filesys/inode.c:304 in inode_allow_write(): assertion `inode->deny_write_cnt > 0' failed.
-Call stack: 0x80042186c8 0x80042205e2 0x800421f439 0x800421f1e6 0x800421cdab 0x800421e0b1 0x800421e548 0x800421d854 0x40029f 0x400d55 0x400d9e
+Call stack: 0x80042186c8 0x8004220616 0x800421f46d 0x800421f21a 0x800421cdc2 0x800421e0fb 0x800421e57c 0x800421d86b 0x40029f 0x400d55 0x400d9e
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x00000080042205e2: inode_allow_write (filesys/inode.c:305)
-0x000000800421f439: file_allow_write (filesys/file.c:136)
-0x000000800421f1e6: file_close (filesys/file.c:55)
-0x000000800421cdab: process_close_file (userprog/process.c:732)
-0x000000800421e0b1: close (userprog/syscall.c:286)
-0x000000800421e548: syscall_handler (userprog/syscall.c:415)
-0x000000800421d854: no_sti (userprog/syscall-entry.o:?)
+0x0000008004220616: inode_allow_write (filesys/inode.c:305)
+0x000000800421f46d: file_allow_write (filesys/file.c:136)
+0x000000800421f21a: file_close (filesys/file.c:55)
+0x000000800421cdc2: process_close_file (userprog/process.c:732)
+0x000000800421e0fb: close (userprog/syscall.c:290)
+0x000000800421e57c: syscall_handler (userprog/syscall.c:419)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 0x000000000040029f: (unknown)
 0x0000000000400d55: (unknown)
 0x0000000000400d9e: (unknown)

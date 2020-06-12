@@ -1,4 +1,4 @@
-TOTAL TESTING SCORE: 53.9%
+TOTAL TESTING SCORE: 59.4%
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -10,12 +10,12 @@ tests/threads/Rubric.alarm                     18/ 18   1.0%/  1.0%
 tests/threads/Rubric.priority                  38/ 38   1.0%/  1.0%
 tests/userprog/Rubric.functionality           125/131   7.6%/  8.0%
 tests/userprog/Rubric.robustness               74/ 74   5.0%/  5.0%
-tests/vm/Rubric.functionality                  22/ 84  14.4%/ 55.0%
-tests/vm/Rubric.robustness                     22/ 26  21.2%/ 25.0%
+tests/vm/Rubric.functionality                  29/ 84  19.0%/ 55.0%
+tests/vm/Rubric.robustness                     23/ 26  22.1%/ 25.0%
 tests/filesys/base/Rubric                      22/ 30   3.7%/  5.0%
 tests/vm/cow/Rubric                             0/  1   0.0%/ 25.0%
 --------------------------------------------- --- --- ------ ------
-Total                                                  53.9%/125.0%
+Total                                                  59.4%/125.0%
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -176,14 +176,14 @@ Functionality of virtual memory subsystem (tests/vm/Rubric.functionality):
 	  ** 0/ 5 tests/vm/page-parallel
 	     3/ 3 tests/vm/page-shuffle
 	     3/ 3 tests/vm/page-merge-seq
-	  ** 0/ 5 tests/vm/page-merge-par
+	     5/ 5 tests/vm/page-merge-par
 	  ** 0/ 5 tests/vm/page-merge-mm
 	  ** 0/ 5 tests/vm/page-merge-stk
 
 	- Test "mmap" system call.
 	  ** 0/ 2 tests/vm/mmap-read
 	  ** 0/ 2 tests/vm/mmap-write
-	  ** 0/ 2 tests/vm/mmap-ro
+	     2/ 2 tests/vm/mmap-ro
 	  ** 0/ 2 tests/vm/mmap-shuffle
 	  ** 0/ 2 tests/vm/mmap-twice
 	  ** 0/ 2 tests/vm/mmap-unmap
@@ -204,8 +204,8 @@ Functionality of virtual memory subsystem (tests/vm/Rubric.functionality):
 	  ** 0/ 4 tests/vm/lazy-file
 
 	- Section summary.
-	      7/ 27 tests passed
-	     22/ 84 points subtotal
+	      9/ 27 tests passed
+	     29/ 84 points subtotal
 
 Robustness of virtual memory subsystem (tests/vm/Rubric.robustness):
 	- Test robustness of page table support.
@@ -230,13 +230,13 @@ Robustness of virtual memory subsystem (tests/vm/Rubric.robustness):
 	     1/ 1 tests/vm/mmap-over-code
 	     1/ 1 tests/vm/mmap-over-data
 	     1/ 1 tests/vm/mmap-over-stk
-	  ** 0/ 1 tests/vm/mmap-overlap
+	     1/ 1 tests/vm/mmap-overlap
 	     1/ 1 tests/vm/mmap-bad-off
 	     3/ 3 tests/vm/mmap-kernel
 
 	- Section summary.
-	     16/ 19 tests passed
-	     22/ 26 points subtotal
+	     17/ 19 tests passed
+	     23/ 26 points subtotal
 
 Functionality of base file system (tests/filesys/base/Rubric):
 	- Test basic support for small files.
@@ -292,7 +292,7 @@ Booting from Hard Disk..Kernel command line: -q -f put rox-child put child-rox r
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  111,206,400 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 214 sector (107 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -316,13 +316,13 @@ child-rox: exit(12)
 (rox-child) write "child-rox": FAILED
 rox-child: exit(1)
 Execution of 'rox-child' complete.
-Timer: 104 ticks
-Thread: 45 idle ticks, 45 kernel ticks, 15 user ticks
+Timer: 68 ticks
+Thread: 30 idle ticks, 33 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 343 reads, 467 writes
 hd1:0: 214 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1308 characters output
+Console: 1306 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...
@@ -348,7 +348,7 @@ Booting from Hard Disk..Kernel command line: -q -f put rox-multichild put child-
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 214 sector (107 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -396,13 +396,13 @@ child-rox: exit(12)
 (rox-multichild) write "child-rox": FAILED
 rox-multichild: exit(1)
 Execution of 'rox-multichild' complete.
-Timer: 117 ticks
-Thread: 52 idle ticks, 36 kernel ticks, 29 user ticks
+Timer: 87 ticks
+Thread: 30 idle ticks, 37 kernel ticks, 20 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 959 reads, 467 writes
 hd1:0: 214 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2009 characters output
+Console: 2008 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...
@@ -412,10 +412,10 @@ Powering off...
 DETAILS OF tests/vm/page-parallel FAILURE:
 
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d5ba: kill (userprog/exception.c:104)
+0x000000800421d5d1: kill (userprog/exception.c:104)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x000000800421c274: process_wait (userprog/process.c:314)
@@ -438,7 +438,7 @@ Booting from Hard Disk..Kernel command line: -q -f put page-parallel put child-l
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 205 sector (102 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -451,7 +451,7 @@ Executing 'page-parallel':
 (page-parallel) begin
 child-linear: exit(-1)
 (page-parallel) wait for child 0
-(child-linear) byte 90752 != 0: FAILED
+(child-linear) byte 119424 != 0: FAILED
 child-linear: exit(1)
 (page-parallel) wait for child 0: FAILED
 page-parallel: exit(1)
@@ -464,103 +464,47 @@ r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000
 r15 0000000000000000 rflags 00200202
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 456 ticks
-Thread: 46 idle ticks, 37 kernel ticks, 373 user ticks
+Timer: 426 ticks
+Thread: 44 idle ticks, 42 kernel ticks, 340 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 472 reads, 448 writes
 hd1:0: 205 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2040 characters output
+Console: 2041 characters output
 Key
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-DETAILS OF tests/vm/page-merge-par FAILURE:
-
-run: open "buf1": FAILED
-
-OUTPUT FROM tests/vm/page-merge-par:
-
-c[?7l[2J[0mSeaBIOS (version rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org)
-
-
-iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk..Kernel command line: -q -f put page-merge-par put child-sort run page-merge-par
-0 ~ 9fc00 1
-100000 ~ 13e0000 1
-Pintos booting with: 
-	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
-	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
-hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
-hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
-hd1:0: detected 212 sector (106 kB) disk, model "QEMU HARDDISK", serial "QM00003"
-hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
-Formatting file system...done.
-Boot complete.
-Putting 'page-merge-par' into the file system...
-Putting 'child-sort' into the file system...
-Executing 'page-merge-par':
-(page-merge-par) begin
-(page-merge-par) init
-(page-merge-par) sort chunk 0
-(page-merge-par) sort chunk 1
-load: child-sort: open failed
-child-sort: exit(-1)
-(page-merge-par) sort chunk 2
-(child-sort) open "buf1": FAILED
-child-sort: exit(1)
-(page-merge-par) sort chunk 3
-load: child-sort: open failed
-child-sort: exit(-1)
-(page-merge-par) sort chunk 4
-load: child-sort: open failed
-child-sort: exit(-1)
-(page-merge-par) sort chunk 5
-load: child-sort: open failed
-child-sort: exit(-1)
-(page-merge-par) sort chunk 6
-load: child-sort: open failed
-child-sort: exit(-1)
-(page-merge-par) sort chunk 7
-(child-sort) open "buf6": FAILED
-child-sort: exit(1)
-(page-merge-par) wait for child 0
-(page-merge-par) wait for child 0: FAILED
-page-merge-par: exit(1)
-Execution of 'page-merge-par' complete.
-Timer: 734 ticks
-Thread: 97 idle ticks, 49 kernel ticks, 588 user ticks
-hd0:0: 0 reads, 0 writes
-hd0:1: 738 reads, 4654 writes
-hd1:0: 212 reads, 0 writes
-hd1:1: 0 reads, 0 writes
-Console: 1731 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/page-merge-mm FAILURE:
 
-Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d5ba: kill (userprog/exception.c:104)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x00000080042215f3: vm_try_handle_fault (vm/vm.c:246)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
-0x000000800421c274: process_wait (userprog/process.c:314)
-0x000000800420677f: run_task (threads/init.c:252)
-0x00000080042068cc: run_actions (threads/init.c:297)
-0x0000008004206186: main (threads/init.c:125)
+0x000000800422214b: lazy_map (vm/file.c:183)
+0x0000008004221bd5: uninit_initialize (vm/uninit.c:55 (discriminator 4))
+0x0000008004221740: vm_do_claim_page (vm/vm.c:281)
+0x0000008004221597: vm_try_handle_fault (vm/vm.c:232)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 
 OUTPUT FROM tests/vm/page-merge-mm:
 
@@ -577,7 +521,7 @@ Booting from Hard Disk..Kernel command line: -q -f put page-merge-mm put child-q
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 218 sector (109 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -591,59 +535,27 @@ Executing 'page-merge-mm':
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
 (page-merge-mm) sort chunk 1
-load: child-qsort-mm: open failed
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 2
-(child-qsort-mm) open "buf1": FAILED
-child-qsort-mm: exit(1)
-(page-merge-mm) sort chunk 3
-load: child-qsort-mm: open failed
 child-qsort-mm: exit(-1)
-(page-merge-mm) sort chunk 4
-(child-qsort-mm) open "buf3": FAILED
-child-qsort-mm: exit(1)
-(page-merge-mm) sort chunk 5
-(child-qsort-mm) open "buf4": FAILED
-child-qsort-mm: exit(1)
-(page-merge-mm) sort chunk 6
-(child-qsort-mm) open "buf5": FAILED
-child-qsort-mm: exit(1)
-(page-merge-mm) sort chunk 7
-load: child-qsort-mm: open failed
-child-qsort-mm: exit(-1)
-(page-merge-mm) wait for child 0
-(page-merge-mm) wait for child 0: FAILED
-page-merge-mm: exit(1)
-Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000403ce5 error=               0
-rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
-rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042420c8
-rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
-r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
-r15 0000000000000000 rflags 00200202
-es: 0010 ds: 0010 cs: 0008 ss: 0010
-Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 762 ticks
-Thread: 106 idle ticks, 53 kernel ticks, 603 user ticks
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209acaKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 670 ticks
+Thread: 47 idle ticks, 127 kernel ticks, 496 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 1027 reads, 4666 writes
+hd0:1: 668 reads, 2046 writes
 hd1:0: 218 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2637 characters output
+Console: 1603 characters output
 Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/page-merge-stk FAILURE:
 
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d5ba: kill (userprog/exception.c:104)
+0x000000800421d5d1: kill (userprog/exception.c:104)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x000000800421c274: process_wait (userprog/process.c:314)
@@ -666,7 +578,7 @@ Booting from Hard Disk..Kernel command line: -q -f put page-merge-stk put child-
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  104,755,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 218 sector (109 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -680,29 +592,29 @@ Executing 'page-merge-stk':
 (page-merge-stk) init
 (page-merge-stk) sort chunk 0
 (page-merge-stk) sort chunk 1
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 2
 (page-merge-stk) sort chunk 3
 (page-merge-stk) sort chunk 4
 child-qsort: exit(72)
 child-qsort: exit(72)
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 5
 child-qsort: exit(72)
 (page-merge-stk) sort chunk 6
-(child-qsort) open "buf5": FAILED
-child-qsort: exit(1)
 (page-merge-stk) sort chunk 7
+child-qsort: exit(72)
 (page-merge-stk) wait for child 0
 (page-merge-stk) wait for child 1
 (page-merge-stk) wait for child 2
 (page-merge-stk) wait for child 3
 (page-merge-stk) wait for child 4
+child-qsort: exit(72)
+(child-qsort) open "(null)": FAILED
+child-qsort: exit(1)
 (page-merge-stk) wait for child 5
 (page-merge-stk) wait for child 5: FAILED
 page-merge-stk: exit(1)
 Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000403a0f error=               0
+ cr2=00000000006054e2 error=               0
 rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
 rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042420c8
 rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
@@ -710,23 +622,36 @@ r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000
 r15 0000000000000000 rflags 00200202
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 760 ticks
-Thread: 43 idle ticks, 52 kernel ticks, 665 user ticks
+Timer: 868 ticks
+Thread: 175 idle ticks, 47 kernel ticks, 646 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 4420 reads, 5946 writes
+hd0:1: 4525 reads, 5946 writes
 hd1:0: 218 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2561 characters output
+Console: 2564 characters output
 Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-read FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../filesys/inode.c:304 in inode_allow_write(): assertion `inode->deny_write_cnt > 0' failed.
+Call stack: 0x80042186c8 0x8004220616 0x800421f46d 0x800421f21a 0x800421cdc2 0x800421e0fb 0x800421e57c 0x800421d86b 0x40029f 0x400d55 0x400d9e
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x0000008004220616: inode_allow_write (filesys/inode.c:305)
+0x000000800421f46d: file_allow_write (filesys/file.c:136)
+0x000000800421f21a: file_close (filesys/file.c:55)
+0x000000800421cdc2: process_close_file (userprog/process.c:732)
+0x000000800421e0fb: close (userprog/syscall.c:290)
+0x000000800421e57c: syscall_handler (userprog/syscall.c:419)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
+0x000000000040029f: (unknown)
+0x0000000000400d55: (unknown)
+0x0000000000400d9e: (unknown)
 
 OUTPUT FROM tests/vm/mmap-read:
 
@@ -756,25 +681,46 @@ Executing 'mmap-read':
 (mmap-read) begin
 (mmap-read) open "sample.txt"
 (mmap-read) mmap "sample.txt"
-(mmap-read) mmap "sample.txt": FAILED
-mmap-read: exit(1)
-Execution of 'mmap-read' complete.
-Timer: 71 ticks
-Thread: 39 idle ticks, 29 kernel ticks, 4 user ticks
+Kernel PANIC at ../../filesys/inode.c:304 in inode_allow_write(): assertion `inode->deny_write_cnt > 0' failed.
+Call stack: 0x80042186c8 0x8004220616 0x800421f46d 0x800421f21a 0x800421cdc2 0x800421e0fb 0x800421e57c 0x800421d86b 0x40029f 0x400d55 0x400d9e 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000010000000 error=               0
+rax 458b4801f8458348 rbx 0000008004244f18 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004242dc0 rbp 0000008004242dd0 rsi 000000000000830f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004242cd8  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000216 r12 000000800421e1d5 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000006
+es: 001b ds: 001b cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 73 ticks
+Thread: 37 idle ticks, 35 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 195 reads, 252 writes
+hd0:1: 197 reads, 252 writes
 hd1:0: 107 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1090 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1861 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-write FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x80042211e0 0x800421d944 0x800421e4bb 0x800421d86b 0x400464 0x4004d8 0x4002af 0x400dce 0x400e17
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800421d5d1: kill (userprog/exception.c:104)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
+0x000000800421b4c6: find_elem (lib/kernel/hash.c:294)
+0x000000800421aeb0: hash_find (lib/kernel/hash.c:125)
+0x00000080042211e0: spt_find_page (vm/vm.c:115)
+0x000000800421d944: check_user (userprog/syscall.c:78)
+0x000000800421e4bb: syscall_handler (userprog/syscall.c:396)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
+0x0000000000400464: (unknown)
+0x00000000004004d8: (unknown)
+0x00000000004002af: (unknown)
+0x0000000000400dce: (unknown)
+0x0000000000400e17: (unknown)
 
 OUTPUT FROM tests/vm/mmap-write:
 
@@ -804,73 +750,61 @@ Executing 'mmap-write':
 (mmap-write) create "sample.txt"
 (mmap-write) open "sample.txt"
 (mmap-write) mmap "sample.txt"
-(mmap-write) mmap "sample.txt": FAILED
-mmap-write: exit(1)
-Execution of 'mmap-write' complete.
-Timer: 72 ticks
-Thread: 38 idle ticks, 31 kernel ticks, 3 user ticks
+Interrupt 0x0d (#GP General Protection Exception) at rip=80042217b7
+ cr2=0000000010000000 error=               0
+rax ccccccccccccccb4 rbx 00000000000003cd rcx cccccccccccccccc rdx 0000000000000001
+rsp 0000008004242dd0 rbp 0000008004242df0 rsi 0000008004242e90 rdi cccccccccccccccc
+rip 00000080042217b7 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000202 r12 000000800421e1d5 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000216
+es: 001b ds: 001b cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x80042211e0 0x800421d944 0x800421e4bb 0x800421d86b 0x400464 0x4004d8 0x4002af 0x400dce 0x400e17 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000010000000 error=               0
+rax 458b4801f8458348 rbx 00000000000003cd rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004242c10 rbp 0000008004242c20 rsi 000000000000af0f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004242b28  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000202 r12 000000800421e1d5 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 74 ticks
+Thread: 37 idle ticks, 30 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 192 reads, 250 writes
+hd0:1: 198 reads, 254 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1073 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-DETAILS OF tests/vm/mmap-ro FAILURE:
-
-run: mmap "large.txt" with writable=0: FAILED
-
-OUTPUT FROM tests/vm/mmap-ro:
-
-c[?7l[2J[0mSeaBIOS (version rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org)
-
-
-iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk..Kernel command line: -q -f put mmap-ro put large.txt run mmap-ro
-0 ~ 9fc00 1
-100000 ~ 13e0000 1
-Pintos booting with: 
-	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
-	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
-hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
-hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
-hd1:0: detected 4,015 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00003"
-hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
-Formatting file system...done.
-Boot complete.
-Putting 'mmap-ro' into the file system...
-Putting 'large.txt' into the file system...
-Executing 'mmap-ro':
-(mmap-ro) begin
-(mmap-ro) open "large.txt"
-(mmap-ro) mmap "large.txt" with writable=0
-(mmap-ro) mmap "large.txt" with writable=0: FAILED
-mmap-ro: exit(1)
-Execution of 'mmap-ro' complete.
-Timer: 337 ticks
-Thread: 187 idle ticks, 146 kernel ticks, 4 user ticks
-hd0:0: 0 reads, 0 writes
-hd0:1: 182 reads, 8068 writes
-hd1:0: 4015 reads, 0 writes
-hd1:1: 0 reads, 0 writes
-Console: 1103 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 2395 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-shuffle FAILURE:
 
-run: mmap "buffer": FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x00000080042215f3: vm_try_handle_fault (vm/vm.c:246)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
+0x000000800422214b: lazy_map (vm/file.c:183)
+0x0000008004221bd5: uninit_initialize (vm/uninit.c:55 (discriminator 4))
+0x0000008004221740: vm_do_claim_page (vm/vm.c:281)
+0x0000008004221597: vm_try_handle_fault (vm/vm.c:232)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 
 OUTPUT FROM tests/vm/mmap-shuffle:
 
@@ -887,7 +821,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-shuffle run mmap-shu
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  104,755,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 112 sector (56 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -900,25 +834,37 @@ Executing 'mmap-shuffle':
 (mmap-shuffle) create "buffer"
 (mmap-shuffle) open "buffer"
 (mmap-shuffle) mmap "buffer"
-(mmap-shuffle) mmap "buffer": FAILED
-mmap-shuffle: exit(1)
-Execution of 'mmap-shuffle' complete.
-Timer: 80 ticks
-Thread: 42 idle ticks, 28 kernel ticks, 10 user ticks
+mmap-shuffle: exit(-1)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209acaKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 201 ticks
+Thread: 41 idle ticks, 134 kernel ticks, 26 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 203 reads, 520 writes
+hd0:1: 459 reads, 520 writes
 hd1:0: 112 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1080 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1506 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-twice FAILURE:
 
-run: mmap "sample.txt" #0 at 0x10000000: FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86b
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x000000800421e24e: syscall_handler (userprog/syscall.c:331)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 
 OUTPUT FROM tests/vm/mmap-twice:
 
@@ -935,7 +881,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-twice put sample.txt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 107 sector (53 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -948,25 +894,42 @@ Executing 'mmap-twice':
 (mmap-twice) begin
 (mmap-twice) open "sample.txt" #0
 (mmap-twice) mmap "sample.txt" #0 at 0x10000000
-(mmap-twice) mmap "sample.txt" #0 at 0x10000000: FAILED
-mmap-twice: exit(1)
-Execution of 'mmap-twice' complete.
-Timer: 70 ticks
-Thread: 35 idle ticks, 31 kernel ticks, 4 user ticks
+(mmap-twice) open "sample.txt" #1
+(mmap-twice) mmap "sample.txt" #1 at 0x20000000
+(mmap-twice) compare mmap'd file 0 against data
+(mmap-twice) compare mmap'd file 1 against data
+(mmap-twice) end
+mmap-twice: exit(0)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 175 ticks
+Thread: 42 idle ticks, 126 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 195 reads, 252 writes
+hd0:1: 202 reads, 252 writes
 hd1:0: 107 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1137 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1623 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-unmap FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x80042211e0 0x8004221524 0x800421d6c8 0x80042096ac 0x8004209aca 0x400ce3 0x400d2c
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800421d5d1: kill (userprog/exception.c:104)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
+0x000000800421b4c6: find_elem (lib/kernel/hash.c:294)
+0x000000800421aeb0: hash_find (lib/kernel/hash.c:125)
+0x00000080042211e0: spt_find_page (vm/vm.c:115)
+0x0000008004221524: vm_try_handle_fault (vm/vm.c:222)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
+0x0000000000400ce3: (unknown)
+0x0000000000400d2c: (unknown)
 
 OUTPUT FROM tests/vm/mmap-unmap:
 
@@ -996,25 +959,54 @@ Executing 'mmap-unmap':
 (mmap-unmap) begin
 (mmap-unmap) open "sample.txt"
 (mmap-unmap) mmap "sample.txt"
-(mmap-unmap) mmap "sample.txt": FAILED
-mmap-unmap: exit(1)
-Execution of 'mmap-unmap' complete.
-Timer: 74 ticks
-Thread: 35 idle ticks, 36 kernel ticks, 3 user ticks
+(mmap-unmap) memory is readable 540884285
+(mmap-unmap) memory is readable 540888381
+Interrupt 0x0d (#GP General Protection Exception) at rip=80042217b7
+ cr2=0000000010001000 error=               0
+rax ccccccccccccccb4 rbx 0000008004244f18 rcx cccccccccccccccc rdx 0000000000000001
+rsp 0000008004242d70 rbp 0000008004242d90 rsi 0000008004242e30 rdi cccccccccccccccc
+rip 00000080042217b7 r8 0000000000000001  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000216 r12 0000008004242f10 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000216
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x80042211e0 0x8004221524 0x800421d6c8 0x80042096ac 0x8004209aca 0x400ce3 0x400d2c 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000010001000 error=               0
+rax 458b4801f8458348 rbx 0000008004244f18 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004242bb0 rbp 0000008004242bc0 rsi 000000000000a10f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004242ac8  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000216 r12 0000008004242f10 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 77 ticks
+Thread: 36 idle ticks, 33 kernel ticks, 8 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 190 reads, 250 writes
+hd0:1: 192 reads, 250 writes
 hd1:0: 106 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1100 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 2492 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-exit FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86b
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x000000800421e24e: syscall_handler (userprog/syscall.c:331)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 
 OUTPUT FROM tests/vm/mmap-exit:
 
@@ -1046,27 +1038,39 @@ Executing 'mmap-exit':
 (child-mm-wrt) create "sample.txt"
 (child-mm-wrt) open "sample.txt"
 (child-mm-wrt) mmap "sample.txt"
-(child-mm-wrt) mmap "sample.txt": FAILED
-child-mm-wrt: exit(1)
-(mmap-exit) wait for child (should return 0): FAILED
-mmap-exit: exit(1)
-Execution of 'mmap-exit' complete.
-Timer: 92 ticks
-Thread: 44 idle ticks, 37 kernel ticks, 11 user ticks
+(child-mm-wrt) end
+child-mm-wrt: exit(0)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 185 ticks
+Thread: 41 idle ticks, 135 kernel ticks, 9 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 340 reads, 464 writes
+hd0:1: 343 reads, 466 writes
 hd1:0: 206 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1236 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1489 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-clean FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421d9d7 0x800421e4dc 0x800421d86b
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x000000800421d9d7: check_user_write (userprog/syscall.c:87)
+0x000000800421e4dc: syscall_handler (userprog/syscall.c:399)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 
 OUTPUT FROM tests/vm/mmap-clean:
 
@@ -1083,7 +1087,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-clean put sample.txt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  107,929,600 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 109 sector (54 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1096,25 +1100,38 @@ Executing 'mmap-clean':
 (mmap-clean) begin
 (mmap-clean) open "sample.txt"
 (mmap-clean) mmap "sample.txt"
-(mmap-clean) mmap "sample.txt": FAILED
-mmap-clean: exit(1)
-Execution of 'mmap-clean' complete.
-Timer: 77 ticks
-Thread: 34 idle ticks, 39 kernel ticks, 4 user ticks
+(mmap-clean) write "sample.txt"
+mmap-clean: exit(-1)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421d9d7 0x800421e4dc 0x800421d86bKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 172 ticks
+Thread: 37 idle ticks, 131 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 194 reads, 256 writes
+hd0:1: 206 reads, 256 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1100 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1454 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-close FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86b
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x000000800421e24e: syscall_handler (userprog/syscall.c:331)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 
 OUTPUT FROM tests/vm/mmap-close:
 
@@ -1144,25 +1161,45 @@ Executing 'mmap-close':
 (mmap-close) begin
 (mmap-close) open "sample.txt"
 (mmap-close) mmap "sample.txt"
-(mmap-close) mmap "sample.txt": FAILED
+(mmap-close) read of mmap'd file reported bad data: FAILED
 mmap-close: exit(1)
-Execution of 'mmap-close' complete.
-Timer: 70 ticks
-Thread: 36 idle ticks, 31 kernel ticks, 3 user ticks
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 165 ticks
+Thread: 38 idle ticks, 125 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 190 reads, 250 writes
 hd1:0: 106 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1100 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1467 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-remove FAILURE:
 
-run: mmap "sample.txt": FAILED
+Kernel panic in run: PANIC at ../../devices/disk.c:408 in select_sector(): assertion `sec_no < d->capacity' failed.
+Call stack: 0x80042186c8 0x8004214896 0x8004213e4a 0x8004220291 0x800421f2e3 0x8004222114 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca 0x4002f9 0x400e51 0x400e9a
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x0000008004214896: select_sector (devices/disk.c:409)
+0x0000008004213e4a: disk_read (devices/disk.c:217)
+0x0000008004220291: inode_read_at (filesys/inode.c:205)
+0x000000800421f2e3: file_read_at (filesys/file.c:86)
+0x0000008004222114: lazy_map (vm/file.c:177)
+0x0000008004221bd5: uninit_initialize (vm/uninit.c:55 (discriminator 4))
+0x0000008004221740: vm_do_claim_page (vm/vm.c:281)
+0x0000008004221597: vm_try_handle_fault (vm/vm.c:232)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
+0x00000000004002f9: (unknown)
+0x0000000000400e51: (unknown)
+0x0000000000400e9a: (unknown)
+
+This assertion commonly fails when accessing a file via an inode that
+has been closed and freed.  Freeing an inode clears all its sector
+indexes to 0xcccccccc, which is not a valid sector number for disks
+smaller than about 1.6 TB.
 
 OUTPUT FROM tests/vm/mmap-remove:
 
@@ -1173,14 +1210,13 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk...
-Kernel command line: -q -f put mmap-remove put sample.txt run mmap-remove
+Booting from Hard Disk..Kernel command line: -q -f put mmap-remove put sample.txt run mmap-remove
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 108 sector (54 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1193,25 +1229,47 @@ Executing 'mmap-remove':
 (mmap-remove) begin
 (mmap-remove) open "sample.txt"
 (mmap-remove) mmap "sample.txt"
-(mmap-remove) mmap "sample.txt": FAILED
-mmap-remove: exit(1)
-Execution of 'mmap-remove' complete.
-Timer: 72 ticks
-Thread: 39 idle ticks, 31 kernel ticks, 2 user ticks
+(mmap-remove) remove "sample.txt"
+(mmap-remove) try to open "sample.txt"
+(mmap-remove) create "another"
+Kernel PANIC at ../../devices/disk.c:408 in select_sector(): assertion `sec_no < d->capacity' failed.
+Call stack: 0x80042186c8 0x8004214896 0x8004213e4a 0x8004220291 0x800421f2e3 0x8004222114 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca 0x4002f9 0x400e51 0x400e9a 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000010000000 error=               0
+rax 458b4801f8458348 rbx 0000000010000000 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004242c20 rbp 0000008004242c30 rsi 000000000000b70f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004242b38  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000202 r12 0000008004a29000 r13 0000000104242000 r14 0000008004242000
+r15 000000800422ae18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 82 ticks
+Thread: 44 idle ticks, 31 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 188 reads, 254 writes
+hd0:1: 243 reads, 357 writes
 hd1:0: 108 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1110 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 2021 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/mmap-off FAILURE:
 
-run: try to mmap with offset 0x1000: FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86b
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x000000800421e24e: syscall_handler (userprog/syscall.c:331)
+0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
 
 OUTPUT FROM tests/vm/mmap-off:
 
@@ -1241,20 +1299,20 @@ Executing 'mmap-off':
 (mmap-off) begin
 (mmap-off) open "large.txt"
 (mmap-off) try to mmap with offset 0x1000
-(mmap-off) try to mmap with offset 0x1000: FAILED
+(mmap-off) validate mmap.
+(mmap-off) validate fail.: FAILED
 mmap-off: exit(1)
-Execution of 'mmap-off' complete.
-Timer: 599 ticks
-Thread: 347 idle ticks, 244 kernel ticks, 8 user ticks
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e24e 0x800421d86bmmap-off: exit(-1)
+Kernel PANIC recursion at ../../threads/palloc.c:321 in palloc_free_multiple().
+Timer: 616 ticks
+Thread: 325 idle ticks, 247 kernel ticks, 44 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 192 reads, 15898 writes
+hd0:1: 4104 reads, 15898 writes
 hd1:0: 7930 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1110 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1505 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/swap-anon FAILURE:
@@ -1338,8 +1396,8 @@ Executing 'swap-anon':
 (swap-anon) write sparsely over page 0
 swap-anon: exit(-1)
 Execution of 'swap-anon' complete.
-Timer: 94 ticks
-Thread: 35 idle ticks, 31 kernel ticks, 28 user ticks
+Timer: 92 ticks
+Thread: 37 idle ticks, 27 kernel ticks, 28 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 151 reads, 230 writes
 hd1:0: 101 reads, 0 writes
@@ -1353,7 +1411,7 @@ Powering off...
 
 DETAILS OF tests/vm/swap-file FAILURE:
 
-run: mmap "large.txt": FAILED
+run: TIMEOUT
 
 OUTPUT FROM tests/vm/swap-file:
 
@@ -1383,20 +1441,7 @@ Executing 'swap-file':
 (swap-file) begin
 (swap-file) open "large.txt"
 (swap-file) mmap "large.txt"
-(swap-file) mmap "large.txt": FAILED
-swap-file: exit(1)
-Execution of 'swap-file' complete.
-Timer: 619 ticks
-Thread: 341 idle ticks, 271 kernel ticks, 7 user ticks
-hd0:0: 0 reads, 0 writes
-hd0:1: 194 reads, 15894 writes
-hd1:0: 7928 reads, 0 writes
-hd1:1: 0 reads, 0 writes
-Console: 1090 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+TIMEOUT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/swap-iter FAILURE:
@@ -1485,8 +1530,8 @@ Executing 'swap-iter':
 (swap-iter) write sparsely over page 0
 swap-iter: exit(-1)
 Execution of 'swap-iter' complete.
-Timer: 576 ticks
-Thread: 321 idle ticks, 227 kernel ticks, 28 user ticks
+Timer: 587 ticks
+Thread: 306 idle ticks, 253 kernel ticks, 28 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 190 reads, 15896 writes
 hd1:0: 7929 reads, 0 writes
@@ -1501,10 +1546,10 @@ Powering off...
 DETAILS OF tests/vm/swap-fork FAILURE:
 
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d5ba: kill (userprog/exception.c:104)
+0x000000800421d5d1: kill (userprog/exception.c:104)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x000000800421c274: process_wait (userprog/process.c:314)
@@ -1527,7 +1572,7 @@ Booting from Hard Disk..Kernel command line: -q -f put swap-fork put child-swap 
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x27e0000 (Usable: 39,808 kB)
-Calibrating timer...  104,755,200 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 4,114 sector (2 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1557,13 +1602,13 @@ child-swap: exit(-1)
 child-swap: exit(-1)
 child-swap: exit(-1)
 child-swap: exit(-1)
+child-swap: exit(-1)
 (child-swap) data is inconsistent: FAILED
 child-swap: exit(1)
-child-swap: exit(-1)
 (swap-fork) More than one child process' stack is corrupted: FAILED
 swap-fork: exit(1)
 Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000000071 error=               0
+ cr2=0000000000703b20 error=               0
 rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
 rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 000000800424c0c8
 rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
@@ -1571,12 +1616,12 @@ r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000
 r15 0000000000000000 rflags 00200202
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 1821 ticks
-Thread: 172 idle ticks, 152 kernel ticks, 1497 user ticks
+Timer: 1640 ticks
+Thread: 166 idle ticks, 152 kernel ticks, 1322 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 1355 reads, 8266 writes
 hd1:0: 4114 reads, 0 writes
@@ -1587,7 +1632,31 @@ Key
 
 DETAILS OF tests/vm/lazy-file FAILURE:
 
-run: mmap "small.txt": FAILED
+Kernel panic in run: PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca
+Translation of call stack:
+0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
+0x000000800420c09f: palloc_free_multiple (threads/palloc.c:322)
+0x000000800420c0ec: palloc_free_page (threads/palloc.c:329)
+0x000000800420d41b: pt_destroy (threads/mmu.c:160 (discriminator 2))
+0x000000800420d49e: pgdir_destroy (threads/mmu.c:170 (discriminator 2))
+0x000000800420d521: pdpe_destroy (threads/mmu.c:180 (discriminator 2))
+0x000000800420d5ea: pml4_destroy (threads/mmu.c:199)
+0x000000800421c419: process_cleanup (userprog/process.c:381)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x00000080042215f3: vm_try_handle_fault (vm/vm.c:246)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
+0x000000800422214b: lazy_map (vm/file.c:183)
+0x0000008004221bd5: uninit_initialize (vm/uninit.c:55 (discriminator 4))
+0x0000008004221740: vm_do_claim_page (vm/vm.c:281)
+0x0000008004221597: vm_try_handle_fault (vm/vm.c:232)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
+0x00000080042096ac: intr_handler (threads/interrupt.c:352)
+0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 
 OUTPUT FROM tests/vm/lazy-file:
 
@@ -1620,20 +1689,23 @@ Executing 'lazy-file':
 (lazy-file) sizeof small: 10017
 (lazy-file) page aligned size of small: 12288
 (lazy-file) mmap "small.txt"
-(lazy-file) mmap "small.txt": FAILED
-lazy-file: exit(1)
-Execution of 'lazy-file' complete.
-Timer: 76 ticks
-Thread: 39 idle ticks, 34 kernel ticks, 3 user ticks
+(lazy-file) initial pages status
+(lazy-file) check if page is not loaded
+(lazy-file) check if page is not loaded
+(lazy-file) check if page is not loaded
+(lazy-file) load pages (3)
+(lazy-file) load page [0]
+lazy-file: exit(-1)
+Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209acaKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 189 ticks
+Thread: 38 idle ticks, 133 kernel ticks, 18 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 226 reads, 344 writes
+hd0:1: 246 reads, 344 writes
 hd1:0: 148 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1223 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+Console: 1859 characters output
+Key
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/vm/pt-write-code FAILURE:
@@ -1655,7 +1727,7 @@ Booting from Hard Disk..Kernel command line: -q -f put pt-write-code run pt-writ
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 100 sector (50 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1668,8 +1740,8 @@ Executing 'pt-write-code':
 (pt-write-code) writing the code segment succeeded: FAILED
 pt-write-code: exit(1)
 Execution of 'pt-write-code' complete.
-Timer: 68 ticks
-Thread: 37 idle ticks, 29 kernel ticks, 2 user ticks
+Timer: 60 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 151 reads, 228 writes
 hd1:0: 100 reads, 0 writes
@@ -1683,7 +1755,7 @@ Powering off...
 
 DETAILS OF tests/vm/mmap-inherit FAILURE:
 
-run: mmap "sample.txt": FAILED
+run: TIMEOUT
 
 OUTPUT FROM tests/vm/mmap-inherit:
 
@@ -1700,7 +1772,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-inherit put sample.t
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 209 sector (104 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1714,68 +1786,8 @@ Executing 'mmap-inherit':
 (mmap-inherit) begin
 (mmap-inherit) open "sample.txt"
 (mmap-inherit) mmap "sample.txt"
-(mmap-inherit) mmap "sample.txt": FAILED
-mmap-inherit: exit(1)
-Execution of 'mmap-inherit' complete.
-Timer: 79 ticks
-Thread: 39 idle ticks, 36 kernel ticks, 4 user ticks
-hd0:0: 0 reads, 0 writes
-hd0:1: 217 reads, 466 writes
-hd1:0: 209 reads, 0 writes
-hd1:1: 0 reads, 0 writes
-Console: 1187 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-DETAILS OF tests/vm/mmap-overlap FAILURE:
-
-run: mmap "zeros": FAILED
-
-OUTPUT FROM tests/vm/mmap-overlap:
-
-c[?7l[2J[0mSeaBIOS (version rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org)
-
-
-iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk..Kernel command line: -q -f put mmap-overlap put zeros run mmap-overlap
-0 ~ 9fc00 1
-100000 ~ 13e0000 1
-Pintos booting with: 
-	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
-	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
-hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
-hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
-hd1:0: detected 116 sector (58 kB) disk, model "QEMU HARDDISK", serial "QM00003"
-hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
-Formatting file system...done.
-Boot complete.
-Putting 'mmap-overlap' into the file system...
-Putting 'zeros' into the file system...
-Executing 'mmap-overlap':
-(mmap-overlap) begin
-(mmap-overlap) open "zeros" once
-(mmap-overlap) mmap "zeros"
-(mmap-overlap) mmap "zeros": FAILED
-mmap-overlap: exit(1)
-Execution of 'mmap-overlap' complete.
-Timer: 72 ticks
-Thread: 38 idle ticks, 31 kernel ticks, 3 user ticks
-hd0:0: 0 reads, 0 writes
-hd0:1: 194 reads, 270 writes
-hd1:0: 116 reads, 0 writes
-hd1:1: 0 reads, 0 writes
-Console: 1100 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
-
+child-inherit: exit(-1)
+TIMEOUT
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 DETAILS OF tests/filesys/base/syn-read FAILURE:
@@ -1823,13 +1835,13 @@ child-syn-read: exit(2)
 (syn-read) exec child 5 of 10: "child-syn-read 4": FAILED
 syn-read: exit(1)
 Execution of 'syn-read' complete.
-Timer: 249 ticks
-Thread: 108 idle ticks, 34 kernel ticks, 107 user ticks
+Timer: 222 ticks
+Thread: 92 idle ticks, 36 kernel ticks, 94 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 2863 reads, 496 writes
 hd1:0: 221 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1476 characters output
+Console: 1474 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...
@@ -1855,7 +1867,7 @@ Booting from Hard Disk..Kernel command line: -q -f put syn-write put child-syn-w
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 220 sector (110 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1878,8 +1890,8 @@ child-syn-wrt: exit(2)
 (syn-write) exec child 5 of 10: "child-syn-wrt 4": FAILED
 syn-write: exit(1)
 Execution of 'syn-write' complete.
-Timer: 109 ticks
-Thread: 51 idle ticks, 40 kernel ticks, 18 user ticks
+Timer: 102 ticks
+Thread: 52 idle ticks, 37 kernel ticks, 13 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 798 reads, 502 writes
 hd1:0: 220 reads, 0 writes
@@ -1910,7 +1922,7 @@ Booting from Hard Disk..Kernel command line: -q -f put cow-simple run cow-simple
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 4,016 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -1930,8 +1942,8 @@ child: exit(1)
 (cow-simple) end
 cow-simple: exit(0)
 Execution of 'cow-simple' complete.
-Timer: 402 ticks
-Thread: 213 idle ticks, 154 kernel ticks, 35 user ticks
+Timer: 353 ticks
+Thread: 206 idle ticks, 107 kernel ticks, 40 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 4089 reads, 8060 writes
 hd1:0: 4016 reads, 0 writes

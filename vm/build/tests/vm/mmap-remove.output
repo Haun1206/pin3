@@ -28,7 +28,7 @@ Executing 'mmap-remove':
 (mmap-remove) try to open "sample.txt"
 (mmap-remove) create "another"
 Kernel PANIC at ../../devices/disk.c:408 in select_sector(): assertion `sec_no < d->capacity' failed.
-Call stack: 0x80042186c8 0x8004214896 0x8004213e4a 0x800422025d 0x800421f2af 0x80042220d8 0x8004221b99 0x8004221704 0x800422155b 0x800421d6b1 0x80042096ac 0x8004209aca 0x4002f9 0x400e51 0x400e9a 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+Call stack: 0x80042186c8 0x8004214896 0x8004213e4a 0x8004220291 0x800421f2e3 0x8004222114 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca 0x4002f9 0x400e51 0x400e9a 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
  cr2=0000000010000000 error=               0
 rax 458b4801f8458348 rbx 0000000010000000 rcx 00000080040b8000 rdx 00000000000003d4
 rsp 0000008004242c20 rbp 0000008004242c30 rsi 000000000000b70f rdi 0000000000000000
@@ -37,8 +37,8 @@ r11 0000000000000202 r12 0000008004a29000 r13 0000000104242000 r14 0000008004242
 r15 000000800422ae18 rflags 00000006
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 75 ticks
-Thread: 39 idle ticks, 30 kernel ticks, 6 user ticks
+Timer: 82 ticks
+Thread: 44 idle ticks, 31 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 243 reads, 357 writes
 hd1:0: 108 reads, 0 writes

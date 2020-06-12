@@ -1,17 +1,17 @@
 FAIL
 Kernel panic in run: PANIC at ../../devices/disk.c:408 in select_sector(): assertion `sec_no < d->capacity' failed.
-Call stack: 0x80042186c8 0x8004214896 0x8004213e4a 0x800422025d 0x800421f2af 0x80042220d8 0x8004221b99 0x8004221704 0x800422155b 0x800421d6b1 0x80042096ac 0x8004209aca 0x4002f9 0x400e51 0x400e9a
+Call stack: 0x80042186c8 0x8004214896 0x8004213e4a 0x8004220291 0x800421f2e3 0x8004222114 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209aca 0x4002f9 0x400e51 0x400e9a
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
 0x0000008004214896: select_sector (devices/disk.c:409)
 0x0000008004213e4a: disk_read (devices/disk.c:217)
-0x000000800422025d: inode_read_at (filesys/inode.c:205)
-0x000000800421f2af: file_read_at (filesys/file.c:86)
-0x00000080042220d8: lazy_map (vm/file.c:177)
-0x0000008004221b99: uninit_initialize (vm/uninit.c:55 (discriminator 4))
-0x0000008004221704: vm_do_claim_page (vm/vm.c:278)
-0x000000800422155b: vm_try_handle_fault (vm/vm.c:229)
-0x000000800421d6b1: page_fault (userprog/exception.c:147)
+0x0000008004220291: inode_read_at (filesys/inode.c:205)
+0x000000800421f2e3: file_read_at (filesys/file.c:86)
+0x0000008004222114: lazy_map (vm/file.c:177)
+0x0000008004221bd5: uninit_initialize (vm/uninit.c:55 (discriminator 4))
+0x0000008004221740: vm_do_claim_page (vm/vm.c:281)
+0x0000008004221597: vm_try_handle_fault (vm/vm.c:232)
+0x000000800421d6c8: page_fault (userprog/exception.c:147)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x00000000004002f9: (unknown)

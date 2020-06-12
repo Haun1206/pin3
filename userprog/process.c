@@ -595,7 +595,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		//printf("sdfsdf1\n");
 		goto done;
 	}
-
+	file_deny_write(file);
 	/* Save the rsp (for vm)*/
 
 	thread_current()->rsp = if_->rsp;

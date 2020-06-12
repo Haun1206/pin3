@@ -5,7 +5,8 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk..Kernel command line: -q -f put sm-seq-block run sm-seq-block
+Booting from Hard Disk...
+Kernel command line: -q -f put sm-seq-block run sm-seq-block
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -32,7 +33,7 @@ Executing 'sm-seq-block':
 sm-seq-block: exit(0)
 Execution of 'sm-seq-block' complete.
 Timer: 77 ticks
-Thread: 35 idle ticks, 35 kernel ticks, 7 user ticks
+Thread: 44 idle ticks, 28 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 220 reads, 283 writes
 hd1:0: 104 reads, 0 writes

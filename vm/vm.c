@@ -209,13 +209,16 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	/* TODO: Your code goes here */
 	if(addr==NULL)
 		exit(-1);
+	if (write && !not_present)
+		exit(-1);
+
 	uint64_t u_rsp=NULL;
 	if(user)
 		u_rsp = f->rsp;
 	else
 		u_rsp = thread_current()->rsp;
-	thread_current()->rsp = u_rsp;
-	
+	//thread_current()->rsp = u_rsp;
+
 	page = spt_find_page(spt,addr);
 	if(page!=NULL){
 		if(!not_present&&is_user_vaddr(addr))

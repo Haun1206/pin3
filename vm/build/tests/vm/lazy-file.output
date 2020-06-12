@@ -35,9 +35,9 @@ Executing 'lazy-file':
 (lazy-file) load page [0]
 lazy-file: exit(-1)
 Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
-Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421db93 0x80042215b7 0x800421d6b1 0x80042096ac 0x8004209aca 0x800422210f 0x8004221b99 0x8004221704 0x800422155b 0x800421d6b1 0x80042096ac 0x8004209acaKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
-Timer: 193 ticks
-Thread: 39 idle ticks, 135 kernel ticks, 19 user ticks
+Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x80042215f3 0x800421d6c8 0x80042096ac 0x8004209aca 0x800422214b 0x8004221bd5 0x8004221740 0x8004221597 0x800421d6c8 0x80042096ac 0x8004209acaKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
+Timer: 189 ticks
+Thread: 38 idle ticks, 133 kernel ticks, 18 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 246 reads, 344 writes
 hd1:0: 148 reads, 0 writes

@@ -25,8 +25,8 @@ Executing 'swap-iter':
 (swap-iter) write sparsely over page 0
 swap-iter: exit(-1)
 Execution of 'swap-iter' complete.
-Timer: 620 ticks
-Thread: 301 idle ticks, 286 kernel ticks, 33 user ticks
+Timer: 587 ticks
+Thread: 306 idle ticks, 253 kernel ticks, 28 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 190 reads, 15896 writes
 hd1:0: 7929 reads, 0 writes
