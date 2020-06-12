@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put page-merge-mm put child-q
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 218 sector (109 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -25,25 +25,31 @@ Executing 'page-merge-mm':
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
 (page-merge-mm) sort chunk 1
-wrong system call!
+load: child-qsort-mm: open failed
+child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 2
-wrong system call!
+(child-qsort-mm) open "buf1": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 3
-wrong system call!
+load: child-qsort-mm: open failed
+child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 4
-wrong system call!
+(child-qsort-mm) open "buf3": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 5
-wrong system call!
+(child-qsort-mm) open "buf4": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 6
-wrong system call!
+(child-qsort-mm) open "buf5": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 7
-wrong system call!
+load: child-qsort-mm: open failed
+child-qsort-mm: exit(-1)
 (page-merge-mm) wait for child 0
 (page-merge-mm) wait for child 0: FAILED
 page-merge-mm: exit(1)
-wrong system call!
 Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000403a13 error=               0
+ cr2=0000000000403ce5 error=               0
 rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
 rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042420c8
 rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
@@ -55,11 +61,11 @@ Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x8
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 653 ticks
-Thread: 38 idle ticks, 51 kernel ticks, 564 user ticks
+Timer: 762 ticks
+Thread: 106 idle ticks, 53 kernel ticks, 603 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 1379 reads, 4666 writes
+hd0:1: 1027 reads, 4666 writes
 hd1:0: 218 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2367 characters output
+Console: 2637 characters output
 Key

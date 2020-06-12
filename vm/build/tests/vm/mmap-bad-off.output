@@ -24,15 +24,16 @@ Executing 'mmap-bad-off':
 (mmap-bad-off) begin
 (mmap-bad-off) open "large.txt"
 (mmap-bad-off) try to mmap invalid offset
-wrong system call!
+(mmap-bad-off) end
+mmap-bad-off: exit(0)
 Execution of 'mmap-bad-off' complete.
-Timer: 340 ticks
-Thread: 205 idle ticks, 129 kernel ticks, 6 user ticks
+Timer: 333 ticks
+Thread: 182 idle ticks, 146 kernel ticks, 5 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 182 reads, 8066 writes
 hd1:0: 4014 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1088 characters output
+Console: 1110 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

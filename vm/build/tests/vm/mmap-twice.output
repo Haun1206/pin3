@@ -24,15 +24,16 @@ Executing 'mmap-twice':
 (mmap-twice) begin
 (mmap-twice) open "sample.txt" #0
 (mmap-twice) mmap "sample.txt" #0 at 0x10000000
-wrong system call!
+(mmap-twice) mmap "sample.txt" #0 at 0x10000000: FAILED
+mmap-twice: exit(1)
 Execution of 'mmap-twice' complete.
-Timer: 71 ticks
-Thread: 38 idle ticks, 28 kernel ticks, 5 user ticks
+Timer: 70 ticks
+Thread: 35 idle ticks, 31 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 195 reads, 252 writes
 hd1:0: 107 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1080 characters output
+Console: 1137 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

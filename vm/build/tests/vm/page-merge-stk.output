@@ -25,31 +25,29 @@ Executing 'page-merge-stk':
 (page-merge-stk) init
 (page-merge-stk) sort chunk 0
 (page-merge-stk) sort chunk 1
-(child-qsort) open "buf0": FAILED
-child-qsort: exit(1)
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 2
-load: child-qsort: open failed
-child-qsort: exit(-1)
 (page-merge-stk) sort chunk 3
-load: child-qsort: open failed
-child-qsort: exit(-1)
 (page-merge-stk) sort chunk 4
-load: child-qsort: open failed
-child-qsort: exit(-1)
+child-qsort: exit(72)
+child-qsort: exit(72)
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 5
-(child-qsort) open "buf4": FAILED
-child-qsort: exit(1)
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 6
-load: child-qsort: open failed
-child-qsort: exit(-1)
+(child-qsort) open "buf5": FAILED
+child-qsort: exit(1)
 (page-merge-stk) sort chunk 7
-load: child-qsort: open failed
-child-qsort: exit(-1)
 (page-merge-stk) wait for child 0
-(page-merge-stk) wait for child 0: FAILED
+(page-merge-stk) wait for child 1
+(page-merge-stk) wait for child 2
+(page-merge-stk) wait for child 3
+(page-merge-stk) wait for child 4
+(page-merge-stk) wait for child 5
+(page-merge-stk) wait for child 5: FAILED
 page-merge-stk: exit(1)
 Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000403ce5 error=               0
+ cr2=0000000000403a0f error=               0
 rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
 rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042420c8
 rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
@@ -61,11 +59,11 @@ Call stack: 0x80042186c8 0x800421d5ba 0x80042096ac 0x8004209aca 0x800421c274 0x8
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 759 ticks
-Thread: 107 idle ticks, 50 kernel ticks, 602 user ticks
+Timer: 760 ticks
+Thread: 43 idle ticks, 52 kernel ticks, 665 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 757 reads, 4666 writes
+hd0:1: 4420 reads, 5946 writes
 hd1:0: 218 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2601 characters output
+Console: 2561 characters output
 Key

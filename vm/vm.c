@@ -1,14 +1,17 @@
 /* vm.c: Generic interface for virtual memory objects. */
 
 #include "threads/malloc.h"
+
 #include "vm/vm.h"
 #include "vm/inspect.h"
 #include <hash.h>
 #include "threads/mmu.h"
+#include "threads/synch.h"
 #include "vm/uninit.h"
 #include "threads/vaddr.h"
 #include "threads/thread.h"
 #include "vm/anon.h"
+#include "vm/vm.h"
 #include "userprog/process.h"
 #include "userprog/syscall.h"
 #include <stdio.h>
@@ -42,6 +45,8 @@ page_get_type (struct page *page) {
 	}
 }
 
+
+
 /* Helpers */
 static struct frame *vm_get_victim (void);
 static bool vm_do_claim_page (struct page *page);
@@ -49,6 +54,7 @@ static struct frame *vm_evict_frame (void);
 static uint64_t vm_hash_func(const struct hash_elem *e, void * aux UNUSED);
 static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b);
 static void spt_destroy_func(struct hash_elem*e,void *aux);
+
 
 /* Create the pending page object with initializer. If you want to create a
  * page, do not create it directly and make it through this function or
@@ -121,9 +127,16 @@ spt_insert_page (struct supplemental_page_table *spt UNUSED,
 	if (spt_find_page(spt,page->va)!=NULL)
 		return false;
 	/* TODO: Fill this function. */
+	bool succ =false;
+	/*
+	if(!lock_held_by_current_thread(&spt_lock))
+		lock_acquire(&spt_lock); */
     if(hash_insert(&spt->hash_table, &page->h_elem) ==NULL)
-        return true;
-	return false;
+        succ=true;
+	/*
+	if(lock_held_by_current_thread(&spt_lock))
+		lock_release(&spt_lock); */
+	return succ;
 }
 
 void
@@ -279,6 +292,7 @@ static bool vm_less_func(const struct hash_elem *a, const struct hash_elem *b){
 void
 supplemental_page_table_init (struct supplemental_page_table *spt ) {
     hash_init(&spt->hash_table, vm_hash_func, vm_less_func, NULL);
+	lock_init(&spt_lock);
 }
 
 /* Copy supplemental page table from src to dst */
@@ -287,6 +301,7 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct
 	//from src to dst
 	
 	struct hash_iterator i;
+	lock_acquire(&spt_lock);
 	hash_first(&i,&src->hash_table);
 	struct aux_load *aux_t;
 	bool res =false;
@@ -314,6 +329,7 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct
 		}
 		
 	}
+	lock_release(&spt_lock);
 	return res;
 }
 

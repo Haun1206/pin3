@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-exit put child-mm-wr
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  65,433,600 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 206 sector (103 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -26,30 +26,18 @@ Executing 'mmap-exit':
 (child-mm-wrt) create "sample.txt"
 (child-mm-wrt) open "sample.txt"
 (child-mm-wrt) mmap "sample.txt"
-wrong system call!
-(mmap-exit) open "sample.txt" for verification
-(mmap-exit) 512 bytes read starting at offset 0 in "sample.txt" differ from expected.
-(mmap-exit) Showing first differing 64 bytes.
-(mmap-exit) Data actually read:
-0000000000000000  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00 |................|
-0000000000000010  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00 |................|
-0000000000000020  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00 |................|
-0000000000000030  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00 |................|
-(mmap-exit) Expected data:
-0000000000000000  3d 3d 3d 20 20 41 4c 4c-20 55 53 45 52 53 20 50 |===  ALL USERS P|
-0000000000000010  4c 45 41 53 45 20 4e 4f-54 45 20 20 3d 3d 3d 3d |LEASE NOTE  ====|
-0000000000000020  3d 3d 3d 3d 3d 3d 3d 3d-3d 3d 3d 3d 3d 3d 3d 3d |================|
-0000000000000030  3d 3d 3d 3d 0a 0a 43 41-52 20 61 6e 64 20 43 44 |====..CAR and CD|
-(mmap-exit) 512 bytes read starting at offset 0 in "sample.txt" differ from expected: FAILED
+(child-mm-wrt) mmap "sample.txt": FAILED
+child-mm-wrt: exit(1)
+(mmap-exit) wait for child (should return 0): FAILED
 mmap-exit: exit(1)
 Execution of 'mmap-exit' complete.
-Timer: 107 ticks
-Thread: 51 idle ticks, 34 kernel ticks, 22 user ticks
+Timer: 92 ticks
+Thread: 44 idle ticks, 37 kernel ticks, 11 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 345 reads, 464 writes
+hd0:1: 340 reads, 464 writes
 hd1:0: 206 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2150 characters output
+Console: 1236 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

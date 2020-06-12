@@ -24,15 +24,16 @@ Executing 'mmap-write':
 (mmap-write) create "sample.txt"
 (mmap-write) open "sample.txt"
 (mmap-write) mmap "sample.txt"
-wrong system call!
+(mmap-write) mmap "sample.txt": FAILED
+mmap-write: exit(1)
 Execution of 'mmap-write' complete.
-Timer: 71 ticks
-Thread: 36 idle ticks, 33 kernel ticks, 2 user ticks
+Timer: 72 ticks
+Thread: 38 idle ticks, 31 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 192 reads, 250 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1033 characters output
+Console: 1073 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

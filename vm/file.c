@@ -4,6 +4,7 @@
 #include "threads/thread.h"
 #include "threads/mmu.h"
 #include "threads/vaddr.h"
+#include "threads/synch.h"
 
 static bool file_map_swap_in (struct page *page, void *kva);
 static bool file_map_swap_out (struct page *page);
@@ -50,6 +51,20 @@ file_map_swap_out (struct page *page) {
 static void
 file_map_destroy (struct page *page) {
     struct file_page *file_page UNUSED = &page->file;
+    //If the file was written we might need to write it back again
+    struct thread *t  = thread_current();
+    if(pml4_is_dirty(t->pml4, page->va)){
+        if(page->frame != NULL)
+            file_write_at(page->file.file, page->frame->kva, page->file.read_bytes, page->file.ofs);
+        
+
+    }
+    //If the page has the physical memeory ->free
+    if(page->frame !=NULL){
+        palloc_free_page(page->frame->kva);
+        free(page->frame);
+    }
+
 }
 
 int check_addr(void * addr, size_t length){
@@ -69,9 +84,9 @@ int check_addr(void * addr, size_t length){
 void *
 do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offset) {
     
-    if(length==0)
+    if(file_length(length)==0)
         return NULL;
-    if(!addr)
+    if(pg_ofs(addr)!=0)
         return NULL;
     if(check_addr(addr,length)==0)
         return NULL;
@@ -152,7 +167,7 @@ bool lazy_map(struct page *p, void * aux){
         return false;
     else{
         struct file *reopen = file_reopen(aux_t->file);
-        uint8_t * kva = page->frame->kva;
+        uint8_t * kva = p->frame->kva;
         int read_bytes = file_read_at(reopen, kva, aux_t->read_bytes, aux_t->ofs);
         int zero_bytes = PGSIZE - read_bytes;
 
@@ -177,7 +192,38 @@ Pages removed from process's list of vp ->delete hash
 
 
 */
+void do_punmap (struct hash_elem *e, void *aux){
+	
+	int check_mapping  = (int)aux;
+	struct page *page = hash_entry(e, struct page, h_elem);
+	struct thread* t = thread_current();
+	if(page->mapping == check_mapping) {
+		if (VM_TYPE(page->operations->type) == VM_FILE && pml4_is_dirty(thread_current()->pml4, page->va))
+		{
+			if (page->frame)
+			{
+				file_write_at(page->file.file, page->frame->kva, page->file.read_bytes, page->file.ofs);
+				
+				//find the file's location in fd_table
+				//And backup
+				for(int i = 2; i < t->next_fd; i++){
+					if(t->fd_table[i] == page->file.file)
+						t->fd_table[i] = file_reopen(page->file.file);
+				}
+			}
+		}
+		spt_remove_page(&thread_current()->spt, page);
+	}
+}
 void
 do_munmap (void *addr) {
-}
+	struct supplemental_page_table *spt = &thread_current()->spt;
+	struct page *page = spt_find_page(spt, addr);
+	struct file *file = page->file.file;
 
+	spt->hash_table.aux = page->mapping;
+    lock_acquire(&spt_lock);
+	hash_apply (&spt->hash_table, do_punmap);
+    lock_release(&spt_lock);
+	file_close(file);
+}

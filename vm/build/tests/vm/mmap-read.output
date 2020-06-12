@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-read put sample.txt 
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 107 sector (53 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,15 +24,16 @@ Executing 'mmap-read':
 (mmap-read) begin
 (mmap-read) open "sample.txt"
 (mmap-read) mmap "sample.txt"
-wrong system call!
+(mmap-read) mmap "sample.txt": FAILED
+mmap-read: exit(1)
 Execution of 'mmap-read' complete.
-Timer: 75 ticks
-Thread: 41 idle ticks, 28 kernel ticks, 6 user ticks
+Timer: 71 ticks
+Thread: 39 idle ticks, 29 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 195 reads, 252 writes
 hd1:0: 107 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1052 characters output
+Console: 1090 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...
