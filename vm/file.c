@@ -207,17 +207,19 @@ void do_punmap (struct hash_elem *e, void *aux){
 	struct page *page = hash_entry(e, struct page, h_elem);
 	struct thread* t = thread_current();
 	if(page->mapping == check_mapping) {
-		if (VM_TYPE(page->operations->type) == VM_FILE && pml4_is_dirty(thread_current()->pml4, page->va))
+		if (pml4_is_dirty(thread_current()->pml4, page->va && VM_TYPE(page->operations->type) == VM_FILE))
 		{
-			if (page->frame)
+			if (page->frame!=NULL)
 			{
 				file_write_at(page->file.file, page->frame->kva, page->file.read_bytes, page->file.ofs);
 				
 				//find the file's location in fd_table
 				//And backup
 				for(int i = 2; i < t->next_fd; i++){
-					if(t->fd_table[i] == page->file.file)
+					if(t->fd_table[i] == page->file.file){
 						t->fd_table[i] = file_reopen(page->file.file);
+                        break;
+                    }
 				}
 			}
 		}
