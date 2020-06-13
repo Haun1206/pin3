@@ -12,7 +12,7 @@ Pintos booting with:
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
 Calibrating timer...  157,081,600 loops/s.
-hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 148 sector (74 kB) disk, model "QEMU HARDDISK", serial "QM00003"
 hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
@@ -34,13 +34,14 @@ Executing 'lazy-file':
 (lazy-file) load pages (3)
 (lazy-file) load page [0]
 lazy-file: exit(-1)
-Kernel PANIC at ../../threads/palloc.c:321 in palloc_free_multiple(): assertion `bitmap_all (pool->used_map, page_idx, page_cnt)' failed.
-Call stack: 0x80042186c8 0x800420c09f 0x800420c0ec 0x800420d41b 0x800420d49e 0x800420d521 0x800420d5ea 0x800421c419 0x800421c39c 0x8004207574 0x800421dbaa 0x8004221669 0x800421d6c8 0x80042096ac 0x8004209aca 0x80042221d2 0x8004221c4b 0x80042217b6 0x800422160d 0x800421d6c8 0x80042096ac 0x8004209acaKernel PANIC recursion at ../../vm/vm.c:179 in vm_get_frame().
-Timer: 191 ticks
-Thread: 41 idle ticks, 131 kernel ticks, 19 user ticks
+Execution of 'lazy-file' complete.
+Timer: 87 ticks
+Thread: 40 idle ticks, 30 kernel ticks, 17 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 246 reads, 344 writes
 hd1:0: 148 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1859 characters output
-Key
+Console: 1394 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

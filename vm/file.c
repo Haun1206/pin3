@@ -61,7 +61,7 @@ file_map_destroy (struct page *page) {
     }
     //If the page has the physical memeory ->free
     if(page->frame !=NULL){
-        palloc_free_page(page->frame->kva);
+        //palloc_free_page(page->frame->kva);
         free(page->frame);
     }
 
@@ -207,19 +207,17 @@ void do_punmap (struct hash_elem *e, void *aux){
 	struct page *page = hash_entry(e, struct page, h_elem);
 	struct thread* t = thread_current();
 	if(page->mapping == check_mapping) {
-		if (pml4_is_dirty(thread_current()->pml4, page->va && VM_TYPE(page->operations->type) == VM_FILE))
+		if (VM_TYPE(page->operations->type) == VM_FILE && pml4_is_dirty(thread_current()->pml4, page->va))
 		{
-			if (page->frame!=NULL)
+			if (page->frame != NULL)
 			{
 				file_write_at(page->file.file, page->frame->kva, page->file.read_bytes, page->file.ofs);
 				
 				//find the file's location in fd_table
 				//And backup
 				for(int i = 2; i < t->next_fd; i++){
-					if(t->fd_table[i] == page->file.file){
+					if(t->fd_table[i] == page->file.file)
 						t->fd_table[i] = file_reopen(page->file.file);
-                        break;
-                    }
 				}
 			}
 		}
@@ -232,11 +230,11 @@ do_munmap (void *addr) {
 	struct supplemental_page_table *spt = &thread_current()->spt;
 	struct page *page = spt_find_page(spt, addr);
 	struct file *file = page->file.file;
-
+    struct file *file_re= file_reopen(file);
 	spt->hash_table.aux = page->mapping;
     lock_acquire(&spt_lock);
 	hash_apply (&spt->hash_table, do_punmap);
     lock_release(&spt_lock);
-	file_close(file);
+	file_close(file_re);
 
 }

@@ -15,6 +15,7 @@
 #include "userprog/process.h"
 #include "userprog/syscall.h"
 #include <stdio.h>
+#include <list.h>
 #include <stdlib.h>
 
 /* Initializes the virtual memory subsystem by invoking each subsystem's
@@ -29,6 +30,8 @@ vm_init (void) {
 	register_inspect_intr ();
 	/* DO NOT MODIFY UPPER LINES. */
 	/* TODO: Your code goes here. */
+	list_init(&victim_list);
+	victim_c = list_head(&victim_list);
 }
 
 /* Get the type of the page. This function is useful if you want to know the
@@ -146,22 +149,36 @@ spt_remove_page (struct supplemental_page_table *spt, struct page *page) {
 }
 
 /* Get the struct frame, that will be evicted. */
-static struct frame *
-vm_get_victim (void) {
+static struct frame * vm_get_victim (void) {
 	struct frame *victim = NULL;
-	 /* TODO: The policy for eviction is up to you. */
-
+	/* TODO: The policy for eviction is up to you. */
+	struct frame *tmp;
+	void * addr;
+	victim_c = list_begin(&victim_list);
+	while(victim ==NULL){
+		tmp  = list_entry(victim_c, struct frame, victim);
+		addr = tmp -> page ->va;
+		//already accessed
+		if (!pml4_is_accessed(thread_current()->pml4, addr)) 
+			victim = tmp;
+		else
+			pml4_set_accessed(thread_current()->pml4, addr, false);
+		(victim_c ==list_rbegin(&victim_list))?(victim_c = list_begin(&victim_list)): (victim_c = list_next(victim_c));
+	
+	}
+	list_remove(&victim->victim);
 	return victim;
+
 }
 
 /* Evict one page and return the corresponding frame.
  * Return NULL on error.*/
 static struct frame *
 vm_evict_frame (void) {
-	struct frame *victim UNUSED = vm_get_victim ();
+	struct frame *victim = vm_get_victim ();
 	/* TODO: swap out the victim and return the evicted frame. */
-
-	return NULL;
+	swap_out(victim->page);
+	return victim;
 }
 
 /* palloc() and get frame. If there is no available page, evict the page
@@ -175,8 +192,10 @@ vm_get_frame (void) {
     frame = malloc(sizeof(struct frame));
 	ASSERT (frame != NULL);
     frame->kva = palloc_get_page(PAL_USER);
-    if(frame->kva==NULL)
-        PANIC("todo");
+    if(frame->kva==NULL){
+        free(frame);
+		frame = vm_evict_frame();
+	}
 	frame->page= NULL;
 	ASSERT(frame->page ==NULL);
 	return frame;
@@ -230,6 +249,11 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		}
 		//printf("HERE\n");
 
+		if(VM_TYPE(page->operations->type) == VM_ANON || VM_TYPE(page->operations->type) == VM_FILE) {
+			struct frame *frame = vm_evict_frame();
+			page->frame = frame;
+			return swap_in(page, frame->kva);
+		}
 		return vm_do_claim_page (page);
 	}
 	else{

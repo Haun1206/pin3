@@ -28,6 +28,7 @@ enum vm_type {
 #include "vm/anon.h"
 #include "vm/file.h"
 #include <hash.h>
+#include <list.h>
 
 struct page_operations;
 struct thread;
@@ -66,6 +67,7 @@ struct page {
 struct frame {
 	void *kva;
 	struct page *page;
+	struct list_elem victim;
 };
 
 /* The function table for page operations.
@@ -123,4 +125,6 @@ void vm_dealloc_page (struct page *page);
 bool vm_claim_page (void *va);
 enum vm_type page_get_type (struct page *page);
 struct lock spt_lock;
+struct list victim_list;
+struct list_elem * victim_c;
 #endif  /* VM_VM_H */

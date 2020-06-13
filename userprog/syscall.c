@@ -386,6 +386,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe read?");
 			check_addr((void *)f->R.rsi);
 #ifdef VM
+			//printf("HERE\n");
 			check_user((void *)f->R.rsi, f);
 			check_user_write((void *)f->R.rsi, f); //why does this happen for reading haun? 
 #endif
@@ -398,6 +399,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("%s\n", "maybe write?\n");
 			check_addr(f->R.rsi);
 #ifdef VM
+			//printf("HERE\n");
 			check_user((void *)f->R.rsi, f);
 			check_user_write((void *)f->R.rsi, f);
 #endif
@@ -421,7 +423,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 		case SYS_CLOSE:
 			//printf("%s\n", "maybe close?\n");
 			close(f->R.rdi);
-			//printf("%s\n", "maybe close?\n");
+			//printf("%s\n", "maybe ok?\n");
 			break;
 		case SYS_MMAP:
 			if(check_validity(f)==false) {
@@ -430,13 +432,14 @@ syscall_handler (struct intr_frame *f UNUSED) {
 				break;
 			}
 			mmap(f);
+			//printf("I'vE DONE MMAP\n");
 			break;
 		case SYS_MUNMAP:
-//			printf("hi\n");
+			//printf("THEN MUNMAPhi\n");
 			do_munmap(f->R.rdi);
 			break;
 		default:
-			printf("wrong system call!\n");
+			//printf("wrong system call!\n");
 			thread_exit();
 			break;
 	}

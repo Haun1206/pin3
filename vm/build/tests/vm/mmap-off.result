@@ -1,6 +1,6 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221256 0x800422159a 0x800421d6c8 0x80042096ac 0x8004209aca 0x4003b1 0x400fa8 0x400ff1
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221279 0x8004221723 0x800421d6c8 0x80042096ac 0x8004209aca 0x4003b1 0x400fa8 0x400ff1
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
 0x000000800421d5d1: kill (userprog/exception.c:104)
@@ -8,8 +8,8 @@ Translation of call stack:
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x000000800421b4c6: find_elem (lib/kernel/hash.c:294)
 0x000000800421aeb0: hash_find (lib/kernel/hash.c:125)
-0x0000008004221256: spt_find_page (vm/vm.c:115)
-0x000000800422159a: vm_try_handle_fault (vm/vm.c:223)
+0x0000008004221279: spt_find_page (vm/vm.c:118)
+0x0000008004221723: vm_try_handle_fault (vm/vm.c:242)
 0x000000800421d6c8: page_fault (userprog/exception.c:147)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
