@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put page-parallel put child-l
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  156,876,800 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 205 sector (102 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -41,8 +41,8 @@ Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x8
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 459 ticks
-Thread: 45 idle ticks, 39 kernel ticks, 375 user ticks
+Timer: 466 ticks
+Thread: 48 idle ticks, 36 kernel ticks, 382 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 472 reads, 448 writes
 hd1:0: 205 reads, 0 writes

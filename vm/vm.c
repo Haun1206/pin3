@@ -267,7 +267,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 			return true;
 		}
 		//free(page);
-		exit(-1);
+		return false;
 	}
 }
 
