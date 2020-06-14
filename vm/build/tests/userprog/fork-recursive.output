@@ -49,7 +49,7 @@ child: exit(4)
 fork-recursive: exit(0)
 Execution of 'fork-recursive' complete.
 Timer: 78 ticks
-Thread: 35 idle ticks, 33 kernel ticks, 10 user ticks
+Thread: 35 idle ticks, 29 kernel ticks, 14 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 157 reads, 230 writes
 hd1:0: 101 reads, 0 writes

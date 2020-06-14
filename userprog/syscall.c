@@ -400,8 +400,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			check_addr(f->R.rsi);
 #ifdef VM
 			//printf("HERE\n");
-			check_user((void *)f->R.rsi, f);
-			check_user_write((void *)f->R.rsi, f);
+			//check_user((void *)f->R.rsi, f);
+			//check_user_write((void *)f->R.rsi, f);
 #endif
 			//printf("%s\n", "maybe write?\n");
 			f->R.rax = write(f->R.rdi, (const void *)f->R.rsi, (unsigned) f->R.rdx);

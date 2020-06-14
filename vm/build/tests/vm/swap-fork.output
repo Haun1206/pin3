@@ -41,8 +41,7 @@ child-swap: exit(-1)
 (child-swap) data is inconsistent: FAILED
 child-swap: exit(1)
 child-swap: exit(-1)
-(child-swap) data is inconsistent: FAILED
-child-swap: exit(1)
+child-swap: exit(-1)
 child-swap: exit(-1)
 child-swap: exit(-1)
 (swap-fork) More than one child process' stack is corrupted: FAILED
@@ -60,11 +59,11 @@ Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x8
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 1946 ticks
-Thread: 217 idle ticks, 140 kernel ticks, 1589 user ticks
+Timer: 1732 ticks
+Thread: 82 idle ticks, 150 kernel ticks, 1500 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 1355 reads, 8266 writes
 hd1:0: 4114 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2456 characters output
+Console: 2414 characters output
 Key

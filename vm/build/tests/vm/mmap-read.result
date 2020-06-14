@@ -1,18 +1,18 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221262 0x800421d944 0x800421e51a 0x800421d86b 0x4003eb 0x40045f 0x400d70 0x400d9e
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x8004218f83 0x800421ac6a 0x8004221ca0 0x800421c3d0 0x800421c39c 0x8004207574 0x800421dbaa 0x800421e2ad 0x800421d86b 0x400dac
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
 0x000000800421d5d1: kill (userprog/exception.c:104)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
-0x000000800421b4c6: find_elem (lib/kernel/hash.c:294)
-0x000000800421aeb0: hash_find (lib/kernel/hash.c:125)
-0x0000008004221262: spt_find_page (vm/vm.c:118)
-0x000000800421d944: check_user (userprog/syscall.c:78)
-0x000000800421e51a: syscall_handler (userprog/syscall.c:404)
+0x0000008004218f83: list_pop_front (lib/kernel/list.c:257)
+0x000000800421ac6a: hash_clear (lib/kernel/hash.c:59)
+0x0000008004221ca0: supplemental_page_table_kill (vm/vm.c:377)
+0x000000800421c3d0: process_cleanup (userprog/process.c:368)
+0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004207574: thread_exit (threads/thread.c:409)
+0x000000800421dbaa: fork (userprog/syscall.c:126)
+0x000000800421e2ad: syscall_handler (userprog/syscall.c:337)
 0x000000800421d86b: no_sti (userprog/syscall-entry.o:?)
-0x00000000004003eb: (unknown)
-0x000000000040045f: (unknown)
-0x0000000000400d70: (unknown)
-0x0000000000400d9e: (unknown)
+0x0000000000400dac: (unknown)
