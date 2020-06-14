@@ -9,6 +9,8 @@
 static bool file_map_swap_in (struct page *page, void *kva);
 static bool file_map_swap_out (struct page *page);
 static void file_map_destroy (struct page *page);
+bool lazy_map(struct page*o, void*aux);
+void do_punmap(struct hash_elem *e, void *aux); 
 
 
 
@@ -23,7 +25,7 @@ int counter;
 /* The initializer of file vm */
 void
 vm_file_init (void) {
-    counter =0;
+    counter =2;
 }
 
 /* Initialize the file mapped page */
@@ -103,26 +105,32 @@ do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offse
     //
     //printf("%x\n",read_bytes);
     uint32_t read_bytes = (uint32_t)length;
-    uint32_t remainder = PGSIZE- read_bytes%PGSIZE;
+    uint32_t remainder = (PGSIZE- read_bytes)%PGSIZE;
     uint32_t  zero_bytes = 0;
     if(remainder!=0){
         zero_bytes = remainder;
     }
     //ZERO_BYTES bytes at UPAGE + READ_BYTES must be zeroed.
     //printf("%x\n",zero_bytes);
-    counter ++;
+    //counter ++;
+    struct thread* t = thread_current();
+    for(int i=2;i<t->next_fd;i++){
+    	if(t->fd_table[i]==file)
+		counter = i;	
+    }
     //printf("UNTIL HER\n");
     while (read_bytes > 0 || zero_bytes > 0) {
 
         size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
         size_t page_zero_bytes = PGSIZE - page_read_bytes;
+	//printf("READ:%d",page_read_bytes);
 
         struct aux_map * aux = malloc(sizeof(struct aux_map));
         //printf("1?\n");
         aux->file = file;
         aux->ofs = offset;
-        aux->read_bytes = read_bytes;
-        aux-> zero_bytes = zero_bytes;
+        aux->read_bytes = page_read_bytes;
+        aux-> zero_bytes = page_zero_bytes;
         aux-> mapping = counter;
         //printf("2?\n");
         
@@ -175,15 +183,16 @@ bool lazy_map(struct page *p, void * aux){
     if(p->frame==NULL)
         return false;
     else{
-        struct file *reopen = file_reopen(aux_t->file);
+        struct file *reopen = file_duplicate(aux_t->file);
         uint8_t * kva = p->frame->kva;
         int read_bytes = file_read_at(reopen, kva, aux_t->read_bytes, aux_t->ofs);
         int zero_bytes = PGSIZE - read_bytes;
 
-        memset (kva + read_bytes, 0, zero_bytes);
+        
+	memset (kva + read_bytes, 0, zero_bytes);
 
         //SEt the struct file_page the components
-        p->file.file = aux_t->file;
+        p->file.file = reopen;
         p->file.ofs = aux_t->ofs;
         p->file.read_bytes = read_bytes;
         p->file.zero_bytes = zero_bytes;
@@ -207,20 +216,26 @@ void do_punmap (struct hash_elem *e, void *aux){
 	struct page *page = hash_entry(e, struct page, h_elem);
 	struct thread* t = thread_current();
 	if(page->mapping == check_mapping) {
-		if (VM_TYPE(page->operations->type) == VM_FILE && pml4_is_dirty(thread_current()->pml4, page->va))
+		//printf("KIM");
+		//printf("%d\n", VM_TYPE(page->operations->type));
+		if (VM_TYPE(page->operations->type) == VM_FILE)
 		{
 			if (page->frame != NULL)
 			{
-				file_write_at(page->file.file, page->frame->kva, page->file.read_bytes, page->file.ofs);
-				
+				file_write_at(page->file.file, page->frame->kva, page->file.read_bytes, page->file.ofs);	
 				//find the file's location in fd_table
 				//And backup
+				
 				for(int i = 2; i < t->next_fd; i++){
-					if(t->fd_table[i] == page->file.file)
+					if(i == page->mapping){
+						//printf("HOOO");
 						t->fd_table[i] = file_reopen(page->file.file);
+						//page->file.file = t->fd_table[i];
+					}
 				}
 			}
 		}
+		//printf("Please");
 		spt_remove_page(&thread_current()->spt, page);
 	}
 }
@@ -230,11 +245,10 @@ do_munmap (void *addr) {
 	struct supplemental_page_table *spt = &thread_current()->spt;
 	struct page *page = spt_find_page(spt, addr);
 	struct file *file = page->file.file;
-    struct file *file_re= file_reopen(file);
 	spt->hash_table.aux = page->mapping;
     lock_acquire(&spt_lock);
 	hash_apply (&spt->hash_table, do_punmap);
     lock_release(&spt_lock);
-	file_close(file_re);
+	file_close(file);
 
 }

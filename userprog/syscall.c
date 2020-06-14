@@ -301,12 +301,12 @@ void mmap(struct intr_frame *if_){
 		if_->R.rax = NULL;
 	}
 	else{
-		struct file * tempo = file_reopen(f);
+		//struct file * tempo = file_reopen(f);
 		//printf("YEAH\n");
 		if(!lock_held_by_current_thread(&file_lock))
 			lock_acquire(&file_lock);
 		//printf("JJ\n");
-		if_->R.rax = do_mmap(if_->R.rdi, if_->R.rsi, if_->R.rdx, tempo, if_->R.r8);
+		if_->R.rax = do_mmap(if_->R.rdi, if_->R.rsi, if_->R.rdx, f, if_->R.r8);
 		lock_release(&file_lock);
 		//printf("IHERE\n");
 	}
@@ -435,7 +435,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("I'vE DONE MMAP\n");
 			break;
 		case SYS_MUNMAP:
-			//printf("THEN MUNMAPhi\n");
+			//printf("THEN MUNMAPhi"\n);
 			do_munmap(f->R.rdi);
 			break;
 		default:

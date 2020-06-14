@@ -31,8 +31,8 @@ Executing 'args-multiple some arguments for you!':
 (args) end
 args-multiple: exit(0)
 Execution of 'args-multiple' complete.
-Timer: 74 ticks
-Thread: 42 idle ticks, 26 kernel ticks, 6 user ticks
+Timer: 72 ticks
+Thread: 37 idle ticks, 31 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 151 reads, 226 writes
 hd1:0: 99 reads, 0 writes

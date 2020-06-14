@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put lazy-file put sample.txt 
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  155,648,000 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 148 sector (74 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -33,15 +33,40 @@ Executing 'lazy-file':
 (lazy-file) check if page is not loaded
 (lazy-file) load pages (3)
 (lazy-file) load page [0]
-lazy-file: exit(-1)
-Execution of 'lazy-file' complete.
-Timer: 87 ticks
-Thread: 40 idle ticks, 30 kernel ticks, 17 user ticks
+(lazy-file) check if page is loaded
+(lazy-file) check if page is not loaded
+(lazy-file) check if page is not loaded
+(lazy-file) load page [1]
+(lazy-file) check if page is loaded
+(lazy-file) check if page is loaded
+(lazy-file) check if page is not loaded
+(lazy-file) load page [2]
+(lazy-file) check if page is loaded
+(lazy-file) check if page is loaded
+(lazy-file) check if page is loaded
+Interrupt 0x0d (#GP General Protection Exception) at rip=8004221a02
+ cr2=0000000000606f40 error=               0
+rax ccccccccccccccb4 rbx 00000000000003f1 rcx cccccccccccccccc rdx 0000000000000002
+rsp 0000008004244dd0 rbp 0000008004244df0 rsi 0000008004244e90 rdi cccccccccccccccc
+rip 0000008004221a02 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000206 r12 000000800421e234 r13 0000000104244000 r14 0000008004244000
+r15 000000800422be18 rflags 00000216
+es: 001b ds: 001b cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x8004221262 0x800421d944 0x800421e51a 0x800421d86b 0x400635 0x4006a9 0x400fba 0x400fe8 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000000606f40 error=               0
+rax 458b4801f8458348 rbx 00000000000003f1 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 0000008004244c10 rbp 0000008004244c20 rsi 000000000000a60f rdi 0000000000000000
+rip 0000008004215702 r8 0000008004244b28  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000206 r12 000000800421e234 r13 0000000104244000 r14 0000008004244000
+r15 000000800422be18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 83 ticks
+Thread: 42 idle ticks, 32 kernel ticks, 9 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 246 reads, 344 writes
+hd0:1: 307 reads, 364 writes
 hd1:0: 148 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1394 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
+Console: 3134 characters output
+Key

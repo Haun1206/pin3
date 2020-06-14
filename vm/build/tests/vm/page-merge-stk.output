@@ -25,41 +25,40 @@ Executing 'page-merge-stk':
 (page-merge-stk) init
 (page-merge-stk) sort chunk 0
 (page-merge-stk) sort chunk 1
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 2
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 3
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 4
 (page-merge-stk) sort chunk 5
-child-qsort: exit(72)
-child-qsort: exit(72)
 (page-merge-stk) sort chunk 6
+child-qsort: exit(72)
+child-qsort: exit(72)
 (page-merge-stk) sort chunk 7
+child-qsort: exit(-1)
 child-qsort: exit(72)
 child-qsort: exit(72)
 (page-merge-stk) wait for child 0
 (page-merge-stk) wait for child 1
 (page-merge-stk) wait for child 2
-(page-merge-stk) wait for child 3
-(page-merge-stk) wait for child 4
-(page-merge-stk) wait for child 5
-(page-merge-stk) wait for child 6
-(page-merge-stk) wait for child 7
-child-qsort: exit(72)
-(page-merge-stk) merge
-(page-merge-stk) verify
-(page-merge-stk) success, buf_idx=1,048,576
-(page-merge-stk) end
-page-merge-stk: exit(0)
-Execution of 'page-merge-stk' complete.
-Timer: 989 ticks
-Thread: 45 idle ticks, 46 kernel ticks, 898 user ticks
+(page-merge-stk) wait for child 2: FAILED
+page-merge-stk: exit(1)
+Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
+ cr2=0000000000403a0f error=               0
+rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
+rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042440c8
+rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
+r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
+r15 0000000000000000 rflags 00200202
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 908 ticks
+Thread: 169 idle ticks, 55 kernel ticks, 684 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 5543 reads, 6714 writes
+hd0:1: 3682 reads, 5690 writes
 hd1:0: 218 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1857 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
+Console: 2405 characters output
+Key

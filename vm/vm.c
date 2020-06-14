@@ -254,6 +254,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 			page->frame = frame;
 			return swap_in(page, frame->kva);
 		}
+		//printf("INIT");
 		return vm_do_claim_page (page);
 	}
 	else{

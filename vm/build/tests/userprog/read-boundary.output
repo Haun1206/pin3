@@ -5,8 +5,7 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk...
-Kernel command line: -q -f put read-boundary put sample.txt run read-boundary
+Booting from Hard Disk..Kernel command line: -q -f put read-boundary put sample.txt run read-boundary
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -27,8 +26,8 @@ Executing 'read-boundary':
 (read-boundary) end
 read-boundary: exit(0)
 Execution of 'read-boundary' complete.
-Timer: 71 ticks
-Thread: 38 idle ticks, 29 kernel ticks, 4 user ticks
+Timer: 79 ticks
+Thread: 41 idle ticks, 34 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 196 reads, 252 writes
 hd1:0: 107 reads, 0 writes
