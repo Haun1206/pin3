@@ -50,12 +50,14 @@ hash_init (struct hash *h,
 void
 hash_clear (struct hash *h, hash_action_func *destructor) {
 	size_t i;
-
+	//printf("IS YOUR NAMEsdfdsf?\n");
 	for (i = 0; i < h->bucket_cnt; i++) {
 		struct list *bucket = &h->buckets[i];
+		//printf("HI\n");
 
 		if (destructor != NULL)
 			while (!list_empty (bucket)) {
+				//printf("?\n");
 				struct list_elem *list_elem = list_pop_front (bucket);
 				struct hash_elem *hash_elem = list_elem_to_hash_elem (list_elem);
 				destructor (hash_elem, h->aux);

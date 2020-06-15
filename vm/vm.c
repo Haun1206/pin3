@@ -144,9 +144,18 @@ spt_insert_page (struct supplemental_page_table *spt UNUSED,
 
 void
 spt_remove_page (struct supplemental_page_table *spt, struct page *page) {
-	vm_dealloc_page (page);
-	return true;
+	
+	if (hash_delete(&spt->hash_table, &page->h_elem))
+	{
+		//lock_release(&spt_lock);
+		pml4_clear_page (thread_current()->pml4, page->va);
+		vm_dealloc_page (page);
+		return true;	
+	}
+	//lock_release(&spt_lock);
+	return false;
 }
+
 
 /* Get the struct frame, that will be evicted. */
 static struct frame * vm_get_victim (void) {
@@ -159,8 +168,10 @@ static struct frame * vm_get_victim (void) {
 		tmp  = list_entry(victim_c, struct frame, victim);
 		addr = tmp -> page ->va;
 		//already accessed
-		if (!pml4_is_accessed(thread_current()->pml4, addr)) 
+		if (!pml4_is_accessed(thread_current()->pml4, addr)) {
 			victim = tmp;
+			return victim;
+		}
 		else
 			pml4_set_accessed(thread_current()->pml4, addr, false);
 		(victim_c ==list_rbegin(&victim_list))?(victim_c = list_begin(&victim_list)): (victim_c = list_next(victim_c));
@@ -197,6 +208,7 @@ vm_get_frame (void) {
 		frame = vm_evict_frame();
 	}
 	frame->page= NULL;
+	list_push_back(&victim_list, &frame->victim);
 	ASSERT(frame->page ==NULL);
 	return frame;
 }
@@ -366,6 +378,7 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED, struct
 
 static void spt_destroy_func(struct hash_elem*e,void *aux){
 	struct page *p = hash_entry(e,struct page, h_elem);
+	
 	destroy(p);
 	free(p);
 }
@@ -375,5 +388,7 @@ void
 supplemental_page_table_kill (struct supplemental_page_table *spt UNUSED) {
 	/* TODO: Destroy all the supplemental_page_table hold by thread and
 	 * TODO: writeback all the modified contents to the storage. */
+	if(hash_empty(&spt->hash_table))
+		return;
 	hash_clear(&spt->hash_table,spt_destroy_func);
 }

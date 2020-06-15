@@ -124,6 +124,7 @@ bool vm_alloc_page_with_initializer (enum vm_type type, void *upage,
 void vm_dealloc_page (struct page *page);
 bool vm_claim_page (void *va);
 enum vm_type page_get_type (struct page *page);
+
 struct lock spt_lock;
 struct list victim_list;
 struct list_elem * victim_c;

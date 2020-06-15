@@ -26,29 +26,15 @@ Executing 'mmap-unmap':
 (mmap-unmap) mmap "sample.txt"
 (mmap-unmap) memory is readable 540884285
 (mmap-unmap) memory is readable 540888381
-Interrupt 0x0d (#GP General Protection Exception) at rip=8004221990
- cr2=0000000010001000 error=               0
-rax ccccccccccccccb4 rbx 0000000000000000 rcx cccccccccccccccc rdx 0000000000000002
-rsp 0000008004244d70 rbp 0000008004244d90 rsi 0000008004244e30 rdi cccccccccccccccc
-rip 0000008004221990 r8 0000000000000001  r9 0000000000000000 r10 0000000000000000
-r11 0000000000000216 r12 0000008004244f10 r13 0000000104244000 r14 0000008004244000
-r15 000000800422be18 rflags 00000216
-es: 0010 ds: 0010 cs: 0008 ss: 0010
-Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d596 0x80042096ac 0x8004209aca 0x800421b4c6 0x800421aeb0 0x80042211fc 0x80042216a6 0x800421d68d 0x80042096ac 0x8004209aca 0x400ce3 0x400d2c 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
- cr2=0000000010001000 error=               0
-rax 458b4801f8458348 rbx 0000000000000000 rcx 00000080040b8000 rdx 00000000000003d4
-rsp 0000008004244bb0 rbp 0000008004244bc0 rsi 000000000000a10f rdi 0000000000000000
-rip 0000008004215702 r8 0000008004244ac8  r9 000000800421bb41 r10 0000000000000000
-r11 0000000000000216 r12 0000008004244f10 r13 0000000104244000 r14 0000008004244000
-r15 000000800422be18 rflags 00000006
-es: 0010 ds: 0010 cs: 0008 ss: 0010
-Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 71 ticks
-Thread: 37 idle ticks, 27 kernel ticks, 7 user ticks
+mmap-unmap: exit(-1)
+Execution of 'mmap-unmap' complete.
+Timer: 70 ticks
+Thread: 36 idle ticks, 31 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 121 reads, 252 writes
 hd1:0: 106 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2492 characters output
-Key
+Console: 1146 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

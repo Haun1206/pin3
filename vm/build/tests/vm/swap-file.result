@@ -1,18 +1,13 @@
 FAIL
-Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d596 0x80042096ac 0x8004209aca 0x8004218f83 0x800421ac6a 0x8004221c70 0x800421c3b9 0x800421c385 0x8004207574 0x800421db86 0x800421e289 0x800421d847 0x400ddc
+Kernel panic in run: PANIC at ../../lib/kernel/list.c:78 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
+Call stack: 0x80042186c8 0x8004218944 0x800421afdd 0x80042228ab 0x800421e5e9 0x800421d868 0x4002bd 0x400d85 0x400dce
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d596: kill (userprog/exception.c:104)
-0x00000080042096ac: intr_handler (threads/interrupt.c:352)
-0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
-0x0000008004218f83: list_pop_front (lib/kernel/list.c:257)
-0x000000800421ac6a: hash_clear (lib/kernel/hash.c:59)
-0x0000008004221c70: supplemental_page_table_kill (vm/vm.c:379)
-0x000000800421c3b9: process_cleanup (userprog/process.c:368)
-0x000000800421c385: process_exit (userprog/process.c:354)
-0x0000008004207574: thread_exit (threads/thread.c:409)
-0x000000800421db86: fork (userprog/syscall.c:126)
-0x000000800421e289: syscall_handler (userprog/syscall.c:337)
-0x000000800421d847: no_sti (userprog/syscall-entry.o:?)
-0x0000000000400ddc: (unknown)
+0x0000008004218944: list_next (lib/kernel/list.c:79)
+0x000000800421afdd: hash_apply (lib/kernel/hash.c:163 (discriminator 3))
+0x00000080042228ab: do_munmap (vm/file.c:252)
+0x000000800421e5e9: syscall_handler (userprog/syscall.c:440)
+0x000000800421d868: no_sti (userprog/syscall-entry.o:?)
+0x00000000004002bd: (unknown)
+0x0000000000400d85: (unknown)
+0x0000000000400dce: (unknown)

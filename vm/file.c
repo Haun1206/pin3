@@ -237,6 +237,7 @@ void do_punmap (struct hash_elem *e, void *aux){
 		}
 		//printf("Please");
 		spt_remove_page(&thread_current()->spt, page);
+       // pml4_clear_page(&thread_current()-> pml4, pg_round_down(page->va));
 	}
 }
 void
@@ -249,6 +250,7 @@ do_munmap (void *addr) {
     lock_acquire(&spt_lock);
 	hash_apply (&spt->hash_table, do_punmap);
     lock_release(&spt_lock);
+
 	file_close(file);
 
 }
