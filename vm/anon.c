@@ -4,6 +4,7 @@
 #include "devices/disk.h"
 #include "bitmap.h"
 #include "threads/mmu.h"
+#include "threads/synch.h"
 #include "threads/thread.h"
 #include "userprog/process.h"
 
@@ -21,7 +22,7 @@ static const struct page_operations anon_ops = {
 	.type = VM_ANON,
 };
 
-/* Initialize the data for anonymous pages */
+/* Initialize  data for anonymous pages */
 void
 vm_anon_init (void) {
 	/* TODO: Set up the swap_disk. */
@@ -44,26 +45,31 @@ anon_initializer (struct page *page, enum vm_type type, void *kva) {
 /* Swap in the page by read contents from the swap disk. */
 static bool
 anon_swap_in (struct page *page, void *kva) {
+	lock_acquire(&evict_lock);
 
 	struct anon_page *anon_page = &page->anon;
-	size_t number = anon_page -> number;
-	printf("APPER1");
+	size_t number = bitmap_scan(swap_table,0,1,false);
+	//printf("APPER1");
 	for (int i = 0; i < SECTOR_PG; i++){
-		printf("KICK");
+		//printf("KICK");
 		disk_read(swap_disk, number * SECTOR_PG+ i, kva + i * 512);
 	}
-	//pml4_set_page(thread_current()->pml4, page->va, page->frame->kva, page->writable);
+	pml4_set_page(thread_current()->pml4, page->va, page->frame->kva, page->writable);
 	page->frame->kva = kva;
 	page->frame->page = page;
+	anon_page->number = number;
 	list_push_back(&victim_list, &page->frame->victim);
 	bitmap_set(swap_table, number, false);
-	printf("APPER2");
+	lock_release(&evict_lock);
+	//printf("APPER2");
 	return true;
 }
 
 /* Swap out the page by writing contents to the swap disk. */
 static bool
 anon_swap_out (struct page *page) {
+	//printf("HI\n");
+	lock_acquire(&evict_lock);
 	struct anon_page *anon_page = &page->anon;
 	size_t number = bitmap_scan (swap_table, 0, 1, false);
 	anon_page->number = number;
@@ -73,7 +79,7 @@ anon_swap_out (struct page *page) {
 	
 	bitmap_set(swap_table, number, true);
 	page->frame = NULL;
-
+	lock_release(&evict_lock);
 	return true;
 }
 

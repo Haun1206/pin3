@@ -25,8 +25,8 @@ Executing 'pt-write-code2':
 (pt-write-code2) open "sample.txt"
 pt-write-code2: exit(-1)
 Execution of 'pt-write-code2' complete.
-Timer: 68 ticks
-Thread: 34 idle ticks, 32 kernel ticks, 2 user ticks
+Timer: 73 ticks
+Thread: 41 idle ticks, 30 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 110 reads, 244 writes
 hd1:0: 103 reads, 0 writes

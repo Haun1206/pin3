@@ -126,6 +126,7 @@ bool vm_claim_page (void *va);
 enum vm_type page_get_type (struct page *page);
 
 struct lock spt_lock;
+struct lock evict_lock;
 struct list victim_list;
 struct list_elem * victim_c;
 #endif  /* VM_VM_H */

@@ -92,11 +92,12 @@ do_mmap (void *addr, size_t length, int writable, struct file *file, off_t offse
     }
     if(addr ==0x0)
         return NULL;
+    if(pg_ofs(addr)!=0)
+        return NULL;    
     if(length<=0){
         return NULL;
     }
-    if(pg_ofs(addr)!=0)
-        return NULL;
+
     if(check_addr(addr,length)==0)
         return NULL;
     //printf("HIdfsdfds\n");

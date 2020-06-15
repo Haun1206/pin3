@@ -48,7 +48,7 @@ Executing 'lazy-file':
 lazy-file: exit(0)
 Execution of 'lazy-file' complete.
 Timer: 79 ticks
-Thread: 42 idle ticks, 34 kernel ticks, 3 user ticks
+Thread: 41 idle ticks, 31 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 190 reads, 344 writes
 hd1:0: 148 reads, 0 writes

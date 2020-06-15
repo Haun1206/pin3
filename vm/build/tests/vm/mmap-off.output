@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-off put large.txt ru
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 7,930 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -28,8 +28,8 @@ Executing 'mmap-off':
 (mmap-off) validate fail.: FAILED
 mmap-off: exit(1)
 Execution of 'mmap-off' complete.
-Timer: 521 ticks
-Thread: 300 idle ticks, 214 kernel ticks, 7 user ticks
+Timer: 595 ticks
+Thread: 337 idle ticks, 254 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 120 reads, 15898 writes
 hd1:0: 7930 reads, 0 writes

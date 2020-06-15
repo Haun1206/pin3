@@ -971,7 +971,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		upage += PGSIZE;
 		ofs +=PGSIZE;
 		//printf("4?\n");
-	}
+	} 
 	return true;
 }
 

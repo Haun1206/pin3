@@ -31,6 +31,7 @@ vm_init (void) {
 	/* DO NOT MODIFY UPPER LINES. */
 	/* TODO: Your code goes here. */
 	list_init(&victim_list);
+	lock_init(&evict_lock);
 	victim_c = list_head(&victim_list);
 }
 
@@ -165,7 +166,7 @@ static struct frame * vm_get_victim (void) {
 	struct frame *tmp;
 	void * addr;
 	victim_c = list_begin(&victim_list);
-	while(victim ==NULL){
+	while(victim_c!=NULL){
 		tmp  = list_entry(victim_c, struct frame, victim);
 		addr = tmp -> page ->va;
 		//already accessed
@@ -175,10 +176,16 @@ static struct frame * vm_get_victim (void) {
 		}
 		else
 			pml4_set_accessed(thread_current()->pml4, addr, false);
-		(victim_c ==list_rbegin(&victim_list))?(victim_c = list_begin(&victim_list)): (victim_c = list_next(victim_c));
+		
+		victim_c = list_next(&victim_c);
 	
 	}
-	list_remove(&victim->victim);
+	if (victim == NULL){
+		struct list_elem * victim_c2 = list_begin(&victim_list);
+		victim = list_entry(victim_c2,struct frame, victim);
+	}
+
+	//list_remove(&victim->victim);
 	return victim;
 
 }
@@ -206,7 +213,9 @@ vm_get_frame (void) {
     frame->kva = palloc_get_page(PAL_USER);
     if(frame->kva==NULL){
         free(frame);
+		lock_acquire(&evict_lock);
 		frame = vm_evict_frame();
+		lock_release(&evict_lock);
 	}
 	frame->page= NULL;
 	list_push_back(&victim_list, &frame->victim);
@@ -243,6 +252,8 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		exit(-1);
 	if (write && !not_present)
 		exit(-1);
+	//printf("not_presetn: %d write: %d user: %d addr: %x\n", not_present, write, user, addr);
+
 
 
 	uint64_t u_rsp=NULL;
@@ -257,11 +268,11 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	if(page!=NULL){
 		if(!not_present&&is_user_vaddr(addr))
 			exit(-1);
-		if(!page->writable && write){
+		if((!(page->writable)) && write){
 			//printf("HERE\n");
 			exit(-1);
 		}
-		//printf("HERE\n");
+		//printf("HERE\n"); <-왜 이리 쳐오고 jiral?
 
 		if(VM_TYPE(page->operations->type) == VM_ANON || VM_TYPE(page->operations->type) == VM_FILE) {
 			struct frame *frame = vm_evict_frame();
