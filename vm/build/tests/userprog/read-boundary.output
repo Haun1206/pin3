@@ -26,10 +26,10 @@ Executing 'read-boundary':
 (read-boundary) end
 read-boundary: exit(0)
 Execution of 'read-boundary' complete.
-Timer: 68 ticks
-Thread: 38 idle ticks, 29 kernel ticks, 1 user ticks
+Timer: 72 ticks
+Thread: 30 idle ticks, 39 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 196 reads, 252 writes
+hd0:1: 120 reads, 252 writes
 hd1:0: 107 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1074 characters output

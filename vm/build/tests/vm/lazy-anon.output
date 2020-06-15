@@ -47,13 +47,13 @@ Executing 'lazy-anon':
 (lazy-anon) end
 lazy-anon: exit(0)
 Execution of 'lazy-anon' complete.
-Timer: 67 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 6 user ticks
+Timer: 78 ticks
+Thread: 35 idle ticks, 36 kernel ticks, 8 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 156 reads, 232 writes
+hd0:1: 80 reads, 232 writes
 hd1:0: 102 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1736 characters output
+Console: 1735 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

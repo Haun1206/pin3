@@ -5,8 +5,7 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk...
-Kernel command line: -q -f put multi-child-fd put sample.txt put child-close run multi-child-fd
+Booting from Hard Disk..Kernel command line: -q -f put multi-child-fd put sample.txt put child-close run multi-child-fd
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -34,10 +33,10 @@ child-close: exit(0)
 (multi-child-fd) end
 multi-child-fd: exit(0)
 Execution of 'multi-child-fd' complete.
-Timer: 85 ticks
-Thread: 47 idle ticks, 32 kernel ticks, 6 user ticks
+Timer: 82 ticks
+Thread: 30 idle ticks, 45 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 361 reads, 478 writes
+hd0:1: 199 reads, 478 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1338 characters output

@@ -1,18 +1,18 @@
 FAIL
 Kernel panic in run: PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x8004218f83 0x800421ac6a 0x8004221cab 0x800421c3d0 0x800421c39c 0x8004207574 0x800421dbc1 0x800421e2c4 0x800421d882 0x400dac
+Call stack: 0x80042186c8 0x800421d596 0x80042096ac 0x8004209aca 0x8004218f83 0x800421ac6a 0x8004221c70 0x800421c3b9 0x800421c385 0x8004207574 0x800421db86 0x800421e289 0x800421d847 0x400dac
 Translation of call stack:
 0x00000080042186c8: debug_panic (lib/kernel/debug.c:32)
-0x000000800421d5d1: kill (userprog/exception.c:104)
+0x000000800421d596: kill (userprog/exception.c:104)
 0x00000080042096ac: intr_handler (threads/interrupt.c:352)
 0x0000008004209aca: intr_entry (threads/intr-stubs.o:?)
 0x0000008004218f83: list_pop_front (lib/kernel/list.c:257)
 0x000000800421ac6a: hash_clear (lib/kernel/hash.c:59)
-0x0000008004221cab: supplemental_page_table_kill (vm/vm.c:377)
-0x000000800421c3d0: process_cleanup (userprog/process.c:368)
-0x000000800421c39c: process_exit (userprog/process.c:354)
+0x0000008004221c70: supplemental_page_table_kill (vm/vm.c:379)
+0x000000800421c3b9: process_cleanup (userprog/process.c:368)
+0x000000800421c385: process_exit (userprog/process.c:354)
 0x0000008004207574: thread_exit (threads/thread.c:409)
-0x000000800421dbc1: fork (userprog/syscall.c:126)
-0x000000800421e2c4: syscall_handler (userprog/syscall.c:337)
-0x000000800421d882: no_sti (userprog/syscall-entry.o:?)
+0x000000800421db86: fork (userprog/syscall.c:126)
+0x000000800421e289: syscall_handler (userprog/syscall.c:337)
+0x000000800421d847: no_sti (userprog/syscall-entry.o:?)
 0x0000000000400dac: (unknown)

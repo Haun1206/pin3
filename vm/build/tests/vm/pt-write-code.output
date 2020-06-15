@@ -24,13 +24,13 @@ Executing 'pt-write-code':
 (pt-write-code) writing the code segment succeeded: FAILED
 pt-write-code: exit(1)
 Execution of 'pt-write-code' complete.
-Timer: 68 ticks
-Thread: 35 idle ticks, 30 kernel ticks, 3 user ticks
+Timer: 61 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 151 reads, 228 writes
+hd0:1: 79 reads, 228 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1019 characters output
+Console: 1018 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

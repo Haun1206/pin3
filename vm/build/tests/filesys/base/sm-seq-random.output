@@ -31,10 +31,10 @@ Executing 'sm-seq-random':
 (sm-seq-random) end
 sm-seq-random: exit(0)
 Execution of 'sm-seq-random' complete.
-Timer: 67 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 7 user ticks
+Timer: 70 ticks
+Thread: 35 idle ticks, 29 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 215 reads, 281 writes
+hd0:1: 139 reads, 281 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1230 characters output

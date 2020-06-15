@@ -32,16 +32,16 @@ Executing 'rox-child':
 (child-rox) end
 child-rox: exit(12)
 (rox-child) write "child-rox"
-(rox-child) write "child-rox": FAILED
-rox-child: exit(1)
+(rox-child) end
+rox-child: exit(0)
 Execution of 'rox-child' complete.
-Timer: 89 ticks
-Thread: 47 idle ticks, 33 kernel ticks, 10 user ticks
+Timer: 81 ticks
+Thread: 30 idle ticks, 44 kernel ticks, 7 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 343 reads, 467 writes
+hd0:1: 173 reads, 468 writes
 hd1:0: 214 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1307 characters output
+Console: 1284 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

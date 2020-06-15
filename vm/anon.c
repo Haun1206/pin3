@@ -47,15 +47,17 @@ anon_swap_in (struct page *page, void *kva) {
 
 	struct anon_page *anon_page = &page->anon;
 	size_t number = anon_page -> number;
-
+	printf("APPER1");
 	for (int i = 0; i < SECTOR_PG; i++){
+		printf("KICK");
 		disk_read(swap_disk, number * SECTOR_PG+ i, kva + i * 512);
 	}
-	pml4_set_page(thread_current()->pml4, page->va, page->frame->kva, page->writable);
+	//pml4_set_page(thread_current()->pml4, page->va, page->frame->kva, page->writable);
 	page->frame->kva = kva;
 	page->frame->page = page;
 	list_push_back(&victim_list, &page->frame->victim);
 	bitmap_set(swap_table, number, false);
+	printf("APPER2");
 	return true;
 }
 

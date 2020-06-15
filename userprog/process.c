@@ -331,7 +331,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	for (curr->next_fd--; curr->next_fd >= 2; curr->next_fd--)
-    	process_close_file(curr->fd_table[curr->next_fd]);
+    	process_close_file(curr->next_fd);
 		
 	//printf("%s\n", "Is this working?");
 	palloc_free_page(curr->fd_table);
@@ -515,7 +515,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	*/
 	//printf("CHECK LOAD\n");
 	t->cur_file = file;
-	file_deny_write(file);
+	//file_deny_write(file);
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
@@ -595,7 +595,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		//printf("sdfsdf1\n");
 		goto done;
 	}
-	file_deny_write(file);
+	//file_deny_write(file);
 	/* Save the rsp (for vm)*/
 
 	thread_current()->rsp = if_->rsp;
@@ -890,18 +890,24 @@ lazy_load_segment (struct page *page, void *aux) {
     //In aux it has file, ofs, read_bytes, zero_bytes, writable
     //Should modify this part
     /* Get a page of memory. */
-    if(page->frame==NULL)
+    //printf("OK\n");
+    //printf("BYTE:%d, %d\n", (int)aux_t->read_bytes, (int)aux_t->zero_bytes);
+    if(page->frame==NULL){
+	//printf("No\n");
         return false;
+    }
     else{
-		struct file *reopen = file_reopen(aux_t->file);
+	struct file *reopen = file_reopen(aux_t->file);
         uint8_t * kva = page->frame->kva;
+	//printf("K:%llx",kva);
         if (file_read_at(reopen, kva, aux_t->read_bytes, aux_t->ofs) != (int) aux_t->read_bytes) {
-           // printf("SOMETHING IS WRONG\n");
+            //printf("SOMETHING IS WRONG\n");
             return false;
         }
         /* Load this page. */
-
+	//printf("SUC\n");
         memset (kva + aux_t->read_bytes, 0, aux_t->zero_bytes);
+	//printf("????\n");
     }
 
 
@@ -944,8 +950,8 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         aux->file = file;
         aux->ofs = ofs;
         //aux->upage = upage;
-        aux->read_bytes = read_bytes;
-        aux-> zero_bytes = zero_bytes;
+        aux->read_bytes = page_read_bytes;
+        aux-> zero_bytes = page_zero_bytes;
         aux->writable = writable;
 		//printf("2?\n");
         

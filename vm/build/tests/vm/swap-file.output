@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put swap-file put large.txt r
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x9e0000 (Usable: 9,088 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  154,009,600 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 7,928 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,4 +24,31 @@ Executing 'swap-file':
 (swap-file) begin
 (swap-file) open "large.txt"
 (swap-file) mmap "large.txt"
-TIMEOUT
+(swap-file) end
+swap-file: exit(0)
+Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
+ cr2=00000000101e9000 error=               0
+rax cccccccccccccccc rbx 0000008004241f18 rcx 0000000000000000 rdx cccccccccccccccc
+rsp 000000800423fdc0 rbp 000000800423fdd0 rsi 0000008004221bf1 rdi 000000800426f530
+rip 0000008004218f2d r8 000000800423fdf8  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000206 r12 000000800421e210 r13 000000010423f000 r14 000000800423f000
+r15 000000800422be18 rflags 00000202
+es: 001b ds: 001b cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x80042186c8 0x800421d596 0x80042096ac 0x8004209aca 0x8004218f83 0x800421ac6a 0x8004221c70 0x800421c3b9 0x800421c385 0x8004207574 0x800421db86 0x800421e289 0x800421d847 0x400ddc 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=00000000101e9000 error=               0
+rax 458b4801f8458348 rbx 0000008004241f18 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 000000800423fc00 rbp 000000800423fc10 rsi 000000000000b20f rdi 0000000000000000
+rip 0000008004215702 r8 000000800423fb18  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000206 r12 000000800421e210 r13 000000010423f000 r14 000000800423f000
+r15 000000800422be18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 953 ticks
+Thread: 546 idle ticks, 274 kernel ticks, 133 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 7944 reads, 19807 writes
+hd1:0: 7928 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 2457 characters output
+Key

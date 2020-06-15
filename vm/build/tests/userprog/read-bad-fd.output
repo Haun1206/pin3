@@ -25,12 +25,12 @@ Executing 'read-bad-fd':
 read-bad-fd: exit(0)
 Execution of 'read-bad-fd' complete.
 Timer: 71 ticks
-Thread: 37 idle ticks, 30 kernel ticks, 4 user ticks
+Thread: 35 idle ticks, 32 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 151 reads, 228 writes
+hd0:1: 79 reads, 228 writes
 hd1:0: 100 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 964 characters output
+Console: 963 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

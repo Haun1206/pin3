@@ -22,30 +22,24 @@ Putting 'page-parallel' into the file system...
 Putting 'child-linear' into the file system...
 Executing 'page-parallel':
 (page-parallel) begin
-child-linear: exit(-1)
+child-linear: exit(66)
 (page-parallel) wait for child 0
-(child-linear) byte 111232 != 0: FAILED
-child-linear: exit(1)
-(page-parallel) wait for child 0: FAILED
-page-parallel: exit(1)
-Interrupt 0x0d (#GP General Protection Exception) at rip=8004218f2d
- cr2=0000000000401000 error=               0
-rax cccccccccccccccc rbx 0000000000204400 rcx 0000000000000000 rdx cccccccccccccccc
-rsp 0000008004000f30 rbp 0000008004000f40 rsi 0000008004000030 rdi 00000080042440c8
-rip 0000008004218f2d r8 0000008004000efc  r9 0000000004209d61 r10 0000000000000000
-r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
-r15 0000000000000000 rflags 00200202
-es: 0010 ds: 0010 cs: 0008 ss: 0010
-Kernel PANIC at ../../userprog/exception.c:98 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x80042186c8 0x800421d5d1 0x80042096ac 0x8004209aca 0x800421c274 0x800420677f 0x80042068cc 0x8004206186.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 466 ticks
-Thread: 48 idle ticks, 36 kernel ticks, 382 user ticks
+child-linear: exit(66)
+(page-parallel) wait for child 1
+(page-parallel) wait for child 2
+child-linear: exit(66)
+(page-parallel) wait for child 3
+child-linear: exit(66)
+(page-parallel) end
+page-parallel: exit(0)
+Execution of 'page-parallel' complete.
+Timer: 203 ticks
+Thread: 30 idle ticks, 48 kernel ticks, 126 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 472 reads, 448 writes
+hd0:1: 227 reads, 448 writes
 hd1:0: 205 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2041 characters output
-Key
+Console: 1272 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

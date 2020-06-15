@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-ro put large.txt run
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 4,015 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -27,13 +27,13 @@ Executing 'mmap-ro':
 (mmap-ro) about to write into read-only mmap'd memory
 mmap-ro: exit(-1)
 Execution of 'mmap-ro' complete.
-Timer: 204 ticks
-Thread: 66 idle ticks, 134 kernel ticks, 4 user ticks
+Timer: 321 ticks
+Thread: 166 idle ticks, 150 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 182 reads, 8068 writes
+hd0:1: 110 reads, 8068 writes
 hd1:0: 4015 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1106 characters output
+Console: 1107 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

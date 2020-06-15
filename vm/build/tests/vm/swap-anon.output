@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put swap-anon run swap-anon
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x9e0000 (Usable: 9,088 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 101 sector (50 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -22,15 +22,23 @@ Putting 'swap-anon' into the file system...
 Executing 'swap-anon':
 (swap-anon) begin
 (swap-anon) write sparsely over page 0
-swap-anon: exit(-1)
-Execution of 'swap-anon' complete.
-Timer: 90 ticks
-Thread: 29 idle ticks, 33 kernel ticks, 29 user ticks
+(swap-anon) write sparsely over page 512
+(swap-anon) write sparsely over page 1024
+Kernel PANIC at ../../lib/kernel/list.c:78 in list_next(): assertion `is_head (elem) || is_interior (elem)' failed.
+Call stack: 0x80042186c8 0x8004218944 0x80042213e4 0x8004221430 0x8004221507 0x80042218a4 0x800422177c 0x800421d68d 0x80042096ac 0x8004209aca 0x400cac 0x400cf5 0 0x45394808408b48d8Interrupt 0x0d (#GP General Protection Exception) at rip=8004215702
+ cr2=0000000000abbbc0 error=               0
+rax 458b4801f8458348 rbx 0000008004240f18 rcx 00000080040b8000 rdx 00000000000003d4
+rsp 000000800423ed10 rbp 000000800423ed20 rsi 000000000000940f rdi 0000000000000000
+rip 0000008004215702 r8 000000800423ec28  r9 000000800421bb41 r10 0000000000000000
+r11 0000000000000202 r12 000000800423ef10 r13 000000010423e000 r14 000000800423e000
+r15 000000800422be18 rflags 00000006
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
+Timer: 119 ticks
+Thread: 30 idle ticks, 35 kernel ticks, 54 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 151 reads, 230 writes
+hd0:1: 79 reads, 230 writes
 hd1:0: 101 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 972 characters output
-Keyboard: 0 keys pressed
-Exception: 1 page faults
-Powering off...
+Console: 1884 characters output
+Key

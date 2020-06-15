@@ -53,8 +53,8 @@ main (int argc UNUSED, char *argv[])
       CHECK (wait (child) == 12, "wait for \"child-rox\"");
       quiet = false;
     }
-
   try_write ();
+  
   msg ("end");
 
   return 12;
