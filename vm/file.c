@@ -218,7 +218,7 @@ void do_punmap (struct hash_elem *e, void *aux){
 	if(page->mapping == check_mapping) {
 		//printf("KIM");
 		//printf("%d\n", VM_TYPE(page->operations->type));
-		if (VM_TYPE(page->operations->type) == VM_FILE)
+		if (VM_TYPE(page->operations->type) == VM_FILE &&pml4_is_dirty(thread_current()->pml4, page->va))
 		{
 			if (page->frame != NULL)
 			{

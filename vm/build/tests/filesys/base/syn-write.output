@@ -58,8 +58,8 @@ child-syn-wrt: exit(9)
 (syn-write) end
 syn-write: exit(0)
 Execution of 'syn-write' complete.
-Timer: 111 ticks
-Thread: 47 idle ticks, 42 kernel ticks, 22 user ticks
+Timer: 114 ticks
+Thread: 47 idle ticks, 42 kernel ticks, 25 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 667 reads, 510 writes
 hd1:0: 220 reads, 0 writes

@@ -147,12 +147,13 @@ spt_remove_page (struct supplemental_page_table *spt, struct page *page) {
 	
 	if (hash_delete(&spt->hash_table, &page->h_elem))
 	{
-		//lock_release(&spt_lock);
 		pml4_clear_page (thread_current()->pml4, page->va);
 		vm_dealloc_page (page);
 		return true;	
 	}
-	//lock_release(&spt_lock);
+	//vm_dealloc_page(page);
+
+	//free(page->frame);
 	return false;
 }
 
@@ -252,6 +253,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	//thread_current()->rsp = u_rsp;
 
 	page = spt_find_page(spt,addr);
+	
 	if(page!=NULL){
 		if(!not_present&&is_user_vaddr(addr))
 			exit(-1);

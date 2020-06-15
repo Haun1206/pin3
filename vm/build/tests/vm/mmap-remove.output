@@ -30,8 +30,8 @@ Executing 'mmap-remove':
 (mmap-remove) read of mmap'd file reported bad data: FAILED
 mmap-remove: exit(1)
 Execution of 'mmap-remove' complete.
-Timer: 76 ticks
-Thread: 40 idle ticks, 29 kernel ticks, 7 user ticks
+Timer: 77 ticks
+Thread: 39 idle ticks, 30 kernel ticks, 8 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 174 reads, 357 writes
 hd1:0: 108 reads, 0 writes

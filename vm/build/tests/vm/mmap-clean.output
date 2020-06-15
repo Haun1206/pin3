@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put mmap-clean put sample.txt
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  154,009,600 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 337 sector (168 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 109 sector (54 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -28,16 +28,17 @@ Executing 'mmap-clean':
 (mmap-clean) munmap "sample.txt"
 (mmap-clean) seek "sample.txt"
 (mmap-clean) read "sample.txt"
-(mmap-clean) munmap wrote back clean page: FAILED
-mmap-clean: exit(1)
+(mmap-clean) file change was retained after munmap
+(mmap-clean) end
+mmap-clean: exit(0)
 Execution of 'mmap-clean' complete.
-Timer: 78 ticks
-Thread: 38 idle ticks, 33 kernel ticks, 8 user ticks
+Timer: 69 ticks
+Thread: 37 idle ticks, 28 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 128 reads, 259 writes
+hd0:1: 127 reads, 257 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1238 characters output
+Console: 1256 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

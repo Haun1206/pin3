@@ -86,7 +86,7 @@ pass tests/vm/mmap-ro
 pass tests/vm/mmap-exit
 pass tests/vm/mmap-shuffle
 pass tests/vm/mmap-bad-fd
-FAIL tests/vm/mmap-clean
+pass tests/vm/mmap-clean
 FAIL tests/vm/mmap-inherit
 pass tests/vm/mmap-misalign
 pass tests/vm/mmap-null
