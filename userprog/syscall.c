@@ -73,18 +73,21 @@ static void check_addr(void* addr){
 		return;
 	}*/
 } 
-
+#ifdef VM
 static void check_user(void* addr,struct intr_frame *f ){
 	struct page *p = spt_find_page(&thread_current()->spt, addr);
 	if( addr < pg_round_down(f->rsp) && p==NULL )
 		exit(-1);
     
 } 
+
+
 static void check_user_write(void* addr,struct intr_frame *f ){
 	struct page *p = spt_find_page(&thread_current()->spt, addr);
 	if(!p->writable)
 		exit(-1);
 }
+#endif
 void check_buffer(void *buffer, unsigned size){
 	char *ptr = (char *)buffer;
 	for(int i=0;i<size;i++){
@@ -293,6 +296,7 @@ void close(int fd){
 	process_close_file(fd);
 	
 }
+#ifdef VM
 void mmap(struct intr_frame *if_){
 	struct file * f; 
 	//printf("I WILL KILL YOU\n");
@@ -312,6 +316,7 @@ void mmap(struct intr_frame *if_){
 	}
 
 }
+#endif
 
 
 /* The main system call interface */
@@ -425,6 +430,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			close(f->R.rdi);
 			//printf("%s\n", "maybe ok?\n");
 			break;
+#ifdef VM
 		case SYS_MMAP:
 			if(check_validity(f)==false) {
 				//printf("?\n");
@@ -438,6 +444,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("THEN MUNMAPhi"\n);
 			do_munmap(f->R.rdi);
 			break;
+#endif
 		default:
 			//printf("wrong system call!\n");
 			thread_exit();

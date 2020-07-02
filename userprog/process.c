@@ -600,8 +600,9 @@ load (const char *file_name, struct intr_frame *if_) {
 	}
 	//file_deny_write(file);
 	/* Save the rsp (for vm)*/
-
+#ifdef VM
 	thread_current()->rsp = if_->rsp;
+#endif
 	/* Start address. */
 	if_->rip = ehdr.e_entry;
 
