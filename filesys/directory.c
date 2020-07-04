@@ -164,7 +164,7 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector) {
 	strlcpy (e.name, name, sizeof e.name);
 	e.inode_sector = inode_sector;
 //	printf("HI\n");
-	//printf("DIR_ADD: %llx\n",&e);
+//	printf("DIR_ADD: %llx\n",&e);
 	success = inode_write_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
 //	printf("HI\n");
 

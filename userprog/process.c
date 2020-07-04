@@ -85,7 +85,7 @@ initd (void *f_name) {
 	supplemental_page_table_init (&thread_current ()->spt);
     //printf("HI");
 #endif
-
+	//printf("FILE NAME:%s\n",f_name);
 	process_init ();
     //printf("%s\n", f_name);
 	if (process_exec (f_name) < 0)
@@ -236,6 +236,7 @@ process_exec (void *f_name) {
     //printf("HI\n");
 	char *file_name = malloc(strlen(f_name)+1);
 	memcpy(file_name,f_name,strlen(f_name)+1);
+	//printf("ECXEC NAME: %s\n",file_name);
 	bool success;
 	if(file_name==NULL){
 		//thread_exit();
@@ -263,8 +264,9 @@ process_exec (void *f_name) {
     tempo = strtok_r(tempo," ", &saveptr);
 	// And then load the binary 
 	*/
-
+	//printf("SEX\n");
 	success = load (file_name, &_if);
+	//printf("SENX\n");
 	/*Write the success status to the threads*/
 	//printf("sccess: %d\n", success);
 	struct thread * t  = thread_current();
@@ -278,11 +280,12 @@ process_exec (void *f_name) {
     free(file_name);
 	//printf("HI\n");
 	if (!success){
+		//printf("SEFDS\n");
 		//thread_exit();
         //printf("HI23\n");
 		return -1;
 	}
-
+	//printf("SEE");
 	/* Start switched process. */
 	do_iret (&_if);
 	NOT_REACHED ();
@@ -464,6 +467,7 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
  * Returns true if successful, false otherwise. */
 static bool
 load (const char *file_name, struct intr_frame *if_) {
+	//printf("LOAD NAME: %s\n",file_name);
 	bool success = false;
 	/*
 	if(file_name ==NULL){
@@ -536,6 +540,7 @@ load (const char *file_name, struct intr_frame *if_) {
 		free(arguments);
 		goto done;
 	}
+	//printf("DSFDSFD\n");
 
 	/* Read program headers. */
 	file_ofs = ehdr.e_phoff;

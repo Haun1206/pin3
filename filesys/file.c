@@ -73,7 +73,9 @@ file_get_inode (struct file *file) {
  * Advances FILE's position by the number of bytes read. */
 off_t
 file_read (struct file *file, void *buffer, off_t size) {
+	//printf("HI\n");
 	off_t bytes_read = inode_read_at (file->inode, buffer, size, file->pos);
+	//printf("%d\n",bytes_read);
 	file->pos += bytes_read;
 	return bytes_read;
 }
