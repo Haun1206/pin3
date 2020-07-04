@@ -48,12 +48,13 @@ struct inode {
 static disk_sector_t
 byte_to_sector (const struct inode *inode, off_t pos) {
 	ASSERT (inode != NULL);
-	if (pos < inode->data.length)
+	if (pos < inode->data.length){
 		cluster_t clst = inode->data.start;
 		for(int i=0; i< pos / (DISK_SECTOR_SIZE * SECTORS_PER_CLUSTER) ; i++){
 			clst = fat_get(clst);
 		}
 		return cluster_to_sector(clst);
+	}
 	else
 		return -1;
 }
@@ -90,6 +91,7 @@ inode_create (disk_sector_t sector, off_t length, bool is_dir) {
 		disk_inode->length = length;
 		disk_inode->magic = INODE_MAGIC;
 		disk_inode->is_dir = is_dir;
+		//printf("ISDIR: %d\n",is_dir);
 
 		//메모1 : inode disk랑 data disk랑 연결이 안되있게 되있었고 그래서 그렇게 했는데 일단 메모
 		//메모2 : sectors가 0일때는 start 가 할당이 되는건지 확실 ㄴ 기존 코드에서 bit map 막이용해서 어찌한건지 이해가 안됨.
@@ -99,7 +101,7 @@ inode_create (disk_sector_t sector, off_t length, bool is_dir) {
 			if(clst){
 				disk_inode->start = clst;
 				for (int i=1; i < sectors; i++){
-					clst = fat_create_chain(clst)
+					clst = fat_create_chain(clst);
 					if(!clst){
 						return false;
 					}
@@ -157,8 +159,10 @@ inode_open (disk_sector_t sector) {
 /* Reopens and returns INODE. */
 struct inode *
 inode_reopen (struct inode *inode) {
+	//printf("HI\n");
 	if (inode != NULL)
 		inode->open_cnt++;
+	//printf("HI\n");
 	return inode;
 }
 
@@ -184,8 +188,9 @@ inode_close (struct inode *inode) {
 
 		/* Deallocate blocks if removed. */
 		if (inode->removed) {
-			fat_put (inode->sector_clst, 0);
-			cluster_t clst = inode->data.start;
+			cluster_t clst = (cluster_t)inode->sector;
+			fat_put (clst, 0);
+			clst = inode->data.start;
 			for(int i=0 ; i<inode->data.length ; i++){
 				fat_put (clst, 0);
 				clst = fat_get(clst);
@@ -285,12 +290,13 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 			inode->data.length = offset + size;
 			size_t addition = bytes_to_sectors(inode_length (inode)) - old_sectors;
 			if(addition > 0){
+				cluster_t clst;
 				for(int i=0 ; i<addition ; i++){
-					cluster_t clst = fat_create_chain (inode->data.last);
+					clst = fat_create_chain (inode->data.last);
 					disk_write (filesys_disk, cluster_to_sector(clst), 0);
 				}
-			inode->data.last = clst;
-			continue;
+				inode->data.last = clst;
+				continue;
 			}
 			else continue;
 		}
@@ -354,7 +360,9 @@ inode_length (const struct inode *inode) {
 
 bool
 inode_is_dir(const struct inode *inode){
-  	if (inode->removed)
+  	if (inode->removed){
+		//printf("HI\n");
     	return false;
+	}
 	return inode->data.is_dir;
 }

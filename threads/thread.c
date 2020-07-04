@@ -13,6 +13,7 @@
 #include "threads/vaddr.h"
 #include "intrinsic.h"
 #include "threads/fixed_point.h"
+#include "filesys/directory.h"
 #include <list.h>
 
 #ifdef USERPROG

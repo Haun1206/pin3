@@ -48,7 +48,9 @@ fat_init (void) {
     // Extract FAT info
     if (fat_fs->bs.magic != FAT_MAGIC)
         fat_boot_create ();
+  //  printf("HI\n");
     fat_fs_init ();
+   // printf("sdfsdfdsfJIN\n");
 }
 
 void
@@ -157,8 +159,10 @@ fat_fs_init (void) {
     struct fat_boot *bs = &fat_fs->bs;
     fat_fs->fat_length = bs->total_sectors / bs->sectors_per_cluster;
     fat_fs->data_start = bs->fat_start+1;
-    fat_fs->fat[1] = EOChain;
+
+   // fat_fs->fat[1] = EOChain;
     fat_fs->last_clst = fat_fs->fat_length-1;
+
     //lock_init(&fat_fs->write_lock); //?? 아직 동기화 모르겠음
 }
 
@@ -224,6 +228,6 @@ cluster_to_sector (cluster_t clst) {
     //clst가 0보다 커야 된다는 조건이 필요한거 같음.
     if(clst <=0)
         return 0;
-    return data_start;
+    return fat_fs->data_start;
 }
 

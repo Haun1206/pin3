@@ -95,9 +95,10 @@ fsutil_put (char **argv) {
 	src = disk_get (1, 0);
 	if (src == NULL)
 		PANIC ("couldn't open source disk (hdc or hd1:0)");
-
+	
 	/* Read file size. */
 	disk_read (src, sector++, buffer);
+	//printf("HI\n");
 	if (memcmp (buffer, "PUT", 4))
 		PANIC ("%s: missing PUT signature on scratch disk", file_name);
 	size = ((int32_t *) buffer)[1];
@@ -105,8 +106,10 @@ fsutil_put (char **argv) {
 		PANIC ("%s: invalid file size %d", file_name, size);
 
 	/* Create destination file. */
+	//printf("HI\n");
 	if (!filesys_create (file_name, size))
 		PANIC ("%s: create failed", file_name);
+	printf("HI\n");
 	dst = filesys_open (file_name);
 	if (dst == NULL)
 		PANIC ("%s: open failed", file_name);

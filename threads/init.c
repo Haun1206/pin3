@@ -110,16 +110,19 @@ main (void) {
 	/* Initialize file system. */
 	disk_init ();
 	filesys_init (format_filesys);
+//	printf("HI]\n");
 #endif
 
 #ifdef VM
 	vm_init ();
 #endif
-
+//	printf("S\n");
 	printf ("Boot complete.\n");
 
 	/* Run actions specified on kernel command line. */
+//	printf("Z\n");
 	run_actions (argv);
+
 
 	/* Finish up. */
 	if (power_off_when_done)
@@ -241,6 +244,7 @@ run_task (char **argv) {
 
 	printf ("Executing '%s':\n", task);
 #ifdef USERPROG
+//	printf("HI\n");
 	if (thread_tests){
 		run_test (task);
 	} else {
@@ -293,7 +297,9 @@ run_actions (char **argv) {
 				PANIC ("action `%s' requires %d argument(s)", *argv, a->argc - 1);
 
 		/* Invoke action and advance. */
+		//printf("SEE");
 		a->function (argv);
+		//printf("SE");
 		argv += a->argc;
 	}
 

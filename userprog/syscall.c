@@ -16,6 +16,8 @@
 #include "threads/flags.h"
 #include "vm/vm.h"
 #include "vm/file.h"
+#include "filesys/directory.h"
+#include "filesys/fat.h"
 
 #include "intrinsic.h"
 
@@ -328,7 +330,7 @@ bool isdir(int fd){
 	struct file * f= process_get_file(fd);
 	if(f==NULL)
 		exit(-1);
-	struct inode * tmp = file_get_inode();
+	struct inode * tmp = file_get_inode(f);
 	return inode_is_dir(tmp);
 }
 bool chdir (const char *path)

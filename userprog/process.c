@@ -12,6 +12,8 @@
 #include "filesys/directory.h"
 #include "filesys/file.h"
 #include "filesys/filesys.h"
+
+#include "filesys/fat.h"
 #include "threads/flags.h"
 #include "threads/init.h"
 #include "threads/interrupt.h"
@@ -41,6 +43,7 @@ struct lock open_lock;
 /* General process initializer for initd and other process. */
 static void
 process_init (void) {
+	//printf("HI\n");
 	struct thread *current = thread_current ();
 }
 
@@ -76,6 +79,7 @@ process_create_initd (const char *file_name) {
 /* A thread function that launches first user process. */
 static void
 initd (void *f_name) {
+
 #ifdef VM
     //printf("HI");
 	supplemental_page_table_init (&thread_current ()->spt);
@@ -340,7 +344,7 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
-	dir_cose(curr->cur_dir);
+	dir_close(curr->cur_dir);
 
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){
