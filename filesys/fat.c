@@ -177,11 +177,15 @@ fat_fs_init (void) {
 cluster_t
 fat_create_chain (cluster_t clst) {
     /* TODO: Your code goes here. */
+    //printf("HI\n");
     for(cluster_t i=fat_fs->data_start; i <fat_fs->fat_length; i++){
         if(fat_fs->fat[i] == 0){
+          //  printf("1\n");
             fat_fs->fat[i] = EOChain; 
+           // printf("2\n");
             if (clst != 0)
                 fat_fs->fat[clst] = i;
+            //printf("3\n");
             return i;
         }
     }

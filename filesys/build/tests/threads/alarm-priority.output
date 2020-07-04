@@ -30,8 +30,8 @@ Executing 'alarm-priority':
 (alarm-priority) Thread priority 21 woke up.
 (alarm-priority) end
 Execution of 'alarm-priority' complete.
-Timer: 570 ticks
-Thread: 526 idle ticks, 44 kernel ticks, 0 user ticks
+Timer: 569 ticks
+Thread: 524 idle ticks, 46 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 159 reads, 317 writes
 Console: 1148 characters output

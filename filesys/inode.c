@@ -78,19 +78,21 @@ bool
 inode_create (disk_sector_t sector, off_t length, bool is_dir) {
 	struct inode_disk *disk_inode = NULL;
 	bool success = true;
+	
 
 	ASSERT (length >= 0);
-
+//printf("HI\n");
 	/* If this assertion fails, the inode structure is not exactly
 	 * one sector in size, and you should fix that. */
 	ASSERT (sizeof *disk_inode == DISK_SECTOR_SIZE);
-
+//	printf("HI\n");
 	disk_inode = calloc (1, sizeof *disk_inode);
 	if (disk_inode != NULL) {
 		size_t sectors = bytes_to_sectors (length);
 		disk_inode->length = length;
 		disk_inode->magic = INODE_MAGIC;
 		disk_inode->is_dir = is_dir;
+		//printf("HI\n");
 		//printf("ISDIR: %d\n",is_dir);
 
 		//메모1 : inode disk랑 data disk랑 연결이 안되있게 되있었고 그래서 그렇게 했는데 일단 메모
@@ -98,27 +100,36 @@ inode_create (disk_sector_t sector, off_t length, bool is_dir) {
 		
 		if(!is_dir){
 			cluster_t clst = fat_create_chain (0);
+			//printf("HI\n");
 			if(clst){
 				disk_inode->start = clst;
 				for (int i=1; i < sectors; i++){
 					clst = fat_create_chain(clst);
+					//printf("%d\n",clst);
+					//printf("HI\n");
 					if(!clst){
 						return false;
 					}
 					if(i == sectors-1)
 						disk_inode->last = clst;
 				}
+				//printf("%d\n",disk_inode->last);
 				static char zeros[DISK_SECTOR_SIZE];
-				cluster_t clst = disk_inode->start;
+				cluster_t clst2 = disk_inode->start;
 				for(int i = 0; i<sectors; i++){ 
-					disk_write (filesys_disk, cluster_to_sector(clst), zeros);
-					clst = fat_get(clst);
+					disk_write (filesys_disk, cluster_to_sector(clst2), zeros);
+					clst2 = fat_get(clst2);
 				}
+				//printf("HI\n");
 			}
-			else return false;
+			else 
+				return false;
 		}
+		//printf("%d\n",success);
 		disk_write (filesys_disk, sector, disk_inode);
+		//printf("HI\n");
 		free(disk_inode);
+		//printf("HI\n");
 	}
 	return success;
 }
@@ -153,6 +164,8 @@ inode_open (disk_sector_t sector) {
 	inode->deny_write_cnt = 0;
 	inode->removed = false;
 	disk_read (filesys_disk, inode->sector, &inode->data);
+	if(sector==1)
+		inode->data.is_dir = 1;
 	return inode;
 }
 
@@ -269,31 +282,54 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 	const uint8_t *buffer = buffer_;
 	off_t bytes_written = 0;
 	uint8_t *bounce = NULL;
-
+	//printf("HI\n");
 	if (inode->deny_write_cnt)
 		return 0;
-
+	//printf("HI\n");
 	while (size > 0) {
 		/* Sector to write, starting byte offset within sector. */
-		disk_sector_t sector_idx = byte_to_sector (inode, offset);
+		//printf("HI\n");
+		disk_sector_t sector_idx; 
+		//printf("HI\n");
 		int sector_ofs = offset % DISK_SECTOR_SIZE;
 
 		/* Bytes left in inode, bytes left in sector, lesser of the two. */
-		off_t inode_left = inode_length (inode) - offset;
-		int sector_left = DISK_SECTOR_SIZE - sector_ofs;
-		int min_left = inode_left < sector_left ? inode_left : sector_left;
+		off_t inode_left;
+		int sector_left;
+		int min_left;
+		if(inode->data.is_dir == 0){
+			sector_idx = byte_to_sector (inode, offset);
+			inode_left = inode_length (inode) - offset;
+			sector_left = DISK_SECTOR_SIZE - sector_ofs;
+			min_left = inode_left < sector_left ? inode_left : sector_left;
+		}
+		else{
+			sector_idx = inode->sector;
+			inode_left = DISK_SECTOR_SIZE - offset;
+			sector_left = DISK_SECTOR_SIZE - sector_ofs;
+			min_left = inode_left < sector_left ? inode_left : sector_left;
+		}
 
 		/* Number of bytes to actually write into this sector. */
 		int chunk_size = size < min_left ? size : min_left;
+		//printf("%d\n",chunk_size);
 		if (chunk_size <= 0){
+			//printf("HI\n");
 			size_t old_sectors = bytes_to_sectors(inode_length (inode));
+			//printf("HI\n");
 			inode->data.length = offset + size;
 			size_t addition = bytes_to_sectors(inode_length (inode)) - old_sectors;
+			//printf("HI\n");
 			if(addition > 0){
 				cluster_t clst;
 				for(int i=0 ; i<addition ; i++){
+					//printf("HI\n");
+					//printf("%d\n",inode->data.start);
+					//printf("%d\n",inode->data.last);
 					clst = fat_create_chain (inode->data.last);
+					//printf("HI\n");
 					disk_write (filesys_disk, cluster_to_sector(clst), 0);
+					//printf("HI\n");
 				}
 				inode->data.last = clst;
 				continue;
@@ -321,6 +357,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 				memset (bounce, 0, DISK_SECTOR_SIZE);
 			memcpy (bounce + sector_ofs, buffer + bytes_written, chunk_size);
 			disk_write (filesys_disk, sector_idx, bounce); 
+			printf("%llx",bounce);
 		}
 
 		/* Advance. */

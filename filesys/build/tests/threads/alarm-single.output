@@ -5,7 +5,8 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk..Kernel command line: -q -threads-tests -f run alarm-single
+Booting from Hard Disk...
+Kernel command line: -q -threads-tests -f run alarm-single
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -30,8 +31,8 @@ Executing 'alarm-single':
 (alarm-single) thread 4: duration=50, iteration=1, product=50
 (alarm-single) end
 Execution of 'alarm-single' complete.
-Timer: 322 ticks
-Thread: 285 idle ticks, 37 kernel ticks, 0 user ticks
+Timer: 319 ticks
+Thread: 285 idle ticks, 34 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 159 reads, 317 writes
 Console: 1295 characters output

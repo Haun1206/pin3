@@ -1,0 +1,8 @@
+FAIL
+Kernel panic in run: PANIC at ../../filesys/fsutil.c:115 in fsutil_put(): create-long: open failed
+Call stack: 0x8004214459 0x800421dc77 0x80042068c0 0x800420617a
+Translation of call stack:
+0x0000008004214459: debug_panic (lib/kernel/debug.c:32)
+0x000000800421dc77: fsutil_put (filesys/fsutil.c:119)
+0x00000080042068c0: run_actions (threads/init.c:303)
+0x000000800420617a: main (threads/init.c:128)

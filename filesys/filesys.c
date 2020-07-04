@@ -33,8 +33,9 @@ filesys_init (bool format) {
 
 	if (format)
 		do_format ();
-	
+//	printf("HI\n");
 	fat_open ();
+	//printf("HI\n");
 	thread_current ()->cur_dir = dir_open_root ();
 
 #else
@@ -76,7 +77,10 @@ filesys_create (const char *name, off_t initial_size) {
 	//printf("HI\n");
 	//printf("HI\n");
 	char tmp_name[PATH_MAX +1];
+	//printf("%s\n",name);
 	struct dir *dir = parse_path(name, tmp_name);
+	//printf("%llx\n", dir);
+
 	//printf("HI\n");
 	//printf("HI\n");
 	//printf("%d\n",clst);
@@ -85,6 +89,7 @@ filesys_create (const char *name, off_t initial_size) {
 			&& clst
 			&& inode_create (inode_sector, initial_size, false)
 			&& dir_add (dir, tmp_name, inode_sector));
+	//printf("%d\n",success);
 	//printf("HI\n");
 	if (!success && inode_sector != 0){
 		//printf("HI\n");
@@ -104,15 +109,24 @@ filesys_create (const char *name, off_t initial_size) {
  * or if an internal memory allocation fails. */
 struct file *
 filesys_open (const char *name) {
-	char tmp_name[NAME_MAX+1];
+	//printf("HI\n");
+	char tmp_name[PATH_MAX+1];
 	struct dir *dir = parse_path(name,tmp_name);
 	struct inode *inode = NULL;
-
-	if (dir != NULL)
+	//printf("HI\n");
+	//printf("%s\n",name);
+	//printf("%s\n",tmp_name);
+	if (dir != NULL){
+		//printf("HI\n");
 		dir_lookup (dir, tmp_name, &inode);
+		//printf("HI\n");
+		dir_close (dir);
+		//rintf("HI\n");
+		return file_open(inode);
+	}
 	else
 		return NULL;
-	dir_close (dir);
+
 }
 
 /* Deletes the file named NAME.
@@ -190,6 +204,7 @@ struct dir *parse_path(char * path_name, char *file_name){
 		dir = dir_reopen(thread_current()->cur_dir);
 
 	}
+	//printf("%d\n",dir==NULL)
 	//printf("HI\n");
 	struct inode * tmp = dir_get_inode(dir);
 	//printf("%d\n",tmp==NULL);
