@@ -6,6 +6,7 @@
 #include "filesys/filesys.h"
 #include "filesys/free-map.h"
 #include "threads/malloc.h"
+#include "filesys/fat.h"
 
 /* Identifies an inode. */
 #define INODE_MAGIC 0x494e4f44
@@ -13,10 +14,14 @@
 /* On-disk inode.
  * Must be exactly DISK_SECTOR_SIZE bytes long. */
 struct inode_disk {
-	disk_sector_t start;                /* First data sector. */
+	//disk_sector_t start;                /* First data sector. */
+	cluster_t start;
+	cluster_t last;
+	bool is_dir;
 	off_t length;                       /* File size in bytes. */
 	unsigned magic;                     /* Magic number. */
-	uint32_t unused[125];               /* Not used. */
+	bool bunused[3];
+	uint32_t unused[122];               /* Not used. */
 };
 
 /* Returns the number of sectors to allocate for an inode SIZE
@@ -44,7 +49,11 @@ static disk_sector_t
 byte_to_sector (const struct inode *inode, off_t pos) {
 	ASSERT (inode != NULL);
 	if (pos < inode->data.length)
-		return inode->data.start + pos / DISK_SECTOR_SIZE;
+		cluster_t clst = inode->data.start;
+		for(int i=0; i< pos / (DISK_SECTOR_SIZE * SECTORS_PER_CLUSTER) ; i++){
+			clst = fat_get(clst);
+		}
+		return cluster_to_sector(clst);
 	else
 		return -1;
 }
@@ -65,9 +74,9 @@ inode_init (void) {
  * Returns true if successful.
  * Returns false if memory or disk allocation fails. */
 bool
-inode_create (disk_sector_t sector, off_t length) {
+inode_create (disk_sector_t sector, off_t length, bool is_dir) {
 	struct inode_disk *disk_inode = NULL;
-	bool success = false;
+	bool success = true;
 
 	ASSERT (length >= 0);
 
@@ -80,18 +89,34 @@ inode_create (disk_sector_t sector, off_t length) {
 		size_t sectors = bytes_to_sectors (length);
 		disk_inode->length = length;
 		disk_inode->magic = INODE_MAGIC;
-		if (free_map_allocate (sectors, &disk_inode->start)) {
-			disk_write (filesys_disk, sector, disk_inode);
-			if (sectors > 0) {
-				static char zeros[DISK_SECTOR_SIZE];
-				size_t i;
+		disk_inode->is_dir = is_dir;
 
-				for (i = 0; i < sectors; i++) 
-					disk_write (filesys_disk, disk_inode->start + i, zeros); 
+		//메모1 : inode disk랑 data disk랑 연결이 안되있게 되있었고 그래서 그렇게 했는데 일단 메모
+		//메모2 : sectors가 0일때는 start 가 할당이 되는건지 확실 ㄴ 기존 코드에서 bit map 막이용해서 어찌한건지 이해가 안됨.
+		
+		if(!is_dir){
+			cluster_t clst = fat_create_chain (0);
+			if(clst){
+				disk_inode->start = clst;
+				for (int i=1; i < sectors; i++){
+					clst = fat_create_chain(clst)
+					if(!clst){
+						return false;
+					}
+					if(i == sectors-1)
+						disk_inode->last = clst;
+				}
+				static char zeros[DISK_SECTOR_SIZE];
+				cluster_t clst = disk_inode->start;
+				for(int i = 0; i<sectors; i++){ 
+					disk_write (filesys_disk, cluster_to_sector(clst), zeros);
+					clst = fat_get(clst);
+				}
 			}
-			success = true; 
-		} 
-		free (disk_inode);
+			else return false;
+		}
+		disk_write (filesys_disk, sector, disk_inode);
+		free(disk_inode);
 	}
 	return success;
 }
@@ -159,9 +184,12 @@ inode_close (struct inode *inode) {
 
 		/* Deallocate blocks if removed. */
 		if (inode->removed) {
-			free_map_release (inode->sector, 1);
-			free_map_release (inode->data.start,
-					bytes_to_sectors (inode->data.length)); 
+			fat_put (inode->sector_clst, 0);
+			cluster_t clst = inode->data.start;
+			for(int i=0 ; i<inode->data.length ; i++){
+				fat_put (clst, 0);
+				clst = fat_get(clst);
+			}
 		}
 
 		free (inode); 
@@ -252,8 +280,20 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 
 		/* Number of bytes to actually write into this sector. */
 		int chunk_size = size < min_left ? size : min_left;
-		if (chunk_size <= 0)
-			break;
+		if (chunk_size <= 0){
+			size_t old_sectors = bytes_to_sectors(inode_length (inode));
+			inode->data.length = offset + size;
+			size_t addition = bytes_to_sectors(inode_length (inode)) - old_sectors;
+			if(addition > 0){
+				for(int i=0 ; i<addition ; i++){
+					cluster_t clst = fat_create_chain (inode->data.last);
+					disk_write (filesys_disk, cluster_to_sector(clst), 0);
+				}
+			inode->data.last = clst;
+			continue;
+			}
+			else continue;
+		}
 
 		if (sector_ofs == 0 && chunk_size == DISK_SECTOR_SIZE) {
 			/* Write full sector directly to disk. */
@@ -261,7 +301,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 		} else {
 			/* We need a bounce buffer. */
 			if (bounce == NULL) {
-				bounce = malloc (DISK_SECTOR_SIZE);
+				bounce = malloc (DISK_SECTOR_SIZE);                                                                      
 				if (bounce == NULL)
 					break;
 			}
@@ -269,7 +309,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 			/* If the sector contains data before or after the chunk
 			   we're writing, then we need to read in the sector
 			   first.  Otherwise we start with a sector of all zeros. */
-			if (sector_ofs > 0 || chunk_size < sector_left) 
+			if (sector_ofs > 0 || chunk_size < sector_left)
 				disk_read (filesys_disk, sector_idx, bounce);
 			else
 				memset (bounce, 0, DISK_SECTOR_SIZE);
@@ -310,4 +350,11 @@ inode_allow_write (struct inode *inode) {
 off_t
 inode_length (const struct inode *inode) {
 	return inode->data.length;
+}
+
+bool
+inode_is_dir(const struct inode *inode){
+  	if (inode->removed)
+    	return false;
+	return inode->data.is_dir;
 }

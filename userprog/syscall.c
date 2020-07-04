@@ -43,6 +43,13 @@ void seek (int fd, unsigned position);
 unsigned tell (int fd);
 void close(int fd);
 void mmap(struct intr_frame *if_);
+bool isdir(int fd);
+bool chdir (const char *path);
+bool mkdir(const char * dir);
+bool readdir(int fd, char *file_name);
+int inumber(int fd);
+
+
 
 /* System call.
  *
@@ -317,7 +324,73 @@ void mmap(struct intr_frame *if_){
 
 }
 #endif
+bool isdir(int fd){
+	struct file * f= process_get_file(fd);
+	if(f==NULL)
+		exit(-1);
+	struct inode * tmp = file_get_inode();
+	return inode_is_dir(tmp);
+}
+bool chdir (const char *path)
+{
 
+	char tmp_path[PATH_MAX + 1];
+	strlcpy (tmp_path, path, PATH_MAX);
+	//FINISH BY /0
+	strlcat (tmp_path, "/0", PATH_MAX);
+	
+	bool success = false;
+	char file_name[NAME_MAX + 1];
+	struct dir *dir = parse_path (tmp_path, file_name);
+	if (dir==NULL)
+		return success;
+	dir_close (thread_current ()->cur_dir);
+	//set new directory by chdir
+	thread_current ()->cur_dir = dir; 
+	return true;
+}
+
+bool mkdir (const char *dir)
+{
+	return filesys_create_dir (dir);
+}
+//fd가 invalid하면??????????
+bool readdir (int fd, char *file_name)
+{
+	struct file *f = process_get_file (fd);
+
+	if (f == NULL)
+		exit (-1);
+	bool success =false;
+
+	struct inode *inode = file_get_inode (f);
+	if (inode==NULL || inode_is_dir (inode)==false)
+		return success;
+	struct dir *dir = dir_open (inode);
+	if (dir==NULL)
+		return success;
+
+
+
+	bool result = true;
+	off_t * ofs = (off_t *)f + 1;
+	
+	int i;
+	for (i = 0; i <= *ofs && result; i++){
+		result = dir_readdir (dir, file_name);
+	}
+	if ( (i <= *ofs ) == false)
+		(*ofs)++;
+	return result;
+}
+
+int inumber (int fd)
+{
+	struct file *f = process_get_file (fd);
+	if (f == NULL)
+		exit (-1);
+	return inode_get_inumber (file_get_inode (f));
+}
 
 /* The main system call interface */
 void
@@ -444,7 +517,26 @@ syscall_handler (struct intr_frame *f UNUSED) {
 			//printf("THEN MUNMAPhi"\n);
 			do_munmap(f->R.rdi);
 			break;
+			
 #endif
+
+		case SYS_ISDIR:
+			f->R.rax = isdir((int)f->R.rdi);
+			break;
+		case SYS_MKDIR:
+			f->R.rax = mkdir((const char *)f->R.rdi);
+			break;
+		case SYS_CHDIR:
+			f->R.rax = chdir((const char *)f->R.rdi);
+			break;
+		case SYS_READDIR:
+			check_addr((void *)f->R.rsi);
+			f->R.rax = readdir((int)f->R.rdi, (char *) f->R.rsi);
+			break;
+		case SYS_INUMBER:
+			f->R.rax = inumber((int)f->R.rdi);
+			break;
+		
 		default:
 			//printf("wrong system call!\n");
 			thread_exit();

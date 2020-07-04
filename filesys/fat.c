@@ -156,9 +156,10 @@ fat_fs_init (void) {
     // fat를 create 에서 만들어 주는데 그러면 여기서는 할 필요가 없나? 그러면 맨 처음에는? 음 ..
     struct fat_boot *bs = &fat_fs->bs;
     fat_fs->fat_length = bs->total_sectors / bs->sectors_per_cluster;
-    fat_fs->data_start = bs->fat_start;
+    fat_fs->data_start = bs->fat_start+1;
+    fat_fs->fat[1] = EOChain;
     fat_fs->last_clst = fat_fs->fat_length-1;
-    lock_init(&fat_fs->write_lock); //?? 아직 동기화 모르겠음
+    //lock_init(&fat_fs->write_lock); //?? 아직 동기화 모르겠음
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,7 +173,7 @@ fat_fs_init (void) {
 cluster_t
 fat_create_chain (cluster_t clst) {
     /* TODO: Your code goes here. */
-    for(cluster_t i=1; i <fat_fs->fat_length; i++){
+    for(cluster_t i=fat_fs->data_start; i <fat_fs->fat_length; i++){
         if(fat_fs->fat[i] == 0){
             fat_fs->fat[i] = EOChain; 
             if (clst != 0)
@@ -220,5 +221,9 @@ fat_get (cluster_t clst) {
 disk_sector_t
 cluster_to_sector (cluster_t clst) {
     /* TODO: Your code goes here. */
+    //clst가 0보다 커야 된다는 조건이 필요한거 같음.
+    if(clst <=0)
+        return 0;
+    return data_start;
 }
 

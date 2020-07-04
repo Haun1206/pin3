@@ -144,6 +144,8 @@ struct thread {
 	/*Current running file*/
 	struct file *cur_file;
 
+	struct dir *cur_dir;
+
 	/*semaphore for child_fork*/
 	struct semaphore child_fork;
 

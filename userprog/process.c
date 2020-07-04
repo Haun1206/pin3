@@ -340,6 +340,7 @@ process_exit (void) {
 	palloc_free_page(curr->fd_table);
 	/*close the currently running file*/
 	curr->process_exit = true;
+	dir_cose(curr->cur_dir);
 
 	/*Check out the child exit staus and parent's forked*/
 	if(curr->child_status_exit==-1 && parent->forked ==1){

@@ -231,6 +231,8 @@ thread_create (const char *name, int priority,
 
 	if(t->fd_table ==NULL)
 		return TID_ERROR;
+	if(thread_current()->cur_dir !=NULL)
+		t->cur_dir = dir_reopen(thread_current()->cur_dir);
 	/*Child, parent Relationship */
 	t->success_load = false;
 	t->process_exit = false;
@@ -584,6 +586,7 @@ init_thread (struct thread *t, const char *name, int priority) {
 
     t->priority = priority;
     t->original_priority = priority;
+	t->cur_dir =NULL;
     
     t->want_lock = NULL;
     list_init(&t->donation);
