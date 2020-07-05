@@ -6,6 +6,7 @@
 #include "filesys/free-map.h"
 #include "filesys/inode.h"
 #include "filesys/directory.h"
+
 #include "filesys/fat.h"
 #include "devices/disk.h"
 #include "threads/thread.h"
@@ -23,7 +24,6 @@ filesys_init (bool format) {
 	filesys_disk = disk_get (0, 1);
 	if (filesys_disk == NULL)
 		PANIC ("hd0:1 (hdb) not present, file system initialization failed");
-
 	inode_init ();
 
 #ifdef EFILESYS
@@ -33,7 +33,7 @@ filesys_init (bool format) {
 
 	if (format)
 		do_format ();
-//	printf("HI\n");
+	//printf("HI\n");
 	fat_open ();
 	//printf("HI\n");
 	thread_current ()->cur_dir = dir_open_root ();
@@ -140,22 +140,20 @@ filesys_remove (const char *name) {
 	struct inode * i =NULL;
 	dir_lookup(dir,tmp_name,&i);
 
-	char tmp_dir_name[PATH_MAX+1];
+
 
 	struct dir *tmp_dir= NULL;
 
 
-
-	struct dir *cur_dir = NULL;
-  	char temp[PATH_MAX + 1];
+  	char tmp[PATH_MAX + 1];
 	bool success = false;
 
-	if (!inode_is_dir (i) || ((cur_dir = dir_open (i) )&& !dir_readdir (cur_dir, temp))){
-		if(!dir && dir_remove(dir,name))
+	if (!inode_is_dir (i) || ((tmp_dir = dir_open (i) )&& !dir_readdir (tmp_dir, tmp))){
+		if(dir && dir_remove(dir,tmp_name))
 			success = true;
 	}
-
-	dir_close (dir);
+	dir_close(dir);
+	
 	return success;
 }
 
@@ -178,8 +176,9 @@ do_format (void) {
 	printf ("done.\n");
 }
 struct dir *parse_path(char * path_name, char *file_name){
-	//printf("HI\n");
+	//printf("START\n");
 	struct dir *dir = NULL;
+	char path[PATH_MAX+1];
 	if(path_name ==NULL){
 		//printf("HI\n");
 		return NULL;
@@ -194,7 +193,9 @@ struct dir *parse_path(char * path_name, char *file_name){
 	}
 	//printf("HI\n");
 	//절대경로
-	if(path_name[0] =='/')
+	
+	strlcpy(path, path_name, PATH_MAX);
+	if(path[0] =='/')
 		dir = dir_open_root();
 	
 	//상대경로
@@ -204,18 +205,19 @@ struct dir *parse_path(char * path_name, char *file_name){
 		dir = dir_reopen(thread_current()->cur_dir);
 
 	}
-	//printf("%d\n",dir==NULL)
+	//printf("%d\n",dir==NULL);
 	//printf("HI\n");
 	struct inode * tmp = dir_get_inode(dir);
-	//printf("%d\n",tmp==NULL);
+	//printf("tm:%d\n",tmp==NULL);
 	if(inode_is_dir(tmp)==false){
 		//printf("HI\n");
 		return NULL;
 	}
+	printf("HERE\n");
   	char *token, *next_token, *save_ptr;
-  	token = strtok_r (path_name, "/", &save_ptr);
+  	token = strtok_r (path, "/", &save_ptr);
 	next_token = strtok_r (NULL, "/", &save_ptr);
-
+	
 	if(token==NULL){
 		//printf("HI\n");
 		strlcpy(file_name,".",NAME_MAX);
@@ -239,6 +241,7 @@ struct dir *parse_path(char * path_name, char *file_name){
 
 		//NEXT PART
 		dir = dir_open (tempo);
+		//printf("H:%d\n",dir==NULL);
 		token = next_token;
 		next_token = strtok_r (NULL, "/", &save_ptr);
 	}

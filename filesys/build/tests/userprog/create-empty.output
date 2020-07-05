@@ -18,9 +18,18 @@ hd1:0: detected 102 sector (51 kB) disk, model "QEMU HARDDISK", serial "QM00003"
 Formatting file system...done.
 Boot complete.
 Putting 'create-empty' into the file system...
-Kernel PANIC at ../../filesys/fsutil.c:115 in fsutil_put(): create-empty: open failed
-Call stack: 0x8004214459 0x800421dc77 0x80042068c0 0x800420617a.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Kernel PANIC recursion at ../../devices/timer.c:185 in real_time_sleep().
+Executing 'create-empty':
+(create-empty) begin
+(create-empty) create(""): 0
+(create-empty) end
+create-empty: exit(0)
+Execution of 'create-empty' complete.
+Timer: 78 ticks
+Thread: 38 idle ticks, 38 kernel ticks, 2 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 225 reads, 625 writes
+hd1:0: 102 reads, 0 writes
+Console: 894 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

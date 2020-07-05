@@ -1,0 +1,32 @@
+c[?7l[2J[0mSeaBIOS (version rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org)
+
+
+iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
+Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
+
+
+Booting from Hard Disk..Kernel command line: -q -f put dir-rm-parent put tar run dir-rm-parent
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 224 sector (112 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'dir-rm-parent' into the file system...
+Putting 'tar' into the file system...
+Executing 'dir-rm-parent':
+(dir-rm-parent) begin
+(dir-rm-parent) mkdir "a"
+(dir-rm-parent) chdir "a"
+(dir-rm-parent) mkdir "b"
+dKernel PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
+Call stack: 0x8004214459 0x80042074e6 0x800420b070 0x800421775e 0x800421792b 0x800421790f 0x8004212958 0x8004212090 0x80042177be 0x800421195c 0x80042198da 0x8004219513 0x80042096f7 0x8004209b15 0x800421ad49 0x800421af95 0x800421a010 0x800421a4ea 0x8004219676 0x4001c3 0x400f71 0x400fba.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Kernel PANIC recursion at ../../threads/thread.c:389 in thread_current().

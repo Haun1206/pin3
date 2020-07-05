@@ -3,6 +3,7 @@
 #include "filesys/filesys.h"
 #include "threads/malloc.h"
 #include "threads/synch.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -232,6 +233,6 @@ cluster_to_sector (cluster_t clst) {
     //clst가 0보다 커야 된다는 조건이 필요한거 같음.
     if(clst <=0)
         return 0;
-    return fat_fs->data_start;
+    return clst;
 }
 

@@ -1,0 +1,26 @@
+FAIL
+Kernel panic in run: PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
+Call stack: 0x8004214459 0x80042074e6 0x800420b070 0x800421775e 0x800421792b 0x800421790f 0x8004212958 0x8004212090 0x80042177be 0x800421195c 0x80042198da 0x8004219513 0x80042096f7 0x8004209b15 0x800421ad49 0x800421aac3 0x8004219a9c 0x800421a366 0x8004219676 0x40021b 0x400f24 0x400f6d
+Translation of call stack:
+0x0000008004214459: debug_panic (lib/kernel/debug.c:32)
+0x00000080042074e6: thread_current (threads/thread.c:390)
+0x000000800420b070: lock_held_by_current_thread (threads/synch.c:289)
+0x000000800421775e: console_locked_by_current_thread (lib/kernel/console.c:111 (discriminator 2))
+0x000000800421792b: putchar_have_lock (lib/kernel/console.c:173)
+0x000000800421790f: vprintf_helper (lib/kernel/console.c:166)
+0x0000008004212958: format_string (lib/stdio.c:529 (discriminator 3))
+0x0000008004212090: __vprintf (lib/stdio.c:284)
+0x00000080042177be: vprintf (lib/kernel/console.c:123)
+0x000000800421195c: printf (lib/stdio.c:80)
+0x00000080042198da: exit (userprog/syscall.c:136)
+0x0000008004219513: page_fault (userprog/exception.c:158)
+0x00000080042096f7: intr_handler (threads/interrupt.c:352)
+0x0000008004209b15: intr_entry (threads/intr-stubs.o:?)
+0x000000800421ad49: parse_path (filesys/filesys.c:207)
+0x000000800421aac3: filesys_open (filesys/filesys.c:114)
+0x0000008004219a9c: open (userprog/syscall.c:192)
+0x000000800421a366: syscall_handler (userprog/syscall.c:455)
+0x0000008004219676: no_sti (userprog/syscall-entry.o:?)
+0x000000000040021b: (unknown)
+0x0000000000400f24: (unknown)
+0x0000000000400f6d: (unknown)

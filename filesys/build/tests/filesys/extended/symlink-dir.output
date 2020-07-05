@@ -1,0 +1,36 @@
+c[?7l[2J[0mSeaBIOS (version rel-1.11.0-0-g63451fca13-prebuilt.qemu-project.org)
+
+
+iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
+Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
+
+
+Booting from Hard Disk..Kernel command line: -q -f put symlink-dir put tar run symlink-dir
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 226 sector (113 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'symlink-dir' into the file system...
+Putting 'tar' into the file system...
+Executing 'symlink-dir':
+(symlink-dir) begin
+(symlink-dir) mkdir "/a"
+(symlink-dir) mkdir "a/b"
+(symlink-dir) create symlink "a/link_b"
+Execution of 'symlink-dir' complete.
+Timer: 81 ticks
+Thread: 41 idle ticks, 35 kernel ticks, 5 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 246 reads, 763 writes
+hd1:0: 226 reads, 0 writes
+Console: 955 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...
