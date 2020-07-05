@@ -213,7 +213,7 @@ struct dir *parse_path(char * path_name, char *file_name){
 		//printf("HI\n");
 		return NULL;
 	}
-	printf("HERE\n");
+	//printf("HERE\n");
   	char *token, *next_token, *save_ptr;
   	token = strtok_r (path, "/", &save_ptr);
 	next_token = strtok_r (NULL, "/", &save_ptr);
