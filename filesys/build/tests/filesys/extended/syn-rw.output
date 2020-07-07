@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put syn-rw put tar put child-
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  117,760,000 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 343 sector (171 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -28,10 +28,10 @@ Executing 'syn-rw':
 (syn-rw) exec child 2 of 4: "child-syn-rw 1"
 (syn-rw) exec child 3 of 4: "child-syn-rw 2"
 (syn-rw) exec child 4 of 4: "child-syn-rw 3"
-child-syn-rw: exit(2)
 child-syn-rw: exit(1)
 child-syn-rw: exit(0)
 child-syn-rw: exit(3)
+child-syn-rw: exit(2)
 (syn-rw) wait for child 1 of 4 returned 0 (expected 0)
 (syn-rw) wait for child 2 of 4 returned 1 (expected 1)
 (syn-rw) wait for child 3 of 4 returned 2 (expected 2)
@@ -39,10 +39,10 @@ child-syn-rw: exit(3)
 (syn-rw) end
 syn-rw: exit(0)
 Execution of 'syn-rw' complete.
-Timer: 169 ticks
-Thread: 59 idle ticks, 45 kernel ticks, 65 user ticks
+Timer: 151 ticks
+Thread: 34 idle ticks, 44 kernel ticks, 73 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 961 reads, 2132 writes
+hd0:1: 996 reads, 2134 writes
 hd1:0: 343 reads, 0 writes
 Console: 1468 characters output
 Keyboard: 0 keys pressed

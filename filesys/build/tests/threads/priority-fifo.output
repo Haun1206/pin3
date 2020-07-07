@@ -38,10 +38,10 @@ Executing 'priority-fifo':
 (priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 (priority-fifo) end
 Execution of 'priority-fifo' complete.
-Timer: 75 ticks
-Thread: 38 idle ticks, 37 kernel ticks, 0 user ticks
+Timer: 74 ticks
+Thread: 36 idle ticks, 38 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 159 reads, 319 writes
+hd0:1: 177 reads, 321 writes
 Console: 1866 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults

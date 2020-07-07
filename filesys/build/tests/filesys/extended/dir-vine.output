@@ -5,13 +5,14 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk..Kernel command line: -q -f put dir-vine put tar run dir-vine
+Booting from Hard Disk...
+Kernel command line: -q -f put dir-vine put tar run dir-vine
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 230 sector (115 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -22,9 +23,14 @@ Putting 'tar' into the file system...
 Executing 'dir-vine':
 (dir-vine) begin
 (dir-vine) creating many levels of files and directories...
-dKernel PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
-Call stack: 0x8004214459 0x80042074e6 0x800420b070 0x800421775e 0x800421792b 0x800421790f 0x8004212958 0x8004212090 0x80042177be 0x800421195c 0x80042198da 0x8004219513 0x80042096f7 0x8004209b15 0x800421ad49 0x800421a9e7 0x80042199e3 0x800421a2ea 0x8004219676 0x40020e 0x401608 0x401651.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Kernel PANIC recursion at ../../threads/thread.c:389 in thread_current().
+dir-vine: exit(-1)
+Execution of 'dir-vine' complete.
+Timer: 86 ticks
+Thread: 36 idle ticks, 45 kernel ticks, 5 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 211 reads, 769 writes
+hd1:0: 230 reads, 0 writes
+Console: 925 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

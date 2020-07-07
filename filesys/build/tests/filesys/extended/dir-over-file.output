@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put dir-over-file put tar run
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 223 sector (111 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -26,10 +26,10 @@ Executing 'dir-over-file':
 (dir-over-file) end
 dir-over-file: exit(0)
 Execution of 'dir-over-file' complete.
-Timer: 84 ticks
-Thread: 40 idle ticks, 38 kernel ticks, 6 user ticks
+Timer: 75 ticks
+Thread: 31 idle ticks, 40 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 185 reads, 747 writes
+hd0:1: 210 reads, 749 writes
 hd1:0: 223 reads, 0 writes
 Console: 996 characters output
 Keyboard: 0 keys pressed

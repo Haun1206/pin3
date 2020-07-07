@@ -22,9 +22,19 @@ Putting 'tar' into the file system...
 Executing 'dir-rm-tree':
 (dir-rm-tree) begin
 (dir-rm-tree) creating /0/0/0/0 through /3/2/2/3...
-Kernel PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
-Call stack: 0x8004214459 0x80042074e6 0x8004206be7 0x800420e23d 0x80042096f7 0x8004209b15 0x80042164dc 0x80042166c3 0x800421671e 0x800420be56 0x800420bf35 0x800420c4db 0x800421d2b2 0x800421c776 0x800421c846 0x800421ae43 0x800421a9e7 0x80042199e3 0x800421a2ea 0x8004219676 0x401556 0x401287 0x40010c 0x40112f 0x4015ac.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Kernel PANIC recursion at ../../threads/synch.c:222 in lock_acquire().
+(dir-rm-tree) open "/0/2/0/3"
+(dir-rm-tree) close "/0/2/0/3"
+(dir-rm-tree) removing /0/0/0/0 through /3/2/2/3...
+(dir-rm-tree) open "/3/0/2/0" (must return -1)
+(dir-rm-tree) end
+dir-rm-tree: exit(0)
+Execution of 'dir-rm-tree' complete.
+Timer: 839 ticks
+Thread: 295 idle ticks, 44 kernel ticks, 500 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 14939 reads, 2007 writes
+hd1:0: 232 reads, 0 writes
+Console: 1122 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put dir-mkdir put tar run dir
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 223 sector (111 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -24,10 +24,14 @@ Executing 'dir-mkdir':
 (dir-mkdir) mkdir "a"
 (dir-mkdir) create "a/b"
 (dir-mkdir) chdir "a"
-(dir-mkdir) open "b"
-dKernel PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
-Call stack: 0x8004214459 0x80042074e6 0x800420b070 0x800421775e 0x800421792b 0x800421790f 0x8004212958 0x8004212090 0x80042177be 0x800421195c 0x80042198da 0x8004219513 0x80042096f7 0x8004209b15 0x800421ad49 0x800421aac3 0x8004219a9c 0x800421a366 0x8004219676 0x40021b 0x400f24 0x400f6d.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Kernel PANIC recursion at ../../threads/thread.c:389 in thread_current().
+dir-mkdir: exit(-1)
+Execution of 'dir-mkdir' complete.
+Timer: 89 ticks
+Thread: 38 idle ticks, 44 kernel ticks, 7 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 232 reads, 752 writes
+hd1:0: 223 reads, 0 writes
+Console: 941 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

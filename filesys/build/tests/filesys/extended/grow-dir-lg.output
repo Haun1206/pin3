@@ -11,7 +11,7 @@ Booting from Hard Disk..Kernel command line: -q -f put grow-dir-lg put tar run g
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  78,540,800 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 224 sector (112 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -27,9 +27,60 @@ Executing 'grow-dir-lg':
 (grow-dir-lg) creating and checking "/x/file2"
 (grow-dir-lg) creating and checking "/x/file3"
 (grow-dir-lg) creating and checking "/x/file4"
-Kernel PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
-Call stack: 0x8004214459 0x80042074e6 0x8004206be7 0x800420e23d 0x80042096f7 0x8004209b15 0x80042164dc 0x80042166c3 0x800421671e 0x800420be56 0x800420bf35 0x800420c4db 0x800421d2b2 0x800421c776 0x800421c846 0x800421ae43 0x800421a9e7 0x80042199e3 0x800421a2ea 0x8004219676 0x400d09 0x40021a 0x400f20 0x400f69.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Kernel PANIC recursion at ../../threads/synch.c:222 in lock_acquire().
+(grow-dir-lg) creating and checking "/x/file5"
+(grow-dir-lg) creating and checking "/x/file6"
+(grow-dir-lg) creating and checking "/x/file7"
+(grow-dir-lg) creating and checking "/x/file8"
+(grow-dir-lg) creating and checking "/x/file9"
+(grow-dir-lg) creating and checking "/x/file10"
+(grow-dir-lg) creating and checking "/x/file11"
+(grow-dir-lg) creating and checking "/x/file12"
+(grow-dir-lg) creating and checking "/x/file13"
+(grow-dir-lg) creating and checking "/x/file14"
+(grow-dir-lg) creating and checking "/x/file15"
+(grow-dir-lg) creating and checking "/x/file16"
+(grow-dir-lg) creating and checking "/x/file17"
+(grow-dir-lg) creating and checking "/x/file18"
+(grow-dir-lg) creating and checking "/x/file19"
+(grow-dir-lg) creating and checking "/x/file20"
+(grow-dir-lg) creating and checking "/x/file21"
+(grow-dir-lg) creating and checking "/x/file22"
+(grow-dir-lg) creating and checking "/x/file23"
+(grow-dir-lg) creating and checking "/x/file24"
+(grow-dir-lg) creating and checking "/x/file25"
+(grow-dir-lg) creating and checking "/x/file26"
+(grow-dir-lg) creating and checking "/x/file27"
+(grow-dir-lg) creating and checking "/x/file28"
+(grow-dir-lg) creating and checking "/x/file29"
+(grow-dir-lg) creating and checking "/x/file30"
+(grow-dir-lg) creating and checking "/x/file31"
+(grow-dir-lg) creating and checking "/x/file32"
+(grow-dir-lg) creating and checking "/x/file33"
+(grow-dir-lg) creating and checking "/x/file34"
+(grow-dir-lg) creating and checking "/x/file35"
+(grow-dir-lg) creating and checking "/x/file36"
+(grow-dir-lg) creating and checking "/x/file37"
+(grow-dir-lg) creating and checking "/x/file38"
+(grow-dir-lg) creating and checking "/x/file39"
+(grow-dir-lg) creating and checking "/x/file40"
+(grow-dir-lg) creating and checking "/x/file41"
+(grow-dir-lg) creating and checking "/x/file42"
+(grow-dir-lg) creating and checking "/x/file43"
+(grow-dir-lg) creating and checking "/x/file44"
+(grow-dir-lg) creating and checking "/x/file45"
+(grow-dir-lg) creating and checking "/x/file46"
+(grow-dir-lg) creating and checking "/x/file47"
+(grow-dir-lg) creating and checking "/x/file48"
+(grow-dir-lg) creating and checking "/x/file49"
+(grow-dir-lg) end
+grow-dir-lg: exit(0)
+Execution of 'grow-dir-lg' complete.
+Timer: 324 ticks
+Thread: 88 idle ticks, 36 kernel ticks, 201 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 6676 reads, 1054 writes
+hd1:0: 224 reads, 0 writes
+Console: 3320 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

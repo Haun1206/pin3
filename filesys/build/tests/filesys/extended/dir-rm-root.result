@@ -1,15 +1,1 @@
-FAIL
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (dir-rm-root) begin
-  (dir-rm-root) remove "/" (must fail)
-  (dir-rm-root) create "/a"
-  (dir-rm-root) end
-Differences in `diff -u' format:
-  (dir-rm-root) begin
-  (dir-rm-root) remove "/" (must fail)
-- (dir-rm-root) create "/a"
-- (dir-rm-root) end
-
-(Process exit codes are excluded for matching purposes.)
+PASS

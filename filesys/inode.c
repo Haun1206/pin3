@@ -8,7 +8,6 @@
 #include "threads/malloc.h"
 #include "filesys/fat.h"
 
-
 /* Identifies an inode. */
 #define INODE_MAGIC 0x494e4f44
 
@@ -50,6 +49,7 @@ static disk_sector_t
 byte_to_sector (const struct inode *inode, off_t pos) {
 	ASSERT (inode != NULL);
 	if (pos < inode->data.length){
+		//printf("HERE\n");
 		cluster_t clst = inode->data.start;
 		//printf("start:%d",clst);
 		//printf("what%d?", pos / (DISK_SECTOR_SIZE * SECTORS_PER_CLUSTER));
@@ -60,8 +60,10 @@ byte_to_sector (const struct inode *inode, off_t pos) {
 		//printf("next:%d\n",clst);
 		return cluster_to_sector(clst);
 	}
-	else
+	else{
+		//printf("SDFSF\n");
 		return -1;
+	}
 }
 
 /* List of open inodes, so that opening a single inode twice
@@ -126,12 +128,13 @@ inode_create (disk_sector_t sector, off_t length, bool is_dir) {
 		}
 		else 
 			return false;
-		//printf("%d\n",success);
+		//printf("%d %d %d\n",disk_inode->is_dir, disk_inode->start, disk_inode->length);
 		disk_write (filesys_disk, sector, disk_inode);
 		//printf("HI\n");
 		free(disk_inode);
 		//printf("HI\n");
 	}
+	//printf("PPPP:%d\n", )
 	return success;
 }
 
@@ -164,11 +167,8 @@ inode_open (disk_sector_t sector) {
 	inode->open_cnt = 1;
 	inode->deny_write_cnt = 0;
 	inode->removed = false;
-	if(sector==1){
-		//printf("Plese\n");
-		inode_create (sector, DISK_SECTOR_SIZE, true);
-	}
 	disk_read (filesys_disk, inode->sector, &inode->data);
+	
 	
 	return inode;
 }
@@ -176,10 +176,12 @@ inode_open (disk_sector_t sector) {
 /* Reopens and returns INODE. */
 struct inode *
 inode_reopen (struct inode *inode) {
-	//printf("HI\n");
-	if (inode != NULL)
+	//printf("HI2\n");
+	if (inode != NULL){
+		//printf("mape\n");
 		inode->open_cnt++;
-	//printf("HI\n");
+	}
+	//printf("HI2\n");
 	return inode;
 }
 
@@ -199,12 +201,15 @@ inode_close (struct inode *inode) {
 		return;
 	//printf("clse:%d\n",inode->data.length);
 	/* Release resources if this was the last opener. */
+	//printf("open_cnt:%d\n", inode->open_cnt);
+	//printf("open_clst:%d\n", inode->sector);
 	if (--inode->open_cnt == 0) {
 		/* Remove from inode list and release lock. */
 		list_remove (&inode->elem);
 
 		/* Deallocate blocks if removed. */
 		if (inode->removed) {
+
 			cluster_t clst = inode->data.start;
 			while(clst == inode->data.last){
 				clst = fat_get(clst);
@@ -212,6 +217,7 @@ inode_close (struct inode *inode) {
 			}
 			fat_put(inode->data.start, 0);
 			fat_put ((cluster_t)inode->sector, 0);
+
 		}
 
 		free (inode); 
@@ -234,7 +240,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset) {
 	uint8_t *buffer = buffer_;
 	off_t bytes_read = 0;
 	uint8_t *bounce = NULL;
-
+	//printf("REDA:%d\n", offset);
 	while (size > 0) {
 		/* Disk sector to read, starting byte offset within sector. */
 		disk_sector_t sector_idx = byte_to_sector (inode, offset);
@@ -267,7 +273,6 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset) {
 			}
 			//printf("ind\n");
 			disk_read (filesys_disk, sector_idx, bounce);
-			//printf("ind\n");
 			memcpy (buffer + bytes_read, bounce + sector_ofs, chunk_size);
 			//free(bounce);
 		}

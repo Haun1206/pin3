@@ -24,20 +24,22 @@ struct dir_entry {
  * given SECTOR.  Returns true if successful, false on failure. */
 bool
 dir_create (disk_sector_t sector, size_t entry_cnt) {
-	return inode_create (sector, entry_cnt * sizeof (struct dir_entry),true);
+	return inode_create (sector, entry_cnt * sizeof (struct dir_entry), true);
 }
 
 /* Opens and returns the directory for the given INODE, of which
  * it takes ownership.  Returns a null pointer on failure. */
 struct dir *
 dir_open (struct inode *inode) {
-	//printf("HI\n");
+	//printf("HI:%llx\n", inode);
 	struct dir *dir = calloc (1, sizeof *dir);
+	//printf("add:%llx", dir);
 	if (inode != NULL && dir != NULL) {
 		dir->inode = inode;
 		dir->pos = 0;
 		return dir;
 	} else {
+		//printf("Hoxy\n");
 		inode_close (inode);
 		free (dir);
 		return NULL;
@@ -84,13 +86,13 @@ lookup (const struct dir *dir, const char *name,
 		struct dir_entry *ep, off_t *ofsp) {
 	struct dir_entry e;
 	size_t ofs;
-
+	//printf('happy\n');
 	ASSERT (dir != NULL);
 	ASSERT (name != NULL);
-
-
+	//printf('happy\n');
 	for (ofs = 0; inode_read_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
 			ofs += sizeof e)
+		//printf("here?\n");
 		if (e.in_use && !strcmp (name, e.name)) {
 			if (ep != NULL)
 				*ep = e;
@@ -112,16 +114,17 @@ dir_lookup (const struct dir *dir, const char *name,
 
 	ASSERT (dir != NULL);
 	ASSERT (name != NULL);
-
+	//printf("here?\n");
 	if (lookup (dir, name, &e, NULL)){
-		//printf("HI\n");
+		
 		*inode = inode_open (e.inode_sector);
+		
 	}
 	else{
-	//	printf("HI\n");
+		//printf("HI2\n");
 		*inode = NULL;
 	}
-	//printf("%d\n",*inode==NULL);
+	//printf("chekc:%d\n",*inode==NULL);
 	return *inode != NULL;
 }
 
@@ -155,14 +158,16 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector) {
 	 * inode_read_at() will only return a short read at end of file.
 	 * Otherwise, we'd need to verify that we didn't get a short
 	 * read due to something intermittent such as low memory. */
-	for (ofs = 0; inode_read_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
+
+	for (ofs=0; inode_read_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
 			ofs += sizeof e)
 		if (!e.in_use)
 			break;
-	//printf("HI\n");
+	//printf("HI:%d\n",inode_get_inumber(dir_get_inode(dir)));
 	/* Write slot. */
 	e.in_use = true;
 	strlcpy (e.name, name, sizeof e.name);
+	//printf("name:%s", e.name);
 	e.inode_sector = inode_sector;
 //	printf("HI\n");
 //	printf("DIR_ADD: %llx\n",&e);
@@ -215,13 +220,16 @@ done:
 bool
 dir_readdir (struct dir *dir, char name[NAME_MAX + 1]) {
 	struct dir_entry e;
-
+	//printf("he:%d\n", inode_get_inumber(dir_get_inode(dir)));
+	dir->pos = 2*(sizeof e);
 	while (inode_read_at (dir->inode, &e, sizeof e, dir->pos) == sizeof e) {
 		dir->pos += sizeof e;
 		if (e.in_use) {
 			strlcpy (name, e.name, NAME_MAX + 1);
+			//printf('again2\n');
 			return true;
 		}
 	}
+	//printf('again\n');
 	return false;
 }

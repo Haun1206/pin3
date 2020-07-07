@@ -5,7 +5,8 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk..Kernel command line: -q -f put dir-rm-root put tar run dir-rm-root
+Booting from Hard Disk...
+Kernel command line: -q -f put dir-rm-root put tar run dir-rm-root
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -22,14 +23,16 @@ Putting 'tar' into the file system...
 Executing 'dir-rm-root':
 (dir-rm-root) begin
 (dir-rm-root) remove "/" (must fail)
-dir-rm-root: exit(-1)
+(dir-rm-root) create "/a"
+(dir-rm-root) end
+dir-rm-root: exit(0)
 Execution of 'dir-rm-root' complete.
-Timer: 84 ticks
-Thread: 40 idle ticks, 42 kernel ticks, 2 user ticks
+Timer: 83 ticks
+Thread: 41 idle ticks, 38 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 140 reads, 738 writes
+hd0:1: 170 reads, 744 writes
 hd1:0: 223 reads, 0 writes
-Console: 923 characters output
+Console: 966 characters output
 Keyboard: 0 keys pressed
-Exception: 1 page faults
+Exception: 0 page faults
 Powering off...

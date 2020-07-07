@@ -28,10 +28,10 @@ Executing 'dir-open':
 (dir-open) end
 dir-open: exit(0)
 Execution of 'dir-open' complete.
-Timer: 83 ticks
-Thread: 43 idle ticks, 35 kernel ticks, 5 user ticks
+Timer: 81 ticks
+Thread: 37 idle ticks, 38 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 187 reads, 746 writes
+hd0:1: 212 reads, 748 writes
 hd1:0: 223 reads, 0 writes
 Console: 1008 characters output
 Keyboard: 0 keys pressed

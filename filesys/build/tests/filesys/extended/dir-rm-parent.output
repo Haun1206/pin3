@@ -23,10 +23,14 @@ Executing 'dir-rm-parent':
 (dir-rm-parent) begin
 (dir-rm-parent) mkdir "a"
 (dir-rm-parent) chdir "a"
-(dir-rm-parent) mkdir "b"
-dKernel PANIC at ../../threads/thread.c:389 in thread_current(): assertion `is_thread (t)' failed.
-Call stack: 0x8004214459 0x80042074e6 0x800420b070 0x800421775e 0x800421792b 0x800421790f 0x8004212958 0x8004212090 0x80042177be 0x800421195c 0x80042198da 0x8004219513 0x80042096f7 0x8004209b15 0x800421ad49 0x800421af95 0x800421a010 0x800421a4ea 0x8004219676 0x4001c3 0x400f71 0x400fba.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Kernel PANIC recursion at ../../threads/thread.c:389 in thread_current().
+dir-rm-parent: exit(-1)
+Execution of 'dir-rm-parent' complete.
+Timer: 78 ticks
+Thread: 31 idle ticks, 43 kernel ticks, 4 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 207 reads, 751 writes
+hd1:0: 224 reads, 0 writes
+Console: 952 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

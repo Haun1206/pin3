@@ -6,14 +6,12 @@
 #include "filesys/free-map.h"
 #include "filesys/inode.h"
 #include "filesys/directory.h"
-
 #include "filesys/fat.h"
 #include "devices/disk.h"
 #include "threads/thread.h"
 
 /* The disk that contains the file system. */
 struct disk *filesys_disk;
-
 static void do_format (void);
 struct dir *parse_path(char * path_name, char *file_name);
 
@@ -36,7 +34,10 @@ filesys_init (bool format) {
 	//printf("HI\n");
 	fat_open ();
 	//printf("HI\n");
+	inode_create (ROOT_DIR_SECTOR, DISK_SECTOR_SIZE, true);
 	thread_current ()->cur_dir = dir_open_root ();
+	dir_add(thread_current ()->cur_dir, ".", ROOT_DIR_SECTOR);
+	//dir_add(thread_current ()->cur_dir, "..", NULL);
 
 #else
 	/* Original FS */
@@ -97,8 +98,8 @@ filesys_create (const char *name, off_t initial_size) {
 		//printf("HI\n");
 	}
 	dir_close (dir);
-	//printf("HI\n");
-
+	//printf("root:%d\n", dir->pos);
+	
 	return success;
 }
 
@@ -109,19 +110,15 @@ filesys_create (const char *name, off_t initial_size) {
  * or if an internal memory allocation fails. */
 struct file *
 filesys_open (const char *name) {
-	//printf("HI\n");
-	char tmp_name[PATH_MAX+1];
+	char tmp_name[NAME_MAX+1];
 	struct dir *dir = parse_path(name,tmp_name);
 	struct inode *inode = NULL;
 	//printf("HI\n");
 	//printf("%s\n",name);
 	//printf("%s\n",tmp_name);
 	if (dir != NULL){
-		//printf("HI\n");
 		dir_lookup (dir, tmp_name, &inode);
-		//printf("HI\n");
 		dir_close (dir);
-		//rintf("HI\n");
 		return file_open(inode);
 	}
 	else
@@ -139,21 +136,23 @@ filesys_remove (const char *name) {
 	struct dir *dir =parse_path(name,tmp_name);
 	struct inode * i =NULL;
 	dir_lookup(dir,tmp_name,&i);
-
-
-
+	//printf("Pl:%d", chekc);
 	struct dir *tmp_dir= NULL;
-
 
   	char tmp[PATH_MAX + 1];
 	bool success = false;
-
+	//printf("k:%d %d\n",inode_get_inumber(dir_get_inode(dir)), inode_is_dir(i));
 	if (!inode_is_dir (i) || ((tmp_dir = dir_open (i) )&& !dir_readdir (tmp_dir, tmp))){
+		//printf("pleas\n");
 		if(dir && dir_remove(dir,tmp_name))
 			success = true;
 	}
 	dir_close(dir);
-	
+	if(tmp_dir !=NULL){
+		//printf("he\n");
+		free (tmp_dir);
+	}
+	//printf("succe:%d\n", success);
 	return success;
 }
 
@@ -176,7 +175,7 @@ do_format (void) {
 	printf ("done.\n");
 }
 struct dir *parse_path(char * path_name, char *file_name){
-	//printf("START\n");
+	//printf("HI\n");
 	struct dir *dir = NULL;
 	char path[PATH_MAX+1];
 	if(path_name ==NULL){
@@ -195,29 +194,32 @@ struct dir *parse_path(char * path_name, char *file_name){
 	//절대경로
 	
 	strlcpy(path, path_name, PATH_MAX);
+	//printf("path:%s", path);
 	if(path[0] =='/')
 		dir = dir_open_root();
 	
 	//상대경로
 	else{
-		//printf("HI\n");
-		//printf("%d\n",thread_current()->cur_dir ==NULL);
+		if(thread_current()->cur_dir ==NULL){
+			dir = dir_open_root();
+		}
+		//printf("hehe\n", inode_get_inumber(dir_get_inode(dir)));
 		dir = dir_reopen(thread_current()->cur_dir);
-
+		//printf("add:%llx", dir);
+		
 	}
-	//printf("%d\n",dir==NULL);
-	//printf("HI\n");
+
 	struct inode * tmp = dir_get_inode(dir);
-	//printf("tm:%d\n",tmp==NULL);
+	//printf("sec:%d\n",tmp==NULL);
 	if(inode_is_dir(tmp)==false){
 		//printf("HI\n");
 		return NULL;
 	}
-	//printf("HERE\n");
   	char *token, *next_token, *save_ptr;
   	token = strtok_r (path, "/", &save_ptr);
 	next_token = strtok_r (NULL, "/", &save_ptr);
-	
+	//printf("chekc: %s\n", next_token);
+	//printf("Here\n");
 	if(token==NULL){
 		//printf("HI\n");
 		strlcpy(file_name,".",NAME_MAX);
@@ -226,35 +228,41 @@ struct dir *parse_path(char * path_name, char *file_name){
 	while(token!=NULL && next_token != NULL){
 		struct inode * tempo =NULL;
 		//NO DIR
+		//printf("??\n");
+	
+		//printf("sibal\n");
 		if(dir_lookup(dir,token,&tempo)==false){
 			//printf("HI\n");
 			dir_close(dir);
 			return NULL;
 		}
 		if(inode_is_dir(tempo)==false){
-			//printf("HI\n");
+			//printf("??");
 			dir_close(dir);
 			return NULL;
 		}
 		//DONE
 		dir_close(dir);
-
 		//NEXT PART
 		dir = dir_open (tempo);
 		//printf("H:%d\n",dir==NULL);
 		token = next_token;
 		next_token = strtok_r (NULL, "/", &save_ptr);
 	}
+	//printf("check:%s\n", token);
 	strlcpy (file_name, token, NAME_MAX);
-	//printf("%d\n", dir==NULL);
+	//printf("Please%d", inode_get_inumber(dir_get_inode(dir)));
 	return dir;
 }
 
 bool filesys_create_dir(const char *name){
 	cluster_t clst = fat_create_chain (0);
 	disk_sector_t inode_sector = cluster_to_sector(clst);
+	//printf("is:%d", inode_sector);
 	char tmp_name[PATH_MAX +1];
+	//printf("hart\n");
 	struct dir *dir = parse_path(name, tmp_name);
+	//printf("hart%d\n",inode_get_inumber(dir_get_inode(dir)));
 	bool success = (dir != NULL
 			&& clst
 			&& dir_create (inode_sector, 16)
@@ -270,6 +278,9 @@ bool filesys_create_dir(const char *name){
 		dir_add(created_dir, "..", inode_get_inumber(tmp));
 		dir_close(created_dir);
 	}
+	
+	//printf("Pleas");
 	dir_close(dir);
+	//printf("cd:%d", &thread_current()->cur_dir->inode == )
 	return success;
 }

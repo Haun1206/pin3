@@ -5,8 +5,7 @@ iPXE (http://ipxe.org) 00:03.0 C980 PCI2.10 PnP PMM+013915A0+012F15A0 C980
 Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
 
 
-Booting from Hard Disk...
-Kernel command line: -q -f put close-bad-fd run close-bad-fd
+Booting from Hard Disk..Kernel command line: -q -f put close-bad-fd run close-bad-fd
 0 ~ 9fc00 1
 100000 ~ 13e0000 1
 Pintos booting with: 
@@ -24,10 +23,10 @@ Executing 'close-bad-fd':
 (close-bad-fd) end
 close-bad-fd: exit(0)
 Execution of 'close-bad-fd' complete.
-Timer: 68 ticks
-Thread: 30 idle ticks, 36 kernel ticks, 2 user ticks
+Timer: 78 ticks
+Thread: 44 idle ticks, 32 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 225 reads, 625 writes
+hd0:1: 246 reads, 627 writes
 hd1:0: 102 reads, 0 writes
 Console: 865 characters output
 Keyboard: 0 keys pressed

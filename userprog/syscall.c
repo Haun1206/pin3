@@ -85,16 +85,20 @@ static void check_addr(void* addr){
 #ifdef VM
 static void check_user(void* addr,struct intr_frame *f ){
 	struct page *p = spt_find_page(&thread_current()->spt, addr);
-	if( addr < pg_round_down(f->rsp) && p==NULL )
+	if( addr < pg_round_down(f->rsp) && p==NULL ){
+		//printf("2\n");
 		exit(-1);
+	}
     
 } 
 
 
 static void check_user_write(void* addr,struct intr_frame *f ){
 	struct page *p = spt_find_page(&thread_current()->spt, addr);
-	if(!p->writable)
+	if(!p->writable){
+		//printf("3\n");
 		exit(-1);
+	}
 }
 #endif
 void check_buffer(void *buffer, unsigned size){
@@ -126,6 +130,7 @@ void halt(void){
 void exit (int status){
 	struct thread*t = thread_current();
 	/*Tell the process descriptor the exit status*/
+	//printf("bb\n");
 	t->status_exit = status;
 	if(lock_held_by_current_thread(&file_lock))
 		lock_release(&file_lock);
@@ -169,6 +174,8 @@ bool create(const char*file, unsigned initial_size){
 		return false;
 	}
 	//check_str(file);
+	if(strlen(file)>14)
+		return false;
 	lock_acquire(&file_lock);
 	bool res = filesys_create(file, initial_size);
 	lock_release(&file_lock);
@@ -189,7 +196,9 @@ int open (const char *file){
 		return -1;
 	lock_acquire(&file_lock);
 	struct file * res;
+	//printf("He\n");
 	res = filesys_open(file);
+	//printf("ddddd\n");
 	if(res==NULL){
 		lock_release(&file_lock);
 		return -1;
@@ -200,6 +209,7 @@ int open (const char *file){
 	int fd = process_add_file(res);
 	//printf("open %d\n",fd);
 	lock_release(&file_lock);
+	//printf("fd:%d\n",fd);
 	return fd;
 }
 int filesize(int fd){
@@ -216,7 +226,7 @@ int filesize(int fd){
 	struct thread *t  = thread_current();
 	int size = file_length(t->fd_table[fd]);
 	lock_release(&file_lock);
-	//printf("Maybe here?\n");
+	//printf("Maybe: %d\n", size);
 	return size;
 
 }
@@ -327,50 +337,87 @@ void mmap(struct intr_frame *if_){
 }
 #endif
 bool isdir(int fd){
+
 	struct file * f= process_get_file(fd);
-	if(f==NULL)
+	if(f==NULL){
+		//printf("123\n");
 		exit(-1);
+	}
+	lock_acquire(&file_lock);
 	struct inode * tmp = file_get_inode(f);
-	return inode_is_dir(tmp);
+	bool res = inode_is_dir(tmp);
+	lock_release(&file_lock);
+	return res;
 }
 bool chdir (const char *path)
 {
-
 	char tmp_path[PATH_MAX + 1];
 	strlcpy (tmp_path, path, PATH_MAX);
 	//FINISH BY /0
-	strlcat (tmp_path, "/0", PATH_MAX);
+	//printf("tmp_:%s\n", tmp_path);
+	//strlcat (tmp_path, "/0", PATH_MAX);
+	//printf("be:%s\n",tmp_path);
 	
 	bool success = false;
-	char file_name[NAME_MAX + 1];
+	char* file_name = malloc(NAME_MAX + 1);
+	lock_acquire(&file_lock);
 	struct dir *dir = parse_path (tmp_path, file_name);
-	if (dir==NULL)
+	//printf("plese%d\n", dir ==NULL);
+	//printf("P:%s\n", file_name);
+	//printf("cd:%d",dir_get_inode(dir)==NULL);
+	//printf("P:%s\n", file_name);
+	if (dir==NULL){
+		//printf("plpl\n");
+		lock_release(&file_lock);
 		return success;
+	}
+	struct inode *inode = NULL;
+	if(!dir_lookup(dir, file_name, &inode)){
+		//printf("OOOO\n");
+		lock_release(&file_lock);
+		return false;
+	}
+	//printf("see\n");
+	struct dir* next_dir = dir_open(inode);
+	//printf("no?");
+	
 	dir_close (thread_current ()->cur_dir);
+	free(file_name);
 	//set new directory by chdir
-	thread_current ()->cur_dir = dir; 
+	thread_current ()->cur_dir = next_dir;
+	lock_release(&file_lock);
 	return true;
 }
 
 bool mkdir (const char *dir)
 {
-	return filesys_create_dir (dir);
+	lock_acquire(&file_lock);
+	bool res =  filesys_create_dir (dir);
+	lock_release(&file_lock);
+	return res;
 }
 //fd가 invalid하면??????????
 bool readdir (int fd, char *file_name)
 {
 	struct file *f = process_get_file (fd);
 
-	if (f == NULL)
+	if (f == NULL){
+		//printf("READDIR SEX");
 		exit (-1);
+	}
 	bool success =false;
-
+	lock_acquire(&file_lock);
 	struct inode *inode = file_get_inode (f);
-	if (inode==NULL || inode_is_dir (inode)==false)
+	if (inode==NULL || inode_is_dir (inode)==false){
+		lock_release(&file_lock);
 		return success;
+	}
+	
 	struct dir *dir = dir_open (inode);
-	if (dir==NULL)
+	if (dir==NULL){
+		lock_release(&file_lock);
 		return success;
+	}
 
 
 
@@ -383,15 +430,22 @@ bool readdir (int fd, char *file_name)
 	}
 	if ( (i <= *ofs ) == false)
 		(*ofs)++;
+	lock_release(&file_lock);
 	return result;
 }
 
 int inumber (int fd)
 {
 	struct file *f = process_get_file (fd);
-	if (f == NULL)
+	if (f == NULL){
+		//printf("INUMBER SEX\n");
 		exit (-1);
-	return inode_get_inumber (file_get_inode (f));
+	}
+
+	lock_acquire(&file_lock);
+	disk_sector_t res= inode_get_inumber (file_get_inode (f));
+	lock_release(&file_lock);
+	return res;
 }
 
 /* The main system call interface */
